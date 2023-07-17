@@ -1,0 +1,36 @@
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;900&display=swap');
+
+:root {
+  --default-layout-header-height: 100px;
+  --default-layout-width: 1920px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: 'Public Sans', sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.4;
+  background-color: #fffcfe;
+}
+
+button,
+input,
+[tabindex] {
+  outline: none;
+  border: none;
+}
+
+a[href] {
+  color: #142f43;
+  text-decoration: none;
+}
