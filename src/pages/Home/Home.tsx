@@ -8,7 +8,7 @@ const cx = classNames.bind(styles)
 const Home: React.FC<any> = ({ children }) => {
     return (
         <div className={cx('wrapper')}>
-            Ngu
+            
         </div>
     )
 }
