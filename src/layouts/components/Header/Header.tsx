@@ -4,7 +4,6 @@ import classNames from "classnames/bind";
 
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
@@ -13,11 +12,13 @@ import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { faPhoneVolume } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Header.module.scss';
 import config from '../../../config';
 import zaloLogo from '../../../assets/zalo-icon.png';
 import logo from '../../../assets/logo.png';
+import Titles from './MenuTitles';
 
 const cx = classNames.bind(styles)
 
@@ -26,6 +27,7 @@ const faYoutubeIcon = faYoutube as IconProp;
 const faAddressIcon = faLocationDot as IconProp;
 const faPhoneIcon = faPhoneVolume as IconProp;
 const faClockIcon = faClock as IconProp;
+const faBarsIcon = faBars as IconProp;
 
 const Header: React.FC = () => {
     return (
@@ -33,8 +35,8 @@ const Header: React.FC = () => {
             <Grid className={cx('address-bar')}>
                 <Container maxWidth='xl'>
                     <div className={cx('bar')}>
-                        <div className={cx('address')}>
-                            <p style={{ fontSize: '0.8rem' }}>
+                        <div className={cx('address-info')}>
+                            <p className={cx('address')} style={{ fontSize: '0.8rem' }}>
                                 <span>
                                     <FontAwesomeIcon 
                                         icon={faAddressIcon}
@@ -43,7 +45,7 @@ const Header: React.FC = () => {
                                 </span>
                                 Địa chỉ: 28/17/19F Đường 9A, Bình Hưng Hoà A, Bình Tân, Thành phố Hồ Chí Minh
                             </p>
-                            <p style={{ fontSize: '0.8rem' }}>
+                            <p className={cx('hotline')} style={{ fontSize: '0.8rem' }}>
                                 <span>
                                     <FontAwesomeIcon 
                                         icon={faPhoneIcon}
@@ -52,7 +54,7 @@ const Header: React.FC = () => {
                                 </span>
                                 Hotline: 0903 382 582
                             </p>
-                            <p style={{ fontSize: '0.8rem' }}>
+                            <p className={cx('open-time')} style={{ fontSize: '0.8rem' }}>
                                 <span>
                                     <FontAwesomeIcon 
                                         icon={faClockIcon}
@@ -63,43 +65,10 @@ const Header: React.FC = () => {
                             </p>
                         </div>
                         <div className={cx('logos')}>
-                            <FontAwesomeIcon 
-                                icon={faFacebookIcon} 
-                                style={{
-                                    color: "#4f7496", 
-                                    backgroundColor: '#fff', 
-                                    width: '1rem', 
-                                    height: '1rem',
-                                    padding: '0.5rem',
-                                    borderRadius: '50%',
-                                    marginRight: '1rem'
-                                }} 
-                            />
-                            <FontAwesomeIcon 
-                                icon={faYoutubeIcon} 
-                                style={{
-                                    color: "#e50914", 
-                                    backgroundColor: '#fff', 
-                                    width: '1rem', 
-                                    height: '1rem',
-                                    padding: '0.5rem',
-                                    borderRadius: '50%',
-                                    marginRight: '1rem'
-                                }} 
-                            />
+                            <FontAwesomeIcon className={cx('logo-fb')} icon={faFacebookIcon} />
+                            <FontAwesomeIcon className={cx('logo-yt')} icon={faYoutubeIcon} />
                             <div>
-                                <img 
-                                    src={zaloLogo} 
-                                    alt='Zalo logo' 
-                                    style={{
-                                        backgroundColor: '#fff', 
-                                        width: '2rem',
-                                        height: '2rem',
-                                        padding: '0.1rem',
-                                        borderRadius: '50%',
-                                        marginTop: '0.5rem'
-                                    }}
-                                />
+                                <img className={cx('logo-zalo')} src={zaloLogo} alt='Zalo logo' />
                             </div>
                         </div>
                     </div>                 
@@ -108,20 +77,12 @@ const Header: React.FC = () => {
             
             <Grid className={cx('logo-bar')}>
                 <Container maxWidth='xl'>
-                    <div className={cx('logo')}>
+                    <div className={cx('logo-wrapper')}>
                         <Link to={config.routes.home}>
                             <img 
+                                className={cx('logo')}
                                 src={logo} 
                                 alt='Logo'
-                                style={{
-                                    backgroundColor: '#fff', 
-                                    width: '10rem',
-                                    height: '10rem',
-                                    marginTop: '0.5rem',
-                                    marginBottom: '0.1rem',
-                                    marginLeft: '5rem',
-                                    marginRight: '5rem',
-                                }}
                             />
                         </Link>
                         <div className={cx('search-bar')}>
@@ -132,10 +93,17 @@ const Header: React.FC = () => {
             </Grid>
 
             <Grid className={cx('menu-bar')}>
-                <Container maxWidth='xl'>
-                    <div className={cx('menu')}>
+                <Container maxWidth='xl' className={cx('menu')}>
+                    <Grid xs={4} className={cx('menu-hamburger')}>
+                        <FontAwesomeIcon 
+                            icon={faBarsIcon}
+                            style={{marginRight: '0.5rem'}} 
+                        />
                         DANH MỤC SẢN PHẨM
-                    </div>
+                    </Grid>
+                    <Grid xs={8} className={cx('menu-titles')}>
+                        <Titles />
+                    </Grid>
                 </Container>
             </Grid>
         </Grid>
