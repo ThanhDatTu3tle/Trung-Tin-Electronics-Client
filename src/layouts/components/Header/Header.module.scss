@@ -20,7 +20,7 @@
             align-items: center;
             justify-content: space-between;
             text-align: center;
-            width: 60%;
+            width: 70%;
         }
 
         .logos {
@@ -28,7 +28,7 @@
             flex-direction: row;
             align-items: center;
             justify-content: end;
-            width: 40%;
+            width: 30%;
 
             .logo-fb {
                 color: #4f7496;
@@ -54,7 +54,7 @@
                 background-color: #fff;
                 width: 2rem;
                 height: 2rem;
-                padding: 0.5rem;
+                padding: 0.2rem;
                 border-radius: 50%;
                 margin-top: 0.5rem;
             }
@@ -72,6 +72,8 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: space-between;
+        width: 100%;
 
         .logo {
             width: 10rem;
@@ -82,6 +84,25 @@
             margin-right: 5rem;
             background-color: #fff;
         }
+
+        .search-bar {
+            margin-left: 2rem;
+            margin-right: 2rem;
+            width: fit-content;
+            padding: 0;
+            border: 1px solid #434343;
+            border-radius: 0.6rem;
+            background-color: #fff;
+        }
+
+        .categories {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 70%;
+            height: 100%;
+        }
     }
 }
 
@@ -91,7 +112,8 @@
     align-items: center;
     width: 100%;
     height: 4rem;
-    background-color: #d70018;
+    background-color: #018ec3;
+    box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
 
     .menu {
         display: flex;
@@ -122,7 +144,7 @@
     }
 }
 
-@media screen and (max-width: 1399px) and (min-width: 1001px) {
+@media screen and (max-width: 1399px) and (min-width: 1200px) {
     .address-bar {
         display: flex;
         flex-direction: row;
@@ -146,10 +168,6 @@
                 justify-content: space-between;
                 text-align: center;
                 width: 70%;
-
-                .open-time {
-                    display: none;
-                }
             }
     
             .logos {
@@ -183,7 +201,7 @@
                     background-color: #fff;
                     width: 2rem;
                     height: 2rem;
-                    padding: 0.5rem;
+                    padding: 0.2rem;
                     border-radius: 50%;
                     margin-top: 0.5rem;
                 }
@@ -207,179 +225,74 @@
                 height: 7rem;
                 margin-top: 0.5rem;
                 margin-bottom: 0.1rem;
-                margin-left: 5rem;
-                margin-right: 5rem;
+                margin-left: 3rem;
+                margin-right: 2rem;
                 background-color: #fff;
             }
-        }
-    }
-}
 
-@media screen and (max-width: 1000px) and (min-width: 501px) {
-    .address-bar {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        height: 3rem;
-        color: beige;
-        background-color: black;
+            .search-bar {
+                margin-left: 2rem;
+                margin-right: 2rem;
+                width: fit-content;
+                padding: 0;
+                border: 1px solid #434343;
+                border-radius: 0.6rem;
+                background-color: #fff;
+            }
     
-        .bar {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            text-align: center;
-            width: 100%;
-    
-            .address-info {
+            .categories {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
                 justify-content: space-between;
-                text-align: center;
                 width: 70%;
-
-                .address {
-                    display: none;
-                }
-            }
-    
-            .logos {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: end;
-                width: 30%;
-
-                .logo-fb {
-                    color: #4f7496;
-                    background-color: #fff;
-                    width: 1rem;
-                    height: 1rem;
-                    padding: 0.5rem;
-                    border-radius: 50%;
-                    margin-right: 1rem;
-                }
-    
-                .logo-yt {
-                    color: #e50914;
-                    background-color: #fff;
-                    width: 1rem;
-                    height: 1rem;
-                    padding: 0.5rem;
-                    border-radius: 50%;
-                    margin-right: 1rem;
-                }
-    
-                .logo-zalo {
-                    background-color: #fff;
-                    width: 2rem;
-                    height: 2rem;
-                    padding: 0.5rem;
-                    border-radius: 50%;
-                    margin-top: 0.5rem;
-                }
+                height: 100%;
             }
         }
     }
 
-    .logo-bar {
+    .menu-bar {
         display: flex;
         flex-direction: row;
         align-items: center;
         width: 100%;
+        height: 3rem;
+        background-color: #018ec3;
+        box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
     
-        .logo-wrapper {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-    
-            .logo {
-                width: 6rem;
-                height: 5rem;
-                margin-top: 0.5rem;
-                margin-bottom: 0.1rem;
-                margin-left: 5rem;
-                margin-right: 5rem;
-                background-color: #fff;
-            }
-        }
-    }
-}
-
-@media screen and (max-width: 500px) and (min-width: 201px) {
-    .address-bar {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        width: 100vw;
-        height: 2rem;
-        color: beige;
-        background-color: black;
-    
-        .bar {
+        .menu {
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            text-align: center;
-            width: 100%;
-    
-            .address-info {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                text-align: center;
-                width: 50%;
-
-                .address {
-                    display: none;
-                }
-
-                .open-time {
-                    display: none;
-                }
-            }
-    
-            .logos {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: end;
-                width: 50%;
-
-                .logo-fb {
-                    color: #4f7496;
-                    background-color: #fff;
-                    width: 0.8rem;
-                    height: 0.8rem;
-                    padding: 0.2rem;
-                    border-radius: 50%;
-                    margin-right: 1rem;
-                }
-    
-                .logo-yt {
-                    color: #e50914;
-                    background-color: #fff;
-                    width: 0.8rem;
-                    height: 0.8rem;
-                    padding: 0.2rem;
-                    border-radius: 50%;
-                    margin-right: 1rem;
-                }
-    
-                .logo-zalo {
-                    background-color: #fff;
-                    width: 1.3rem;
-                    height: 1.3rem;
-                    padding: 0.1rem;
-                    border-radius: 50%;
-                    margin-top: 0.5rem;
-                }
-            }
+            height: 100%;
         }
+    
+        .menu-hamburger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 14rem;
+            height: 100%;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            color: #ffffff;
+            background-color: #434343;
+        }
+    
+        .menu-titles {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 80%;
+            height: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 1199px) and (min-width: 940px) {
+    .address-bar {
+        display: none;
     }
 
     .logo-bar {
@@ -394,14 +307,132 @@
             align-items: center;
     
             .logo {
-                width: 4rem;
-                height: 3rem;
+                width: 8rem;
+                height: 7rem;
                 margin-top: 0.5rem;
                 margin-bottom: 0.1rem;
-                margin-left: 5rem;
-                margin-right: 5rem;
+                margin-left: 3rem;
+                margin-right: 2rem;
                 background-color: #fff;
             }
+
+            .search-bar {
+                display: none;
+            }
+    
+            .categories {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                width: 70%;
+                height: 100%;
+            }
+        }
+    }
+
+    .menu-bar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        height: 3rem;
+        background-color: #018ec3;
+        box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
+    
+        .menu {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+    
+        .menu-hamburger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 14rem;
+            height: 100%;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            color: #ffffff;
+            background-color: #434343;
+        }
+    
+        .menu-titles {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 80%;
+            height: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 940px) and (min-width: 201px) {
+    .address-bar {
+        display: none;
+    }
+
+    .logo-bar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+    
+        .logo-wrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+    
+            .logo {
+                width: 5rem;
+                height: 4rem;
+                margin-top: 0.5rem;
+                margin-bottom: 0.1rem;
+                margin-left: 1rem;
+                margin-right: 0;
+                background-color: #fff;
+            }
+        }
+    }
+
+    .menu-bar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        height: 2rem;
+        background-color: #018ec3;
+        box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
+    
+        .menu {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+    
+        .menu-hamburger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 14rem;
+            height: 100%;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            color: #ffffff;
+            background-color: #434343;
+        }
+    
+        .menu-titles {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 80%;
+            height: 100%;
         }
     }
 }

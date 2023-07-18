@@ -9,3 +9,9 @@
     height: 100%;
     font-weight: 700;
 }
+
+@media screen and (max-width: 1390px) {
+    .payment-guide {
+        display: none;
+    }
+}

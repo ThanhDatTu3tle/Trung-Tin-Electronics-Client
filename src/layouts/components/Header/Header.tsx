@@ -1,9 +1,13 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from "classnames/bind";
 
+import { styled, alpha } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
+import SearchIcon from '@mui/icons-material/Search';
+import InputBase from '@mui/material/InputBase';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
@@ -19,6 +23,8 @@ import config from '../../../config';
 import zaloLogo from '../../../assets/zalo-icon.png';
 import logo from '../../../assets/logo.png';
 import Titles from './MenuTitles';
+import Category from '../../../components/Category';
+import SocialMedia from '../../../components/SocialMedia';
 
 const cx = classNames.bind(styles)
 
@@ -29,7 +35,72 @@ const faPhoneIcon = faPhoneVolume as IconProp;
 const faClockIcon = faClock as IconProp;
 const faBarsIcon = faBars as IconProp;
 
+const Search = styled('div')(({ theme }) => ({
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    '&:hover': {
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginRight: 0,
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginRight: theme.spacing(0),
+      marginLeft: theme.spacing(0),
+      width: 'auto',
+    },
+}));
+  
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+    padding: theme.spacing(0, 1),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: 'inherit',
+    '& .MuiInputBase-input': {
+      padding: theme.spacing(1, 0, 1, 0),
+      // vertical padding + font size from searchIcon
+      paddingLeft: `calc(1em + ${theme.spacing(2)})`,
+      paddingRight: `calc(1em + ${theme.spacing(1)})`,
+      transition: theme.transitions.create('width'),
+      width: '100%',
+    },
+}));
+
+let screenWidth = window.innerWidth;
+
+function updateScreenSize() {
+  screenWidth = window.innerWidth;
+
+  console.log("Width: " + screenWidth);
+}
+
+updateScreenSize();
+
+window.addEventListener("resize", updateScreenSize);
+
 const Header: React.FC = () => {
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => {
+          setScreenWidth(window.innerWidth);
+        };
+    
+        window.addEventListener("resize", handleResize);
+    
+        return () => {
+          window.removeEventListener("resize", handleResize);
+        };
+      }, []);
+
     return (
         <Grid>
             <Grid className={cx('address-bar')}>
@@ -86,7 +157,30 @@ const Header: React.FC = () => {
                             />
                         </Link>
                         <div className={cx('search-bar')}>
-                            <input type='search'/>
+                            {screenWidth >= 940 ? 
+                                (
+                                    <Search>
+                                        <SearchIconWrapper>
+                                            <SearchIcon />
+                                        </SearchIconWrapper>
+                                        <StyledInputBase
+                                            placeholder="Máy khoan, máy cưa..."
+                                            inputProps={{ 'aria-label': 'search' }}
+                                        />
+                                    </Search>
+                                ) : (
+                                    <div style={{backgroundColor: "#f5f5f5"}}></div>
+                                )
+                            }                           
+                        </div>
+                        <div className={cx('categories')}>
+                            {screenWidth >= 940 ? 
+                                (
+                                    <Category />
+                                ) : (
+                                    <SocialMedia />
+                                )
+                            }
                         </div>
                     </div>
                 </Container>
@@ -94,16 +188,16 @@ const Header: React.FC = () => {
 
             <Grid className={cx('menu-bar')}>
                 <Container maxWidth='xl' className={cx('menu')}>
-                    <Grid xs={4} className={cx('menu-hamburger')}>
+                    <div className={cx('menu-hamburger')}>
                         <FontAwesomeIcon 
                             icon={faBarsIcon}
                             style={{marginRight: '0.5rem'}} 
                         />
                         DANH MỤC SẢN PHẨM
-                    </Grid>
-                    <Grid xs={8} className={cx('menu-titles')}>
+                    </div>
+                    <div className={cx('menu-titles')}>
                         <Titles />
-                    </Grid>
+                    </div>
                 </Container>
             </Grid>
         </Grid>

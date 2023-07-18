@@ -10,11 +10,11 @@ const MenuTitles: React.FC = () => {
     return (
         <div className={cx('wrapper')}>
             <Titles>
+                <TitleItem title='Trang chủ' to={config.routes.home} icon={null}  />
                 <TitleItem title='Giới thiệu' to={config.routes.introduce} icon={null}  />
                 <TitleItem title='Khuyến mãi' to={config.routes.discount} icon={null}  />
                 <TitleItem title='Tin tức' to={config.routes.news} icon={null}  />
                 <TitleItem title='Liên hệ' to={config.routes.contact} icon={null}  />
-                <TitleItem title='Hướng dẫn thanh toán' to={config.routes.paymentGuide} icon={null}  />
             </Titles>
         </div>
     )
