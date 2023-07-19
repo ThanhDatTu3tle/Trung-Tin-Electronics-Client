@@ -6,7 +6,7 @@ import Container from '@mui/material/Container';
 
 import styles from './MainUserLayout.module.scss';
 import Header from '../components/Header';
-// import Footer from '../components/Footer';
+import Footer from '../components/Footer';
 
 const cx = classNames.bind(styles)
 
@@ -19,7 +19,7 @@ const MainUserLayout: React.FC<any> = ({ children }) => {
                     {children}
                 </div>  
             </Container>
-            {/* <Footer /> */}
+            <Footer />
         </Grid>
     )
 }

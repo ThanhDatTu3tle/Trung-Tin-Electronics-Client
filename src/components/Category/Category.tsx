@@ -26,7 +26,7 @@ const categories = [
     }
 ]
 
-const Category: React.FC<any> = ({ children }) => {
+const Category: React.FC<any> = () => {
     return (
         <>
             {categories.map((category) => (

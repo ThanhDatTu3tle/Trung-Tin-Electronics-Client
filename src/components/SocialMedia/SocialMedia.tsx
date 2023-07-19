@@ -19,7 +19,7 @@ const logos = [
     }
 ]
 
-const SocialMedia: React.FC<any> = ({ children }) => {
+const SocialMedia: React.FC<any> = () => {
     return (
         <>
             {logos.map((logo) => (
