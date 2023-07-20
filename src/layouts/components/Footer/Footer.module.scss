@@ -3,7 +3,7 @@
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
-    height: 23rem;
+    height: 22rem;
     margin-top: 5rem;
     background-image: (url('https://storethietbi.com/upload/hinhanh/bgfooter02-813-1028.jpeg'));
 }
@@ -13,6 +13,7 @@
     flex-direction: row;
     justify-content: space-between;
     padding-top: 2rem;
+    width: 100%;
     color: #fff;
     font-size: 1rem;
 
@@ -102,6 +103,7 @@
 }
 
 .copyright {
+    display: flex;
     font-size: 1rem;
     color: #fff;
     margin-bottom: 0.5rem;
