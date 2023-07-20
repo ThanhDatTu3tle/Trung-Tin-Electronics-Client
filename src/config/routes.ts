@@ -4,7 +4,9 @@ const routes = {
     discount: "/khuyen-mai",
     paymentGuide: "/huong-dan-thanh-toan",
     news: "/tin-tuc",
-    contact: "/lien-he"
+    contact: "/lien-he",
+
+    admin: "/admin"
 };
   
 export default routes;

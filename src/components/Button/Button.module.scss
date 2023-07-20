@@ -1,0 +1,70 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-size: 1rem;
+    font-weight: 700;
+    min-width: 100%;
+    min-height: 44px;
+    padding: 10px 22px;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    background-color: white;
+    line-height: 22px;
+    user-select: none;
+  
+    &.disable {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+  }
+  
+  // Button type
+  .primary {
+    background-color: #018ec3;
+    color: white;
+    border-radius: 5px;
+  
+    &:hover {
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)),
+        #018ec3;
+    }
+  }
+  
+  .close {
+    background-color: transparent;
+  }
+  
+  .outline {
+    border-color: #018ec3;
+    color: #018ec3;
+  
+    &:hover {
+      background-color: rgba(254, 44, 85, 0.06);
+    }
+  }
+  
+  // Button size
+  .small {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 88px;
+    min-height: 28px;
+    padding: 4px 16px;
+    color: white;
+    background-color: #018ec3;
+  
+    &:hover {
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)),
+        #018ec3;
+    }
+  }
+  
+  .large {
+    min-width: 140px;
+    min-height: 36px;
+    padding: 14px 16px;
+  }
+  

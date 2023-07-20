@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import classNames from "classnames/bind";
 
-import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,15 +10,41 @@ import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 import styles from './Footer.module.scss';
-import zaloLogo from '../../../assets/zalo-icon.png';
-import Image from '../../../components/Image';
+import zaloLogo from '../../../../assets/zalo-icon.png';
+import Image from '../../../../components/Image';
 
 const cx = classNames.bind(styles);
 
 const faFacebookIcon = faFacebookF as IconProp;
 const faYoutubeIcon = faYoutube as IconProp;
 
+let screenWidth = window.innerWidth;
+
+function updateScreenSize() {
+  screenWidth = window.innerWidth;
+
+  console.log("Width: " + screenWidth);
+}
+
+updateScreenSize();
+
+window.addEventListener("resize", updateScreenSize);
+
 const Footer: React.FC<any> = () => {
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => {
+          setScreenWidth(window.innerWidth);
+        };
+    
+        window.addEventListener("resize", handleResize);
+    
+        return () => {
+          window.removeEventListener("resize", handleResize);
+        };
+      }, []);
+
     return (
         <div className={cx('wrapper')}>
             <Container maxWidth='xl'>
@@ -83,9 +109,21 @@ const Footer: React.FC<any> = () => {
                     </div>
                 </div>
             </Container>
-            <Container maxWidth='xl' className={cx('copyright')}>
-                <p>Copyright © 2023 by CÔNG TY TNHH TRUNG TÍN. All rights reserved. Design by Tu3tle & Sodana Co.,Ltd</p>
-            </Container>
+            {screenWidth >= 540 ? 
+                (
+                    <Container maxWidth='xl' className={cx('copyright')}>
+                        <p>Copyright © 2023 by CÔNG TY TNHH TRUNG TÍN. All rights reserved. Design by Tu3tle & Sodana Co.,Ltd</p>
+                    </Container>
+                ) : (
+                    <Container maxWidth='xl' className={cx('copyright')}>
+                        <p>
+                            Copyright © 2023 by CÔNG TY TNHH TRUNG TÍN. 
+                            <br />
+                            All rights reserved. Design by Tu3tle & Sodana
+                        </p>
+                    </Container>
+                )
+            } 
         </div>
     )
 }

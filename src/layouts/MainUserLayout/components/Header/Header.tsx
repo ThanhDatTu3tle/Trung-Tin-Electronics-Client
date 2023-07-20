@@ -16,13 +16,13 @@ import { faClock } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Header.module.scss';
-import config from '../../../config';
-import zaloLogo from '../../../assets/zalo-icon.png';
-import logo from '../../../assets/logo.png';
+import config from '../../../../config';
+import zaloLogo from '../../../../assets/zalo-icon.png';
+import logo from '../../../../assets/logo.png';
 import Titles from './MenuTitles';
-import Category from '../../../components/Category';
-import SocialMedia from '../../../components/SocialMedia';
-import InputSearch from '../../../components/InputSearch';
+import Category from '../../../../components/Category';
+import SocialMedia from '../../../../components/SocialMedia';
+import InputSearch from '../../../../components/InputSearch';
 
 const cx = classNames.bind(styles)
 

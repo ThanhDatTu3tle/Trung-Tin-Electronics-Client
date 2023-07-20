@@ -1,4 +1,4 @@
-import config from "../../../config";
+import config from "../../../../config";
 import classNames from "classnames/bind";
 
 import styles from './MenuTitles.module.scss';

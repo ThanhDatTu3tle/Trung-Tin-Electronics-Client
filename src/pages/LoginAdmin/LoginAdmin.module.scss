@@ -1,0 +1,273 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: #EEF2F6;
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 22%;
+        height: fit-content;
+        background-color: #FFFFFF;
+        border-radius: 1rem;
+        box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
+
+        .logo-brand {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 60%;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+
+            .logo {
+                width: 4.4rem;
+                height: 4.4rem;
+            }
+        }
+
+        .inputs {
+            display: flex;
+            flex-direction: column;
+            width: 80%;
+            height: fit-content;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+
+            .input-name {
+                height: 3rem;
+                border: 1px solid rgb(199, 192, 192);
+                border-radius: 0.3rem;
+                padding: 1rem;
+
+                &:hover {
+                    border: 1px solid black;
+                }
+            }
+
+            .input-pass {
+                height: 3rem;
+                border: 1px solid rgb(199, 192, 192);
+                border-radius: 0.3rem;
+                padding: 1rem;
+
+                &:hover {
+                    border: 1px solid black;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1650px) and (min-width: 1200px) {
+    .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+        height: 100vh;
+        background-color: #EEF2F6;
+    
+        .form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 30%;
+            height: fit-content;
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
+    
+            .logo-brand {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                width: 60%;
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+                font-size: 1rem;
+    
+                .logo { 
+                    width: 3rem;
+                    height: 3rem;
+                }
+            }
+    
+            .inputs {
+                display: flex;
+                flex-direction: column;
+                width: 80%;
+                height: fit-content;
+                margin-top: 1.5rem;
+                margin-bottom: 1rem;
+    
+                .input-name {
+                    height: 3rem;
+                    border: 1px solid rgb(199, 192, 192);
+                    border-radius: 0.3rem;
+                    padding: 1rem;
+    
+                    &:hover {
+                        border: 1px solid black;
+                    }
+                }
+    
+                .input-pass {
+                    height: 3rem;
+                    border: 1px solid rgb(199, 192, 192);
+                    border-radius: 0.3rem;
+                    padding: 1rem;
+    
+                    &:hover {
+                        border: 1px solid black;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1199px) and (min-width: 540px) {
+    .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+        height: 100vh;
+        background-color: #EEF2F6;
+    
+        .form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 50%;
+            height: fit-content;
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
+    
+            .logo-brand {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                width: 60%;
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+                font-size: 0.8rem;
+    
+                .logo { 
+                    width: 3rem;
+                    height: 3rem;
+                }
+            }
+    
+            .inputs {
+                display: flex;
+                flex-direction: column;
+                width: 80%;
+                height: fit-content;
+                margin-top: 1.5rem;
+                margin-bottom: 1rem;
+    
+                .input-name {
+                    height: 3rem;
+                    border: 1px solid rgb(199, 192, 192);
+                    border-radius: 0.3rem;
+                    padding: 1rem;
+    
+                    &:hover {
+                        border: 1px solid black;
+                    }
+                }
+    
+                .input-pass {
+                    height: 3rem;
+                    border: 1px solid rgb(199, 192, 192);
+                    border-radius: 0.3rem;
+                    padding: 1rem;
+    
+                    &:hover {
+                        border: 1px solid black;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 450px) and (min-width: 250px) {
+    .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+        height: 100vh;
+        background-color: #EEF2F6;
+    
+        .form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            height: fit-content;
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
+    
+            .logo-brand {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                width: 60%;
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+                font-size: 0.9rem;
+    
+                .logo { 
+                    width: 3rem;
+                    height: 3rem;
+                }
+            }
+    
+            .inputs {
+                display: flex;
+                flex-direction: column;
+                width: 80%;
+                height: fit-content;
+                margin-top: 1.5rem;
+                margin-bottom: 1rem;
+    
+                .input-name {
+                    height: 3rem;
+                    border: 1px solid rgb(199, 192, 192);
+                    border-radius: 0.3rem;
+                    padding: 1rem;
+    
+                    &:hover {
+                        border: 1px solid black;
+                    }
+                }
+    
+                .input-pass {
+                    height: 3rem;
+                    border: 1px solid rgb(199, 192, 192);
+                    border-radius: 0.3rem;
+                    padding: 1rem;
+    
+                    &:hover {
+                        border: 1px solid black;
+                    }
+                }
+            }
+        }
+    }
+}

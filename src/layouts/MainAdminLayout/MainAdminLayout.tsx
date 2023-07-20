@@ -4,13 +4,13 @@ import classNames from "classnames/bind";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 
-import styles from './MainUserLayout.module.scss';
+import styles from './MainAdminLayout.module.scss';
 import Header from '../MainUserLayout/components/Header';
 import Footer from '../MainUserLayout/components/Footer';
 
 const cx = classNames.bind(styles)
 
-const MainUserLayout: React.FC<any> = ({ children }) => {
+const MainAdminLayout: React.FC<any> = ({ children }) => {
     return (
         <Grid>
             <Header/>
@@ -24,4 +24,4 @@ const MainUserLayout: React.FC<any> = ({ children }) => {
     )
 }
 
-export default MainUserLayout;
+export default MainAdminLayout;
