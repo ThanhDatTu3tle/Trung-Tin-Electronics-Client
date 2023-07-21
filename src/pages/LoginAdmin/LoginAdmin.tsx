@@ -1,31 +1,84 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import classNames from "classnames/bind";
+
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 
 import styles from './LoginAdmin.module.scss';
 import logo from '../../assets/logo.png';
 import Button from '../../components/Button';
+import { AuthContext } from '../../Context/AuthContext';
+import LoginQuery from '../../hooks/loginQuery';
 
 const cx = classNames.bind(styles)
 
-const LoginAdmin: React.FC<any> = ({ handleLogin }) => {
-    const [username, setUsername] = useState(''); 
-    const [password, setPassword] = useState(''); 
+const LoginAdmin: React.FC<any> = () => {
 
-    // Hàm xử lý khi nhập username
-    const handleUsernameChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
-        setUsername(event.target.value);
-    };
+    const {token, setToken} = useContext(AuthContext);
+    const [username, setUsername] = useState<String | null>(null);
+    const [password, setPassword] = useState<String | null>(null);
+    const [error1, setError1] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const navigate = useNavigate();
 
-    // Hàm xử lý khi nhập password
-    const handlePasswordChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
-        setPassword(event.target.value);
-    };
-
-    // Hàm xử lý khi nhấn nút đăng nhập
-    const handleLoginClick = () => {
-        handleLogin(username, password);
-    };
+    interface IFormInput {
+        username: String|null;
+        password: String|null;
+    }
+      
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm<IFormInput>({
+        defaultValues:{
+          username: username,
+          password: password
+        } 
+    });
+      
+    const onSubmit: SubmitHandler<IFormInput> = (res: any) => console.log("form data", res);
+    const {data, isLoading, isSuccess, refetch} = LoginQuery({username, password});
+    
+    if(isSuccess) {
+        setToken(localStorage.getItem('token')as string);
+    }
+    useEffect(() => {
+        if(token) {
+          navigate('/')
+        }
+    }, [token])
+    
+    const getError = localStorage.getItem('errorlogin') || null;
+    
+    useEffect(() => {
+        if(getError) {
+          setIsError(true)
+        }
+    }, [getError])
+      
+    useEffect(() => {
+        if(username && password) {
+          refetch()
+          setUsername("")
+          setPassword("")
+        }
+    }, [username, password])
+    
+    
+    const handleLogin:SubmitHandler<IFormInput>= async(res: { username: React.SetStateAction<String | null>; password: React.SetStateAction<String | null>; })=>{
+        if(res.username && res.password) {
+          // console.log(res)
+          setUsername(res.username)
+          setPassword(res.password)
+          setError1(false)
+        } else {
+          setError1(true)
+          setIsError(false)
+        }
+    }
 
     return (
         <div className={cx('wrapper')}>
@@ -44,20 +97,20 @@ const LoginAdmin: React.FC<any> = ({ handleLogin }) => {
                         type='text' 
                         placeholder='Tên đăng nhập' 
                         className={cx('input-name')}
-                        value={username}
-                        onChange={handleUsernameChange}
+                        // value={username}
+                        // onChange={handleUsernameChange}
+                        {...register("username",{ required: true})}
                     />
                     <br />
                     <input 
                         type='text' 
                         placeholder='Mật khẩu' 
                         className={cx('input-pass')}
-                        value={password}
-                        onChange={handlePasswordChange}
+                        {...register("password",{required:true})}
                     />
                     <br />
                 </div>
-                <Button primary small onClick={handleLoginClick}>Đăng nhập</Button>
+                <Button primary small onClick={handleSubmit(handleLogin)}>Đăng nhập</Button>
                 <br />
             </div>
         </div>

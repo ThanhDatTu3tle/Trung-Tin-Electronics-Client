@@ -5,15 +5,20 @@ import reportWebVitals from './reportWebVitals';
 
 import GlobalStyles from './components/GlobalStyles';
 
+import { QueryClient, QueryClientProvider } from "react-query";
+const queryClient = new QueryClient();
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <GlobalStyles>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </GlobalStyles>
+  <React.StrictMode>
+    <GlobalStyles>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </GlobalStyles>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

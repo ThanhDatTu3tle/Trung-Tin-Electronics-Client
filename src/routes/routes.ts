@@ -22,8 +22,4 @@ const privateRoutes = [
     { path: config.routes.admin, component: Admin, layout: MainAdminLayout },
 ];
 
-const adminRoute = { path: config.routes.admin, component: Admin, layout: MainUserLayout };
-
-const authenticatedRoutes = [...publicRoutes, adminRoute, ...privateRoutes];
-
-export { publicRoutes, authenticatedRoutes };
+export { publicRoutes, privateRoutes };

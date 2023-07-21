@@ -8,91 +8,97 @@ import {
 } from "react-router-dom";
 
 import { MainUserLayout } from "./layouts/MainUserLayout";
-import { publicRoutes, authenticatedRoutes  } from "./routes";
+import { publicRoutes, privateRoutes  } from "./routes";
+import { AuthContext } from "./Context/AuthContext";
+import ProtectedRoute from "./ProtectedRoute";
 
 import LoginAdmin from "./pages/LoginAdmin";
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    const isAuthenticatedInLocalStorage = localStorage.getItem('isAuthenticated') === 'true';
-    setIsAuthenticated(isAuthenticatedInLocalStorage);
-  }, []);
+  // useEffect(() => {
+  //   const isAuthenticatedInLocalStorage = localStorage.getItem('isAuthenticated') === 'true';
+  //   setIsAuthenticated(isAuthenticatedInLocalStorage);
+  // }, []);
 
-  const handleLogin = (username: string, password: string) => {
-    if (username === 'tu3tle' && password === 'sodana') {
-      setIsAuthenticated(true);
-      localStorage.setItem('isAuthenticated', 'true');
-    } else {
-      setIsAuthenticated(false);
-    }
-  };
+  // const handleLogin = (username: string, password: string) => {
+  //   if (username === 'tu3tle' && password === 'sodana') {
+  //     setIsAuthenticated(true);
+  //     localStorage.setItem('isAuthenticated', 'true');
+  //   } else {
+  //     setIsAuthenticated(false);
+  //   }
+  // };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('isAuthenticated');
-  };
+  // const handleLogout = () => {
+  //   setIsAuthenticated(false);
+  //   localStorage.removeItem('isAuthenticated');
+  // };
 
-  console.log("IsAuthenticated:", isAuthenticated);
+  const [search, setSearch] = useState<string | null>(null);
+  // const [user,setUser] = useState<string | null>(null);
+  const [ token, setToken]  = useState<string|null>(null);
 
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          {publicRoutes.map((route, index) => {
+    <AuthContext.Provider value={{ token, setToken, search, setSearch }}>
+      <Router>
+        <div className="App">
+          <Routes>
+            {publicRoutes.map((route, index) => {
 
-            const Page = route.component;
+              const Page = route.component;
 
-            let Layout = MainUserLayout;
-            
-            if (route.layout) {
-              Layout = route.layout;
-            } else if (route.layout === null) {
-              Layout = Fragment;
-            }
+              let Layout = MainUserLayout;
+              
+              if (route.layout) {
+                Layout = route.layout;
+              } else if (route.layout === null) {
+                Layout = Fragment;
+              }
 
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={
-                  <Layout>
-                    <Page isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
-                  </Layout>
-                }
-              />
-            )
-          })}
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  }
+                />
+              )
+            })}
 
-          {authenticatedRoutes.map((route, index) => {
-            const Page = route.component;
+            {privateRoutes.map((route, index) => {
+              const Page = route.component;
 
-            let Layout = MainUserLayout;
+              let Layout = MainUserLayout;
 
-            if (route.layout) {
-              Layout = route.layout;
-            } else if (route.layout === null) {
-              Layout = Fragment;
-            }
+              if (route.layout) {
+                Layout = route.layout;
+              } else if (route.layout === null) {
+                Layout = Fragment;
+              }
 
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={
-                  <Layout>
-                    <Page isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
-                  </Layout>
-                }
-              />
-            );
-          })}
-
-          <Route path="/login" element={<LoginAdmin handleLogin={handleLogin} />} />
-        </Routes>
-      </div>
-    </Router> 
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <Page />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+              )
+            })}
+          </Routes>
+        </div>
+      </Router> 
+    </AuthContext.Provider>
   );
 }
 
