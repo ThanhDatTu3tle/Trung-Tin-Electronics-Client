@@ -6,7 +6,7 @@ import classNames from "classnames/bind";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';

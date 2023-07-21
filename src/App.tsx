@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Fragment } from "react";
 import {
   BrowserRouter as Router,
@@ -12,30 +12,7 @@ import { publicRoutes, privateRoutes  } from "./routes";
 import { AuthContext } from "./Context/AuthContext";
 import ProtectedRoute from "./ProtectedRoute";
 
-import LoginAdmin from "./pages/LoginAdmin";
-
 const App: React.FC = () => {
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // useEffect(() => {
-  //   const isAuthenticatedInLocalStorage = localStorage.getItem('isAuthenticated') === 'true';
-  //   setIsAuthenticated(isAuthenticatedInLocalStorage);
-  // }, []);
-
-  // const handleLogin = (username: string, password: string) => {
-  //   if (username === 'tu3tle' && password === 'sodana') {
-  //     setIsAuthenticated(true);
-  //     localStorage.setItem('isAuthenticated', 'true');
-  //   } else {
-  //     setIsAuthenticated(false);
-  //   }
-  // };
-
-  // const handleLogout = () => {
-  //   setIsAuthenticated(false);
-  //   localStorage.removeItem('isAuthenticated');
-  // };
-
   const [search, setSearch] = useState<string | null>(null);
   // const [user,setUser] = useState<string | null>(null);
   const [ token, setToken]  = useState<string|null>(null);
