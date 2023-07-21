@@ -6,6 +6,7 @@ const routes = {
     news: "/tin-tuc",
     contact: "/lien-he",
 
+    login: "/login",
     admin: "/admin"
 };
   

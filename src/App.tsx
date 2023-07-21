@@ -1,36 +1,40 @@
 import React from "react";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Fragment } from "react";
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  Navigate
+  Route
 } from "react-router-dom";
 
 import { MainUserLayout } from "./layouts/MainUserLayout";
-import { publicRoutes } from "./routes";
-import PrivateRoute from "./PrivateRoute";
+import { publicRoutes, authenticatedRoutes  } from "./routes";
 
-import Admin from "./pages/Admin";
 import LoginAdmin from "./pages/LoginAdmin";
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Hàm xác thực người dùng
-  const handleLogin = () => {
-    // Thực hiện xác thực người dùng, ví dụ: gửi yêu cầu đăng nhập đến máy chủ
-    // Sau khi xác thực thành công, đặt trạng thái isAuthenticated thành true
-    setIsAuthenticated(true);
+  useEffect(() => {
+    const isAuthenticatedInLocalStorage = localStorage.getItem('isAuthenticated') === 'true';
+    setIsAuthenticated(isAuthenticatedInLocalStorage);
+  }, []);
+
+  const handleLogin = (username: string, password: string) => {
+    if (username === 'tu3tle' && password === 'sodana') {
+      setIsAuthenticated(true);
+      localStorage.setItem('isAuthenticated', 'true');
+    } else {
+      setIsAuthenticated(false);
+    }
   };
 
-  // Hàm đăng xuất người dùng
   const handleLogout = () => {
-    // Thực hiện đăng xuất, ví dụ: gửi yêu cầu đăng xuất đến máy chủ
-    // Sau khi đăng xuất thành công, đặt trạng thái isAuthenticated thành false
     setIsAuthenticated(false);
+    localStorage.removeItem('isAuthenticated');
   };
+
+  console.log("IsAuthenticated:", isAuthenticated);
 
   return (
     <Router>
@@ -54,23 +58,36 @@ const App: React.FC = () => {
                 path={route.path}
                 element={
                   <Layout>
-                    <Page />
+                    <Page isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
                   </Layout>
                 }
               />
             )
           })}
 
-          <Route
-            path="/admin"
-            element={
-              isAuthenticated ? (
-                <Admin handleLogout={handleLogout} />
-              ) : (
-                <Navigate to="/login" replace />
-              )
+          {authenticatedRoutes.map((route, index) => {
+            const Page = route.component;
+
+            let Layout = MainUserLayout;
+
+            if (route.layout) {
+              Layout = route.layout;
+            } else if (route.layout === null) {
+              Layout = Fragment;
             }
-          />
+
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
+                  </Layout>
+                }
+              />
+            );
+          })}
 
           <Route path="/login" element={<LoginAdmin handleLogin={handleLogin} />} />
         </Routes>
