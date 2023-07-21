@@ -1,6 +1,5 @@
 // routes.ts
 import config from "../config";
-// import { privateRoutes } from "./privateRoutes";
 
 // Layouts
 import { MainUserLayout } from "../layouts/MainUserLayout";
@@ -11,7 +10,10 @@ import Home from "../pages/Home";
 
 // Admin Page
 import LoginAdmin from "../pages/LoginAdmin";
-import Admin from "../pages/Admin";
+import Dashboard from "../pages/Admin/Dashboard";
+import Product from "../pages/Admin/Product";
+import Category from "../pages/Admin/Category";
+import Brand from "../pages/Admin/Brand";
 
 const publicRoutes = [
   { path: config.routes.home, component: Home, layout: MainUserLayout },
@@ -19,7 +21,10 @@ const publicRoutes = [
 ];
 
 const privateRoutes = [
-    { path: config.routes.admin, component: Admin, layout: MainAdminLayout },
+    { path: config.routes.admin, component: Dashboard, layout: MainAdminLayout },
+    { path: config.routes.product, component: Product, layout: MainAdminLayout },
+    { path: config.routes.category, component: Category, layout: MainAdminLayout },
+    { path: config.routes.brand, component: Brand, layout: MainAdminLayout },
 ];
 
 export { publicRoutes, privateRoutes };

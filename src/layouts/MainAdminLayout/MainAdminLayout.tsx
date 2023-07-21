@@ -5,17 +5,24 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 
 import styles from './MainAdminLayout.module.scss';
+import Header from '../MainAdminLayout/components/Header';
+import Titles from './components/SideNav/Menu/Titles';
+import SideNav from './components/SideNav/SideNav';
 
 const cx = classNames.bind(styles)
 
 const MainAdminLayout: React.FC<any> = ({ children }) => {
     return (
         <Grid>
-            <Container maxWidth='xl'>
-                <div className={cx('content')}>
+            <Header/>
+            <Grid container className={cx('wrapper')}>
+                <Grid md={2}>
+                    <SideNav />
+                </Grid>
+                <Grid md={10} className={cx('content')}>
                     {children}
-                </div>  
-            </Container>
+                </Grid>
+            </Grid>  
         </Grid>
     )
 }

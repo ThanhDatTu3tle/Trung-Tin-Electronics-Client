@@ -5,9 +5,12 @@ const routes = {
     paymentGuide: "/huong-dan-thanh-toan",
     news: "/tin-tuc",
     contact: "/lien-he",
-
     login: "/login",
-    admin: "/admin"
+
+    admin: "/admin",
+    product: "/product",
+    category: "/category",
+    brand: "/brand"
 };
   
 export default routes;

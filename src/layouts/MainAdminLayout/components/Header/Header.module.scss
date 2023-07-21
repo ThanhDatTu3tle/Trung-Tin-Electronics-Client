@@ -1,0 +1,88 @@
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100vw;
+    height: 4rem;
+    padding: 1rem;
+    background-color: #ffffff;
+
+    .left-function {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+
+        .logo-brand {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 90%;
+            height: fit-content;
+
+            .logo {
+                width: 3rem;
+                height: 3rem;
+                margin-right: 1rem;
+            }
+        }
+
+        .menu-hamburger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 10%;
+            height: 2rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            color: #434343;
+            background-color: #ede7f6;
+            cursor: pointer;
+
+            &:hover {
+                color: #ede7f6;
+                background-color: #018ec3;
+            }
+        }
+    }
+
+    .right-function {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+
+        .search-bar {
+            margin-left: 1rem;
+            width: fit-content;
+            border: 1px solid #8b8787;
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+        }
+
+        .button-manage {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            width: 6rem;
+            height: 3rem;
+            padding: 0.5rem;
+            border-radius: 5rem;
+            background-color: #e3f2fd;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #cce3f3;
+            }
+
+            .avatar {
+                width: 40%;
+                height: 90%;
+                border-radius: 50%;
+            }
+        }
+    }
+}
