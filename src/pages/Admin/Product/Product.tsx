@@ -10,11 +10,120 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Product.module.scss';
 import Button from '../../../components/Button';
+import ProductComponent from '../../../components/ProductCom/ProductComponent';
 
 const faHouseIcon = faHouse as IconProp;
 const faArrowRightIcon = faArrowRight as IconProp;
 
 const cx = classNames.bind(styles);
+
+const products = [
+  {
+    'id': 'M21-KB1385PRO',
+    'name': 'Máy Khoan 3 Chức Năng Dekton',
+    'img': 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-li913798joy418',
+    'price': 1190000,
+    'description': 'Máy Khoan 3 Chức Năng Dekton / M21-KB1385PRO / Trang Bị Anti KickBack - ECO TURBO / Chân Pin Makita Phổ Thông',
+    'specification': [
+      'Motor Brushless',
+      'Điện Áp : 18-21V / Chân Pin Makita Phổ Thông',
+      '3 Chức Năng / 20 Cấp Trượt / 2 Cấp Nhông',
+      'ECO  : Cấp Nhông 1 /380RPM - Cấp Nhông 2 /480RPM',
+      'Turbo : Cấp Nhông 1 /1700RPM - Cấp Nhông 2 /2000RPM',
+      'Tính Năng On/Off Anti KickBack Chủ Động',
+      'Tính Năng On/Off ECO - Turbo',
+      'Tính Năng Chủ Động Đèn Chiếu Sáng Liên Tục 20 Phút.',
+    ],
+    'status': true,
+    'id_event': null,
+    'id_brand': 3,
+    'id_category': 1
+  },
+  {
+    'id': 'M21-KB1385PRO',
+    'name': 'Máy Khoan 3 Chức Năng Dekton',
+    'img': 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-li913798joy418',
+    'price': 1190000,
+    'description': 'Máy Khoan 3 Chức Năng Dekton / M21-KB1385PRO / Trang Bị Anti KickBack - ECO TURBO / Chân Pin Makita Phổ Thông',
+    'specification': [
+      'Motor Brushless',
+      'Điện Áp : 18-21V / Chân Pin Makita Phổ Thông',
+      '3 Chức Năng / 20 Cấp Trượt / 2 Cấp Nhông',
+      'ECO  : Cấp Nhông 1 /380RPM - Cấp Nhông 2 /480RPM',
+      'Turbo : Cấp Nhông 1 /1700RPM - Cấp Nhông 2 /2000RPM',
+      'Tính Năng On/Off Anti KickBack Chủ Động',
+      'Tính Năng On/Off ECO - Turbo',
+      'Tính Năng Chủ Động Đèn Chiếu Sáng Liên Tục 20 Phút.',
+    ],
+    'status': true,
+    'id_event': null,
+    'id_brand': 3,
+    'id_category': 1
+  },
+  {
+    'id': 'M21-KB1385PRO',
+    'name': 'Máy Khoan 3 Chức Năng Dekton',
+    'img': 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-li913798joy418',
+    'price': 1190000,
+    'description': 'Máy Khoan 3 Chức Năng Dekton / M21-KB1385PRO / Trang Bị Anti KickBack - ECO TURBO / Chân Pin Makita Phổ Thông',
+    'specification': [
+      'Motor Brushless',
+      'Điện Áp : 18-21V / Chân Pin Makita Phổ Thông',
+      '3 Chức Năng / 20 Cấp Trượt / 2 Cấp Nhông',
+      'ECO  : Cấp Nhông 1 /380RPM - Cấp Nhông 2 /480RPM',
+      'Turbo : Cấp Nhông 1 /1700RPM - Cấp Nhông 2 /2000RPM',
+      'Tính Năng On/Off Anti KickBack Chủ Động',
+      'Tính Năng On/Off ECO - Turbo',
+      'Tính Năng Chủ Động Đèn Chiếu Sáng Liên Tục 20 Phút.',
+    ],
+    'status': true,
+    'id_event': null,
+    'id_brand': 3,
+    'id_category': 1
+  },
+  {
+    'id': 'M21-KB1385PRO',
+    'name': 'Máy Khoan 3 Chức Năng Dekton',
+    'img': 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-li913798joy418',
+    'price': 1190000,
+    'description': 'Máy Khoan 3 Chức Năng Dekton / M21-KB1385PRO / Trang Bị Anti KickBack - ECO TURBO / Chân Pin Makita Phổ Thông',
+    'specification': [
+      'Motor Brushless',
+      'Điện Áp : 18-21V / Chân Pin Makita Phổ Thông',
+      '3 Chức Năng / 20 Cấp Trượt / 2 Cấp Nhông',
+      'ECO  : Cấp Nhông 1 /380RPM - Cấp Nhông 2 /480RPM',
+      'Turbo : Cấp Nhông 1 /1700RPM - Cấp Nhông 2 /2000RPM',
+      'Tính Năng On/Off Anti KickBack Chủ Động',
+      'Tính Năng On/Off ECO - Turbo',
+      'Tính Năng Chủ Động Đèn Chiếu Sáng Liên Tục 20 Phút.',
+    ],
+    'status': true,
+    'id_event': null,
+    'id_brand': 3,
+    'id_category': 1
+  },
+  {
+    'id': 'M21-KB1385PRO',
+    'name': 'Máy Khoan 3 Chức Năng Dekton',
+    'img': 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-li913798joy418',
+    'price': 1190000,
+    'description': 'Máy Khoan 3 Chức Năng Dekton / M21-KB1385PRO / Trang Bị Anti KickBack - ECO TURBO / Chân Pin Makita Phổ Thông',
+    'specification': [
+      'Motor Brushless',
+      'Điện Áp : 18-21V / Chân Pin Makita Phổ Thông',
+      '3 Chức Năng / 20 Cấp Trượt / 2 Cấp Nhông',
+      'ECO  : Cấp Nhông 1 /380RPM - Cấp Nhông 2 /480RPM',
+      'Turbo : Cấp Nhông 1 /1700RPM - Cấp Nhông 2 /2000RPM',
+      'Tính Năng On/Off Anti KickBack Chủ Động',
+      'Tính Năng On/Off ECO - Turbo',
+      'Tính Năng Chủ Động Đèn Chiếu Sáng Liên Tục 20 Phút.',
+    ],
+    'status': true,
+    'id_event': null,
+    'id_brand': 3,
+    'id_category': 1
+  }
+]
 
 const Product: React.FC<any> = () => {
   const [name, setName] = useState<String | null>(null);
@@ -128,7 +237,18 @@ const Product: React.FC<any> = () => {
       </div>
       <div className={cx('main-container')}>
         <div className={cx('products')}>
-
+          {products !== null ? (
+              <>
+                  <div className={cx('product')}>
+                      {products.map((data) => (
+                          <ProductComponent key={data} data={data} />
+                      ))}
+                  </div>
+              </>
+              ) : (
+              <></>
+              )
+          }
         </div>
 
         <div className={cx('filter')}>

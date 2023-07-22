@@ -14,10 +14,11 @@
     height: 100%;
     position: relative;
     background-color: #fff;
+    font-size: 1rem;
     box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
 }
 
-.descriptions {
+.specifications {
     display: flex;
     flex-direction: column;
     opacity: .7;
@@ -26,15 +27,24 @@
     height: 40px;
     overflow-y: hidden;
 
-    .description {
+    .specification {
         display: inline;
     }
 }
 
+.description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .product-price {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
     line-height: 100%;
-    margin-bottom: 10px;
+    margin-top: 10px;
     font-size: 25px;
     font-weight: 700;
-    color: #ff5b6a;
-  }
+    color: #018ec3;
+}
