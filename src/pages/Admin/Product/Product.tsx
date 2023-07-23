@@ -35,7 +35,7 @@ const products = [
       'Tính Năng Chủ Động Đèn Chiếu Sáng Liên Tục 20 Phút.',
     ],
     'status': true,
-    'id_event': null,
+    'id_event': '50%',
     'id_brand': 3,
     'id_category': 1
   },

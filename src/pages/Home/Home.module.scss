@@ -56,7 +56,8 @@
             justify-content: flex-start;
             width: 20%;
             height: fit-content;
-            padding: 1rem;
+            font-size: 1.2rem;
+            padding: 0.5rem;
             margin: 1rem 0;
             color: #fff;
             background-color: #018ec3;
@@ -67,6 +68,310 @@
             display: flex;
             flex-flow: row wrap;
             margin: 0 -13px;
+        }
+    }
+}
+
+@media screen and (max-width: 1099px) and (min-width: 900px) {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: fit-content;
+        margin: 1rem 0;
+    
+        .brand {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: fit-content;
+        }
+    
+        .category {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 1rem;
+            width: 100%;
+            height: fit-content;
+            border-radius: 1rem;
+            box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
+        }
+    
+        .hot-sale {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: fit-content;
+            color: #018ec3;
+    
+            .product {
+                display: flex;
+                flex-flow: row wrap;
+                margin: 0 -13px;
+            }
+        }
+    
+        .machine {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            width: 100%;
+            height: fit-content;
+            color: #018ec3;
+    
+            .title {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 20%;
+                height: fit-content;
+                font-size: 1rem;
+                padding: 0.5rem;
+                margin: 1rem 0;
+                color: #fff;
+                background-color: #018ec3;
+                box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
+            }
+    
+            .product {
+                display: flex;
+                flex-flow: row wrap;
+                margin: 0 -13px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 899px) and (min-width: 600px) {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: fit-content;
+        margin: 1rem 0;
+    
+        .brand {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: fit-content;
+        }
+    
+        .category {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 1rem;
+            width: 100%;
+            height: fit-content;
+            border-radius: 1rem;
+            box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
+        }
+    
+        .hot-sale {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: fit-content;
+            color: #018ec3;
+    
+            .product {
+                display: flex;
+                flex-flow: row wrap;
+                margin: 0 -13px;
+            }
+        }
+    
+        .machine {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            width: 100%;
+            height: fit-content;
+            color: #018ec3;
+    
+            .title {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 25%;
+                height: fit-content;
+                font-size: 1rem;
+                padding: 0.5rem;
+                margin: 1rem 0;
+                color: #fff;
+                background-color: #018ec3;
+                box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
+            }
+    
+            .product {
+                display: flex;
+                flex-flow: row wrap;
+                margin: 0 -13px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 599px) and (min-width: 281px) {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: fit-content;
+        margin: 1rem 0;
+    
+        .brand {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: fit-content;
+        }
+    
+        .category {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 1rem;
+            width: 100%;
+            height: fit-content;
+            border-radius: 1rem;
+            box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
+        }
+    
+        .hot-sale {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: fit-content;
+            color: #018ec3;
+    
+            .product {
+                display: flex;
+                flex-flow: row wrap;
+                margin: 0 -13px;
+            }
+        }
+    
+        .machine {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            width: 100%;
+            height: fit-content;
+            color: #018ec3;
+    
+            .title {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 50%;
+                height: fit-content;
+                font-size: 1rem;
+                padding: 0.5rem;
+                margin: 1rem 0;
+                color: #fff;
+                background-color: #018ec3;
+                box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
+            }
+    
+            .product {
+                display: flex;
+                flex-flow: row wrap;
+                margin: 0 -13px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 280px) and (min-width: 200px) {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: fit-content;
+        margin: 1rem 0;
+    
+        .brand {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: fit-content;
+        }
+    
+        .category {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 1rem;
+            width: 100%;
+            height: fit-content;
+            border-radius: 1rem;
+            box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
+        }
+    
+        .hot-sale {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: fit-content;
+            color: #018ec3;
+    
+            .product {
+                display: flex;
+                flex-flow: row wrap;
+                margin: 0 -13px;
+            }
+        }
+    
+        .machine {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            width: 100%;
+            height: fit-content;
+            color: #018ec3;
+    
+            .title {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 80%;
+                height: fit-content;
+                font-size: 1rem;
+                padding: 0.5rem;
+                margin: 1rem 0;
+                color: #fff;
+                background-color: #018ec3;
+                box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
+            }
+    
+            .product {
+                display: flex;
+                flex-flow: row wrap;
+                margin: 0 -13px;
+            }
         }
     }
 }

@@ -1,8 +1,8 @@
 .wrapper {
     flex: 1 25%;
     max-width: 25%;
-    padding: 0 13px;
-    margin-bottom: 26px;
+    padding: 0 1rem;
+    margin-bottom: 1rem;
 }
 
 .inner {
@@ -12,39 +12,456 @@
     margin: 0;
     width: 100%;
     height: 100%;
+    padding: 1rem;
     position: relative;
     background-color: #fff;
-    font-size: 1rem;
     box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
-}
 
-.specifications {
-    display: flex;
-    flex-direction: column;
-    opacity: .7;
-    margin: 20px 0px;
-    font-size: 14px;
-    height: 40px;
-    overflow-y: hidden;
+    .name {
+        font-size: 1.2rem;
+    }
 
-    .specification {
-        display: inline;
+    .specifications {
+        display: flex;
+        flex-direction: column;
+        opacity: .7;
+        margin: 20px 0px;
+        font-size: 14px;
+        height: 40px;
+        overflow-y: hidden;
+    
+        .specification {
+            display: inline;
+        }
+    }
+    
+    .description {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .product-price {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        line-height: 100%;
+        margin-top: 10px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #018ec3;
+    }
+    
+    .product-price-sale {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+        line-height: 100%;
+        margin-top: 10px;
+    
+        .price-sale {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #018ec3;
+        }
+    
+        .price-origin {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #c0b6b6;
+        }
     }
 }
 
-.description {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+@media screen and (max-width: 1099px) and (min-width: 900px) {
+    .wrapper {
+        flex: 1 25%;
+        max-width: 25%;
+        padding: 0 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .inner {
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+        justify-content: space-between;
+        padding: 12px 12px;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        padding: 0.8rem;
+        position: relative;
+        background-color: #fff;
+        box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
+
+        .name {
+            font-size: 1rem;
+        }
+
+        .specifications {
+            display: flex;
+            flex-direction: column;
+            opacity: .7;
+            margin: 20px 0px;
+            font-size: 14px;
+            height: 40px;
+            overflow-y: hidden;
+        
+            .specification {
+                display: inline;
+            }
+        }
+        
+        .description {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .product-price {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            line-height: 100%;
+            margin-top: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #018ec3;
+        }
+        
+        .product-price-sale {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            width: 100%;
+            line-height: 100%;
+            margin-top: 10px;
+        
+            .price-sale {
+                font-size: 1rem;
+                font-weight: 700;
+                color: #018ec3;
+            }
+        
+            .price-origin {
+                font-size: 1rem;
+                font-weight: 700;
+                color: #c0b6b6;
+            }
+        }
+    }
 }
 
-.product-price {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    line-height: 100%;
-    margin-top: 10px;
-    font-size: 25px;
-    font-weight: 700;
-    color: #018ec3;
+@media screen and (max-width: 899px) and (min-width: 600px) {
+    .wrapper {
+        flex: 1 33%;
+        max-width: 33%;
+        padding: 0 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .inner {
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+        justify-content: space-between;
+        padding: 12px 12px;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        padding: 0.8rem;
+        position: relative;
+        background-color: #fff;
+        box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
+
+        .name {
+            font-size: 0.9 rem;
+        }
+
+        .specifications {
+            display: flex;
+            flex-direction: column;
+            opacity: .7;
+            margin: 20px 0px;
+            font-size: 14px;
+            height: 40px;
+            overflow-y: hidden;
+        
+            .specification {
+                display: inline;
+            }
+        }
+        
+        .description {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .product-price {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            line-height: 100%;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #018ec3;
+        }
+        
+        .product-price-sale {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            width: 100%;
+            line-height: 100%;
+        
+            .price-sale {
+                font-size: 1rem;
+                font-weight: 700;
+                color: #018ec3;
+            }
+        
+            .price-origin {
+                font-size: 1rem;
+                font-weight: 700;
+                color: #c0b6b6;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 599px) and (min-width: 390px) {
+    .wrapper {
+        flex: 1 50%;
+        max-width: 50%;
+        padding: 0 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .inner {
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+        justify-content: space-between;
+        padding: 12px 12px;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        padding: 0.8rem;
+        position: relative;
+        background-color: #fff;
+        box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
+
+        .name {
+            font-size: 0.9 rem;
+        }
+
+        .specifications {
+            display: flex;
+            flex-direction: column;
+            opacity: .7;
+            margin: 20px 0px;
+            font-size: 14px;
+            height: 40px;
+            overflow-y: hidden;
+        
+            .specification {
+                display: inline;
+            }
+        }
+        
+        .description {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .product-price {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            line-height: 100%;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #018ec3;
+        }
+        
+        .product-price-sale {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            width: 100%;
+            line-height: 100%;
+        
+            .price-sale {
+                font-size: 0.9rem;
+                font-weight: 700;
+                color: #018ec3;
+            }
+        
+            .price-origin {
+                font-size: 0.9rem;
+                font-weight: 700;
+                color: #c0b6b6;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 389px) and (min-width: 281px) {
+    .wrapper {
+        flex: 1 50%;
+        max-width: 50%;
+        padding: 0 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .inner {
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+        justify-content: space-between;
+        padding: 12px 12px;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        padding: 0.8rem;
+        position: relative;
+        background-color: #fff;
+        box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
+
+        .name {
+            font-size: 0.9 rem;
+        }
+
+        .specifications {
+            display: flex;
+            flex-direction: column;
+            opacity: .7;
+            margin: 20px 0px;
+            font-size: 14px;
+            height: 40px;
+            overflow-y: hidden;
+        
+            .specification {
+                display: inline;
+            }
+        }
+        
+        .description {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .product-price {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            line-height: 100%;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #018ec3;
+        }
+        
+        .product-price-sale {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            width: 100%;
+            line-height: 100%;
+        
+            .price-sale {
+                font-size: 0.8rem;
+                font-weight: 700;
+                color: #018ec3;
+            }
+        
+            .price-origin {
+                font-size: 0.8rem;
+                font-weight: 700;
+                color: #c0b6b6;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 280px) and (min-width: 200px) {
+    .wrapper {
+        flex: 1 100%;
+        max-width: 100%;
+        padding: 0 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .inner {
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+        justify-content: space-between;
+        padding: 12px 12px;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        padding: 0.8rem;
+        position: relative;
+        background-color: #fff;
+        box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
+
+        .name {
+            font-size: 0.9 rem;
+        }
+
+        .specifications {
+            display: flex;
+            flex-direction: column;
+            opacity: .7;
+            margin: 20px 0px;
+            font-size: 14px;
+            height: 40px;
+            overflow-y: hidden;
+        
+            .specification {
+                display: inline;
+            }
+        }
+        
+        .description {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .product-price {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            line-height: 100%;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #018ec3;
+        }
+        
+        .product-price-sale {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            width: 100%;
+            line-height: 100%;
+        
+            .price-sale {
+                font-size: 1rem;
+                font-weight: 700;
+                color: #018ec3;
+            }
+        
+            .price-origin {
+                font-size: 1rem;
+                font-weight: 700;
+                color: #c0b6b6;
+            }
+        }
+    }
 }

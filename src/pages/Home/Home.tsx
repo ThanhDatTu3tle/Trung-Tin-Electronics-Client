@@ -26,7 +26,7 @@ const products = [
         'Tính Năng Chủ Động Đèn Chiếu Sáng Liên Tục 20 Phút.',
       ],
       'status': true,
-      'id_event': null,
+      'id_event': '50%',
       'id_brand': 3,
       'id_category': 1
     },
@@ -115,8 +115,8 @@ const products = [
       'id_category': 1
     }
 ];
-
 const productsFourElement = products.slice(0, 4);
+const productsThreeElement = products.slice(0, 3);
 
 const brands = [
     {
@@ -148,11 +148,50 @@ const categories = [
         'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
     },
     {
-        'id': '',
+        'id': '3',
         'name': 'Máy mài',
         'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
     },
+    {
+        'id': '4',
+        'name': 'Máy pin',
+        'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
+    },
+    {
+        'id': '5',
+        'name': 'Máy điện',
+        'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
+    },
+    {
+        'id': '6',
+        'name': 'Máy xịt rửa',
+        'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
+    },
+    {
+        'id': '7',
+        'name': 'Thiết bị đo',
+        'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
+    },
+    {
+        'id': '8',
+        'name': 'Đồ bảo hộ',
+        'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
+    },
 ];
+const categoriesFourElement = categories.slice(0, 4);
+const categoriesTwoElement = categories.slice(0, 2);
+
+let screenWidth = window.innerWidth;
+
+function updateScreenSize() {
+  screenWidth = window.innerWidth;
+
+  console.log("Width: " + screenWidth);
+}
+
+updateScreenSize();
+
+window.addEventListener("resize", updateScreenSize);
 
 const Home: React.FC<any> = ({ children }) => {
     return (
@@ -170,17 +209,37 @@ const Home: React.FC<any> = ({ children }) => {
               )
             }
             <br />
-            {categories !== null ? (
+            {screenWidth <= 700 && screenWidth >= 501 ? (
               <>
                 Danh mục sản phẩm
                 <div className={cx('category')}>
-                    {categories.map((data) => (
+                    {categoriesFourElement.map((data) => (
                         <CategoryComponent key={data} data={data} />
                     ))}
                 </div>
               </>
               ) : (
-              <></>
+              <>
+                {screenWidth <= 500 && screenWidth >= 200 ? (
+                    <>
+                        Danh mục sản phẩm
+                        <div className={cx('category')}>
+                            {categoriesTwoElement.map((data) => (
+                                <CategoryComponent key={data} data={data} />
+                            ))}
+                        </div>
+                    </>
+                ): (
+                    <>
+                        Danh mục sản phẩm
+                        <div className={cx('category')}>
+                            {categories.map((data) => (
+                                <CategoryComponent key={data} data={data} />
+                            ))}
+                        </div>
+                    </>
+                )}
+              </>
               )
             }
             {/* <div className={cx('flash-sale')}>
@@ -188,9 +247,25 @@ const Home: React.FC<any> = ({ children }) => {
             </div> */}
             <br />
             <div className={cx('hot-sale')}>
-                <h2>SẢN PHẨM BÁN CHẠY</h2>
+                {screenWidth >= 400 ? (
+                    <>
+                        <h3>SẢN PHẨM BÁN CHẠY</h3>
+                    </>
+                ): (
+                    <>
+                        <h5>SẢN PHẨM BÁN CHẠY</h5>
+                    </>
+                )}
                 <br />
-                {productsFourElement !== null ? (
+                {screenWidth <= 899 && screenWidth >= 600 ? (
+                    <>
+                        <div className={cx('product')}>
+                            {productsThreeElement.map((data) => (
+                                <ProductComponent key={data} data={data} />
+                            ))}
+                        </div>
+                    </>
+                    ) : (
                     <>
                         <div className={cx('product')}>
                             {productsFourElement.map((data) => (
@@ -198,8 +273,6 @@ const Home: React.FC<any> = ({ children }) => {
                             ))}
                         </div>
                     </>
-                    ) : (
-                    <></>
                     )
                 }
             </div>
@@ -208,7 +281,15 @@ const Home: React.FC<any> = ({ children }) => {
                 <div className={cx('title')}>
                     <p>Các loại máy khoan</p>
                 </div>
-                {productsFourElement !== null ? (
+                {screenWidth <= 899 && screenWidth >= 600 ? (
+                    <>
+                        <div className={cx('product')}>
+                            {productsThreeElement.map((data) => (
+                                <ProductComponent key={data} data={data} />
+                            ))}
+                        </div>
+                    </>
+                    ) : (
                     <>
                         <div className={cx('product')}>
                             {productsFourElement.map((data) => (
@@ -216,8 +297,6 @@ const Home: React.FC<any> = ({ children }) => {
                             ))}
                         </div>
                     </>
-                    ) : (
-                    <></>
                     )
                 }
             </div>
@@ -225,7 +304,15 @@ const Home: React.FC<any> = ({ children }) => {
                 <div className={cx('title')}>
                     <p>Các loại máy cắt</p>
                 </div>
-                {productsFourElement !== null ? (
+                {screenWidth <= 899 && screenWidth >= 600 ? (
+                    <>
+                        <div className={cx('product')}>
+                            {productsThreeElement.map((data) => (
+                                <ProductComponent key={data} data={data} />
+                            ))}
+                        </div>
+                    </>
+                    ) : (
                     <>
                         <div className={cx('product')}>
                             {productsFourElement.map((data) => (
@@ -233,8 +320,6 @@ const Home: React.FC<any> = ({ children }) => {
                             ))}
                         </div>
                     </>
-                    ) : (
-                    <></>
                     )
                 }
             </div>
@@ -242,7 +327,15 @@ const Home: React.FC<any> = ({ children }) => {
                 <div className={cx('title')}>
                     <p>Các loại máy mài</p>
                 </div>
-                {productsFourElement !== null ? (
+                {screenWidth <= 899 && screenWidth >= 600 ? (
+                    <>
+                        <div className={cx('product')}>
+                            {productsThreeElement.map((data) => (
+                                <ProductComponent key={data} data={data} />
+                            ))}
+                        </div>
+                    </>
+                    ) : (
                     <>
                         <div className={cx('product')}>
                             {productsFourElement.map((data) => (
@@ -250,8 +343,6 @@ const Home: React.FC<any> = ({ children }) => {
                             ))}
                         </div>
                     </>
-                    ) : (
-                    <></>
                     )
                 }
             </div>

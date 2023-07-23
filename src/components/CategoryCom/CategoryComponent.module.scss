@@ -1,19 +1,103 @@
 .wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    max-width: 15%;
-    padding: 0 0.5rem;
+    flex: 1 12.5%;
+    max-width: 12.5%;
+    padding: 0 1rem;
+    margin-bottom: 1rem;
 }
 
 .inner {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
     border-radius: 10px;
+    padding: 0.2rem;
     margin-right: 2rem;
     width: 6rem;
     height: fit-content;
     font-size: 1rem;
     position: relative;
+}
+
+@media screen and (max-width: 1199px) and (min-width: 941px) {
+    .wrapper {
+        flex: 1 12.5%;
+        max-width: 12.5%;
+        padding: 0 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 10px;
+        margin-right: 2rem;
+        width: 6rem;
+        height: fit-content;
+        font-size: 1rem;
+        position: relative;
+    }
+}
+
+@media screen and (max-width: 940px) and (min-width: 701px) {
+    .wrapper {
+        flex: 1 12.5%;
+        max-width: 12.5%;
+        padding: 0 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 10px;
+        margin-right: 1rem;
+        width: 6rem;
+        height: fit-content;
+        font-size: 0.8rem;
+        position: relative;
+    }
+}
+
+@media screen and (max-width: 700px) and (min-width: 501px) {
+    .wrapper {
+        flex: 1 25%;
+        max-width: 25%;
+        padding: 0 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 10px;
+        margin-right: 2rem;
+        width: 6rem;
+        height: fit-content;
+        font-size: 0.8rem;
+        position: relative;
+    }
+}
+
+@media screen and (max-width: 500px) and (min-width: 200px) {
+    .wrapper {
+        flex: 1 50%;
+        max-width: 50%;
+        padding: 0 1rem;
+    }
+    
+    .inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 10px;
+        margin-right: 2rem;
+        width: 7rem;
+        height: fit-content;
+        font-size: 0.8rem;
+        position: relative;
+    }
 }

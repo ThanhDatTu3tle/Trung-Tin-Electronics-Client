@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { useState } from "react";
 import classNames from "classnames/bind";
 
 import styles from './CategoryComponent.module.scss';
 import Image from "../Image";
-import Button from "../Button";
 
 const cx = classNames.bind(styles)
 
