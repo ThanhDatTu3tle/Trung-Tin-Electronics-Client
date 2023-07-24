@@ -1,10 +1,19 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from "classnames/bind";
 
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
+import Popper from '@mui/material/Popper';
+import Grow from '@mui/material/Grow';
+import Paper from '@mui/material/Paper';
+import MenuList from '@mui/material/MenuList';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
@@ -45,8 +54,48 @@ updateScreenSize();
 
 window.addEventListener("resize", updateScreenSize);
 
+const options = [
+    'Máy khoan',
+    'Máy cắt',
+    'Máy mài',
+    'Máy pin',
+    'Máy điện',
+    'Máy xịt rửa',
+    'Thiết bị đo',
+    'Đồ bảo hộ',
+];
+
 const Header: React.FC = () => {
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+    // const [dropDown, setDropDown] = useState(false);
+    // const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const [open, setOpen] = React.useState(false);
+    const anchorRef = React.useRef<HTMLDivElement>(null);
+    const [selectedIndex, setSelectedIndex] = React.useState(1);
+
+    const handleMenuItemClick = (
+        event: React.MouseEvent<HTMLLIElement, MouseEvent>,
+        index: number,
+      ) => {
+        setSelectedIndex(index);
+        setOpen(false);
+    };
+
+    const handleToggle = () => {
+        setOpen((prevOpen) => !prevOpen);
+    };
+
+    const handleClose = (event: Event) => {
+        if (
+          anchorRef.current &&
+          anchorRef.current.contains(event.target as HTMLElement)
+        ) {
+          return;
+        }
+    
+        setOpen(false);
+    };
 
     useEffect(() => {
         const handleResize = () => {
@@ -142,13 +191,54 @@ const Header: React.FC = () => {
                     {screenWidth >= 580 ? 
                         (
                             <>
-                                <div className={cx('menu-hamburger')}>
-                                    <FontAwesomeIcon 
-                                        icon={faBarsIcon}
-                                        style={{marginRight: '0.5rem'}} 
-                                    />
+                                <div className={cx('menu-hamburger')} onClick={handleToggle}>                      
+                                    <div ref={anchorRef}>
+                                        <FontAwesomeIcon 
+                                            icon={faBarsIcon}
+                                            style={{marginRight: '0.5rem'}} 
+                                        />
+                                    </div>
+                                    <Popper
+                                        sx={{
+                                            zIndex: 1,
+                                        }}
+                                        open={open}
+                                        anchorEl={anchorRef.current}
+                                        role={undefined}
+                                        transition
+                                        disablePortal
+                                    >
+                                        {({ TransitionProps, placement }) => (
+                                        <Grow
+                                            {...TransitionProps}
+                                            style={{
+                                                transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
+                                                width: '200px',
+                                                backgroundColor: 'black'
+                                            }}
+                                        >
+                                            <Paper>
+                                                <ClickAwayListener onClickAway={handleClose}>
+                                                    <MenuList id="split-button-menu" autoFocusItem>
+                                                        {options.map((option, index) => (
+                                                            <MenuItem
+                                                                key={option}
+                                                                // disabled={index === 0}
+                                                                // selected={index === selectedIndex}
+                                                                onClick={(event) => handleMenuItemClick(event, index)}
+                                                                sx={{ fontSize: '1.2rem', backgroundColor: '#434343', color: '#fff' }}
+                                                            >
+                                                                {option}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </MenuList>
+                                                </ClickAwayListener>
+                                            </Paper>
+                                        </Grow>
+                                        )}
+                                    </Popper>
                                     DANH MỤC SẢN PHẨM
-                                </div>
+                                </div>                         
                                 <div className={cx('menu-titles')}>
                                     <Titles />
                                 </div>

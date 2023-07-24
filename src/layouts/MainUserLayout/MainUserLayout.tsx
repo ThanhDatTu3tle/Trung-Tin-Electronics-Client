@@ -13,7 +13,7 @@ const cx = classNames.bind(styles)
 const MainUserLayout: React.FC<any> = ({ children }) => {
     return (
         <Grid>
-            <Header/>
+            <Header />
             <Container maxWidth='xl'>
                 <div className={cx('content')}>
                     {children}
