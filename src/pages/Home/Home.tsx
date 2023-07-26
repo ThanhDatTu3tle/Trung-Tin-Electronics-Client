@@ -171,8 +171,6 @@ let screenWidth = window.innerWidth;
 
 function updateScreenSize() {
   screenWidth = window.innerWidth;
-
-  console.log("Width: " + screenWidth);
 }
 
 updateScreenSize();
@@ -218,7 +216,7 @@ const Home: React.FC<any> = ({ children }) => {
               <>
                   <div className={cx('brand')}>
                     {brands.map((data) => (
-                          <BrandComponent key={data} data={data} />
+                          <BrandComponent key={data.id} data={data} />
                     ))}
                   </div>
               </>

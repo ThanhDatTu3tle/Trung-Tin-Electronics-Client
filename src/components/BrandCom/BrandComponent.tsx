@@ -8,11 +8,12 @@ const cx = classNames.bind(styles)
 
 const BrandComponent: React.FC<any> = ({ data }) => {
 
+    console.log(data.image)
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <p>{data.name}</p>
-                <Image src={data.image}/>
+                <Image src={data.image.slice(7)}/>
             </div>
         </div>
     )

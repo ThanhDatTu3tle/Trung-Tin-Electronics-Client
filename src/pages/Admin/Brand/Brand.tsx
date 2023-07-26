@@ -18,9 +18,9 @@ const faArrowRightIcon = faArrowRight as IconProp;
 
 const cx = classNames.bind(styles);
 
-interface ImageValues {
-  image: File | null;
-}
+// interface ImageValues {
+//   image: File | null;
+// }
 
 const Brand: React.FC<any> = () => {
   const [open, setOpen] = useState(false);
@@ -28,23 +28,37 @@ const Brand: React.FC<any> = () => {
   const handleOpenAddForm = () => setOpen(true);
 
   const [selectedName, setSelectedName] = useState('');
-  const [selectedImage, setSelectedImage] = useState('');
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
-  const handleNameChange = (event: any) => {
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedName(event.target.value);
   };
 
-  const handleImageChange = (event: any) => {
-    setSelectedImage(event.target.files[0]);
-    console.log(selectedImage);
-    // const selectedImage = new FormData();
-    // selectedImage.append('imageFile', file);
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+    }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  
     const formData = new FormData();
-    formData.append('image', selectedImage)
-    axios.post('localhost:8080/api/v1/brand/create', formData).then((res) => { console.log(res) })
+    formData.append('name', selectedName);
+    // formData.append('image', selectedImage);
+    
+    if (selectedImage) {
+      formData.append('image', selectedImage);
+    }
+  
+    try {
+      const response = await axiosClient.post('brand/create', formData);
+      console.log('Response from server:', response);
+  
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
   
   return (
@@ -80,6 +94,7 @@ const Brand: React.FC<any> = () => {
                     <div className={cx('inputs')}>
                       <label>Điền tên hãng sản xuất:</label>
                       <input 
+                        id="name"
                         type='text' 
                         name="name"
                         placeholder='Tên hãng sản xuất' 
@@ -89,8 +104,9 @@ const Brand: React.FC<any> = () => {
                       />
                       <label>Chọn hình ảnh:</label>
                       <input 
+                        id="image" 
                         type="file"
-                        accept='image/*'
+                        accept="image/*"
                         name="image"
                         onChange={handleImageChange}
                       />
