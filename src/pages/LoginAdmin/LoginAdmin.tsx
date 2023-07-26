@@ -14,7 +14,6 @@ import LoginQuery from '../../hooks/loginQuery';
 const cx = classNames.bind(styles)
 
 const LoginAdmin: React.FC<any> = () => {
-
     const {token, setToken} = useContext(AuthContext);
     const [username, setUsername] = useState<String | null>(null);
     const [password, setPassword] = useState<String | null>(null);
@@ -74,6 +73,7 @@ const LoginAdmin: React.FC<any> = () => {
           setUsername(res.username)
           setPassword(res.password)
           setError1(false)
+          window.location.href = "/admin"
         } else {
           setError1(true)
           setIsError(false)
@@ -97,16 +97,14 @@ const LoginAdmin: React.FC<any> = () => {
                         type='text' 
                         placeholder='Tên đăng nhập' 
                         className={cx('input-name')}
-                        // value={username}
-                        // onChange={handleUsernameChange}
-                        {...register("username",{ required: true})}
+                        {...register("username", { required: true})}
                     />
                     <br />
                     <input 
                         type='text' 
                         placeholder='Mật khẩu' 
                         className={cx('input-pass')}
-                        {...register("password",{required:true})}
+                        {...register("password", {required:true})}
                     />
                     <br />
                 </div>

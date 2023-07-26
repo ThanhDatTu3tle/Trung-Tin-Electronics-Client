@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useState } from "react";
 import classNames from "classnames/bind";
 
 import styles from './ProductComponent.module.scss';
@@ -20,19 +19,12 @@ const ProductComponent: React.FC<any> = ({ data }) => {
                 <div className={cx('name')}>
                     <a title="" href="/category/product">{data.name}</a>
                 </div>
-                {currentPath === '/admin' ? (
-                    <>
-                        <div className={cx('specifications')}>
-                            {data.specification.map((content: string) => (
-                                <div className={cx('specification')}>{content}</div>
-                            ))}
-                        </div>
-                        <div className={cx('description')}>{data.description}</div>
-                    </>
-                ) : (
-                    <>
-                    </>
-                )}
+                <div className={cx('specifications')}>
+                    {data.specification.map((content: string) => (
+                        <div className={cx('specification')}>{content}</div>
+                    ))}
+                </div>
+                <div className={cx('description')}>{data.description}</div>
                 <br />
                 {data.id_event === null ? (
                     <>

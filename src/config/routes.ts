@@ -7,6 +7,8 @@ const routes = {
     contact: "/lien-he",
     login: "/login",
 
+    detailProduct: "/detailProduct",
+
     admin: "/admin",
     product: "/product",
     category: "/category",

@@ -7,6 +7,7 @@ import { MainAdminLayout } from "../layouts/MainAdminLayout";
 
 // Pages
 import Home from "../pages/Home";
+import DetailProduct from "../pages/DetailProduct";
 
 // Admin Page
 import LoginAdmin from "../pages/LoginAdmin";
@@ -17,6 +18,8 @@ import Brand from "../pages/Admin/Brand";
 
 const publicRoutes = [
   { path: config.routes.home, component: Home, layout: MainUserLayout },
+  { path: config.routes.detailProduct, component: DetailProduct, layout: MainUserLayout },
+
   { path: config.routes.login, component: LoginAdmin, layout: null },
 ];
 

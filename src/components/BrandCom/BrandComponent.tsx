@@ -11,7 +11,8 @@ const BrandComponent: React.FC<any> = ({ data }) => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <Image src={data.img}/>
+                <p>{data.name}</p>
+                <Image src={data.image}/>
             </div>
         </div>
     )

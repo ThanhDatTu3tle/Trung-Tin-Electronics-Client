@@ -1,10 +1,14 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { useQuery } from 'react-query';
+
 import classNames from "classnames/bind";
 
 import styles from './Home.module.scss';
 import BrandComponent from '../../components/BrandCom/BrandComponent';
 import CategoryComponent from '../../components/CategoryCom/CategoryComponent';
 import ProductComponent from '../../components/ProductCom/ProductComponent';
+import BrandService from '../../service/BrandService';
 
 const cx = classNames.bind(styles);
 
@@ -118,24 +122,6 @@ const products = [
 const productsFourElement = products.slice(0, 4);
 const productsThreeElement = products.slice(0, 3);
 
-const brands = [
-    {
-        'id': '1',
-        'name': 'BOSCH',
-        'img': 'https://storethietbi.com/upload/product/bosch-2330_180x100.png',
-    },
-    {
-        'id': '2',
-        'name': 'TOTAL',
-        'img': 'https://storethietbi.com/upload/product/total-9397_180x100.png',
-    },
-    {
-        'id': '3',
-        'name': 'DEKTON',
-        'img': 'https://storethietbi.com/upload/product/dekton-9804_180x100.png',
-    }
-];
-
 const categories = [
     {
         'id': '1',
@@ -193,15 +179,47 @@ updateScreenSize();
 
 window.addEventListener("resize", updateScreenSize);
 
+interface Brand {
+    id: number;
+    name: string;
+    image: File | null;
+  }
+
 const Home: React.FC<any> = ({ children }) => {
+    const [brands, setBrands] = useState<Brand[]>([]);
+
+    const fetchAPI = async () => {
+        try {
+            const res = await BrandService.GetAllBrand();
+            console.log(res.data)
+            return res.data;
+        } catch (error) {}
+    }
+
+    const { data, refetch } = useQuery(
+        ["brand"],
+        fetchAPI,
+        {}
+    )
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            refetch()
+        }, 1000)
+        setBrands(data);
+        return() => {
+            clearTimeout(timer);
+        }
+      }, [data, refetch]);
+
     return (
         <div className={cx('wrapper')}>
-            {brands !== null ? (
+            {brands !== undefined ? (
               <>
                   <div className={cx('brand')}>
-                      {brands.map((data) => (
+                    {brands.map((data) => (
                           <BrandComponent key={data} data={data} />
-                      ))}
+                    ))}
                   </div>
               </>
               ) : (

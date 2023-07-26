@@ -14,7 +14,6 @@ import ProtectedRoute from "./ProtectedRoute";
 
 const App: React.FC = () => {
   const [search, setSearch] = useState<string | null>(null);
-  // const [user,setUser] = useState<string | null>(null);
   const [ token, setToken]  = useState<string|null>(null);
 
   return (

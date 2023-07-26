@@ -10,38 +10,43 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Brand.module.scss';
 import Button from '../../../components/Button';
+import axiosClient from '../../../axios';
+import axios from 'axios';
 
 const faHouseIcon = faHouse as IconProp;
 const faArrowRightIcon = faArrowRight as IconProp;
 
 const cx = classNames.bind(styles);
 
+interface ImageValues {
+  image: File | null;
+}
+
 const Brand: React.FC<any> = () => {
-  const [name, setName] = useState<String | null>(null);
-  const [img, setImg] = useState(null);
-
   const [open, setOpen] = useState(false);
-  const handleCloseAddForm = () => {
-    setOpen(false);
-  };
-  const handleOpenAddForm = () => {
-      setOpen(true);
-  };
+  const handleCloseAddForm = () => setOpen(false);
+  const handleOpenAddForm = () => setOpen(true);
 
-  const handleAdd = () => {
+  const [selectedName, setSelectedName] = useState('');
+  const [selectedImage, setSelectedImage] = useState('');
 
-  };
-
-  const handleChange = (event: any) => {
-    const { name, value } = event.target;
-    const file = event.target.files[0];
-    if (name === 'name') {
-      setName(value);
-    } else if (name === 'img') {
-      setImg(file);
-    }
+  const handleNameChange = (event: any) => {
+    setSelectedName(event.target.value);
   };
 
+  const handleImageChange = (event: any) => {
+    setSelectedImage(event.target.files[0]);
+    console.log(selectedImage);
+    // const selectedImage = new FormData();
+    // selectedImage.append('imageFile', file);
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append('image', selectedImage)
+    axios.post('localhost:8080/api/v1/brand/create', formData).then((res) => { console.log(res) })
+  };
+  
   return (
     <div className={cx('wrapper')}>
       <div className={cx('header')}>
@@ -67,7 +72,7 @@ const Brand: React.FC<any> = () => {
                 open={open}
               >
                 <div className={cx('add-form')}>
-                  <form action="/upload" method="post" className={cx('form')} onSubmit={handleAdd}>
+                  <form action="/upload" method="post" className={cx('form')} onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className={cx('title')}>
                       <p style={{fontSize: '1.5rem', fontWeight: '500'}}>THÊM HÃNG SẢN XUẤT</p>
                       <button type='button' className={cx('close-btn')} onClick={handleCloseAddForm}>×</button>
@@ -76,18 +81,21 @@ const Brand: React.FC<any> = () => {
                       <label>Điền tên hãng sản xuất:</label>
                       <input 
                         type='text' 
+                        name="name"
                         placeholder='Tên hãng sản xuất' 
                         className={cx('input-name')}
-                        onChange={handleChange}
+                        value={selectedName}
+                        onChange={handleNameChange}
                       />
                       <label>Chọn hình ảnh:</label>
                       <input 
                         type="file"
-                        accept="image/*"
-                        onChange={handleChange}
+                        accept='image/*'
+                        name="image"
+                        onChange={handleImageChange}
                       />
                     </div>
-                    <Button primary small>Xác nhận</Button>
+                    <button>Xác nhận</button>
                   </form>   
                 </div>
                 

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
@@ -15,7 +16,9 @@ root.render(
   <React.StrictMode>
     <GlobalStyles>
       <QueryClientProvider client={queryClient}>
-        <App />
+
+          <App />
+
       </QueryClientProvider>
     </GlobalStyles>
   </React.StrictMode>
