@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from "classnames/bind";
 import Backdrop from '@mui/material/Backdrop';
 
@@ -10,47 +10,69 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Brand.module.scss';
 import Button from '../../../components/Button';
-import axiosClient from '../../../axios';
-import axios from 'axios';
+import Image from '../../../components/Image';
+import { axiosClient } from '../../../axios';
 
 const faHouseIcon = faHouse as IconProp;
 const faArrowRightIcon = faArrowRight as IconProp;
 
 const cx = classNames.bind(styles);
 
-// interface ImageValues {
-//   image: File | null;
-// }
-
 const Brand: React.FC<any> = () => {
   const [open, setOpen] = useState(false);
   const handleCloseAddForm = () => setOpen(false);
   const handleOpenAddForm = () => setOpen(true);
 
-  const [selectedName, setSelectedName] = useState('');
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [name, setName] = React.useState('');
+  const [imageUrl, setImageUrl] = React.useState('');
 
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedName(event.target.value);
+  const linkRef = React.useRef<HTMLAnchorElement>(null);
+
+  const upload = (file: File) => {
+    if (!file || !file.type.match(/image.*/)) return;
+
+    document.body.className = 'uploading';
+
+    const fd = new FormData();
+    fd.append('image', file); 
+
+    const xhr = new XMLHttpRequest(); 
+    xhr.open('POST', 'https://api.imgur.com/3/image.json'); 
+    xhr.onload = function () {
+      const link = JSON.parse(xhr.responseText).data.link;
+      if (linkRef.current) {
+        linkRef.current.href = link;
+        linkRef.current.innerHTML = link;
+      }
+
+      document.body.className = 'uploaded';
+      setImageUrl(link);
+    };
+    xhr.setRequestHeader('Authorization', 'Client-ID 983c8532c49a20e');
+    xhr.send(fd);
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setSelectedImage(file);
+      upload(file);
     }
   };
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
+
+  useEffect(() => {
+    console.log('ImageUrl:', imageUrl);
+  }, [imageUrl]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   
     const formData = new FormData();
-    formData.append('name', selectedName);
-    // formData.append('image', selectedImage);
-    
-    if (selectedImage) {
-      formData.append('image', selectedImage);
-    }
+    formData.append('name', name);
+    formData.append('image', imageUrl);
   
     try {
       const response = await axiosClient.post('brand/create', formData);
@@ -99,17 +121,20 @@ const Brand: React.FC<any> = () => {
                         name="name"
                         placeholder='Tên hãng sản xuất' 
                         className={cx('input-name')}
-                        value={selectedName}
+                        value={name}
                         onChange={handleNameChange}
                       />
                       <label>Chọn hình ảnh:</label>
                       <input 
-                        id="image" 
+                        id="image"  
                         type="file"
                         accept="image/*"
                         name="image"
-                        onChange={handleImageChange}
+                        onChange={handleImageUpload}
                       />
+                    </div>
+                    <div className={cx('show-image')}>
+                      <Image src={imageUrl}/>
                     </div>
                     <button>Xác nhận</button>
                   </form>   

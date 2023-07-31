@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <GlobalStyles>
       <QueryClientProvider client={queryClient}>
 
@@ -21,7 +21,7 @@ root.render(
 
       </QueryClientProvider>
     </GlobalStyles>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

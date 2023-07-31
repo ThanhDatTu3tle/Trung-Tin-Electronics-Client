@@ -177,46 +177,50 @@ updateScreenSize();
 
 window.addEventListener("resize", updateScreenSize);
 
-interface Brand {
-    id: number;
+interface BrandImage {
+    // id: number;
     name: string;
-    image: File | null;
-  }
+    // image: File | null;
+}
 
 const Home: React.FC<any> = ({ children }) => {
-    const [brands, setBrands] = useState<Brand[]>([]);
-
-    const fetchAPI = async () => {
+    const [brandImages, setBrandImages] = useState<BrandImage[]>([]);
+    const fetchAPIBrandImages = async () => {
         try {
             const res = await BrandService.GetAllBrand();
-            console.log(res.data)
-            return res.data;
-        } catch (error) {}
-    }
+            // console.log(res.data);
+            return res.data; 
+        } catch (error) {
+  
+        }
+    };
 
     const { data, refetch } = useQuery(
-        ["brand"],
-        fetchAPI,
+        ["brandImages"],
+        fetchAPIBrandImages,
         {}
-    )
+    );
+    // console.log(brandImages);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             refetch()
         }, 1000)
-        setBrands(data);
+        setBrandImages(data);
+
         return() => {
             clearTimeout(timer);
         }
-      }, [data, refetch]);
+    }, [data, refetch]);
+    
 
     return (
         <div className={cx('wrapper')}>
-            {brands !== undefined ? (
+            {brandImages !== undefined ? (
               <>
                   <div className={cx('brand')}>
-                    {brands.map((data) => (
-                          <BrandComponent key={data.id} data={data} />
+                    {brandImages.map((data) => (
+                        <BrandComponent ngu={data} />
                     ))}
                   </div>
               </>
@@ -230,7 +234,7 @@ const Home: React.FC<any> = ({ children }) => {
                 Danh mục sản phẩm
                 <div className={cx('category')}>
                     {categoriesFourElement.map((data) => (
-                        <CategoryComponent key={data} data={data} />
+                        <CategoryComponent key={data.id} data={data} />
                     ))}
                 </div>
               </>
@@ -241,7 +245,7 @@ const Home: React.FC<any> = ({ children }) => {
                         Danh mục sản phẩm
                         <div className={cx('category')}>
                             {categoriesTwoElement.map((data) => (
-                                <CategoryComponent key={data} data={data} />
+                                <CategoryComponent key={data.id} data={data} />
                             ))}
                         </div>
                     </>

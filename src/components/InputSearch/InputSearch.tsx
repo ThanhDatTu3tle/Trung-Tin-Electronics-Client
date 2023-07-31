@@ -79,8 +79,6 @@ let screenWidth = window.innerWidth;
 
 function updateScreenSize() {
   screenWidth = window.innerWidth;
-
-  console.log("Width: " + screenWidth);
 }
 
 updateScreenSize();

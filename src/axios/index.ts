@@ -10,6 +10,15 @@ const axiosClient = axios.create({
   paramsSerializer: params => queryString.stringify(params),
 });
 
+const imgurApiClient = axios.create({
+  baseURL: 'https://api.imgur.com/3/',
+  paramsSerializer: params => queryString.stringify(params),
+  // http2: false,
+});
+
+const clientId = '983c8532c49a20e'; // Thay YOUR_CLIENT_ID bằng Client ID của bạn từ Imgur
+imgurApiClient.defaults.headers.common['Authorization'] = `Client-ID ${clientId}`;
+
 // Add an interceptor to set the authorization header for each request
 axiosClient.interceptors.request.use(config => {
   const token = getToken();
@@ -27,4 +36,4 @@ axiosClient.interceptors.response.use(response => {
   throw error;
 });
 
-export default axiosClient;
+export { axiosClient, imgurApiClient };
