@@ -10,7 +10,6 @@ const cx = classNames.bind(styles);
 const currentPath = window.location.pathname;
 
 const ProductComponent: React.FC<any> = ({ data }) => {
-
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -21,7 +20,7 @@ const ProductComponent: React.FC<any> = ({ data }) => {
                 </div>
                 <div className={cx('specifications')}>
                     {data.specification.map((content: string) => (
-                        <div className={cx('specification')}>{content}</div>
+                        <div key={content} className={cx('specification')}>{content}</div>
                     ))}
                 </div>
                 <div className={cx('description')}>{data.description}</div>
@@ -45,8 +44,9 @@ const ProductComponent: React.FC<any> = ({ data }) => {
                     </>
                 )}
                 <br />  
-                {currentPath === '/admin' ? (
+                {currentPath === '/product' ? (
                     <>
+                        <Button primary>Chỉnh sửa</Button>
                     </>
                 ) : (
                     <>

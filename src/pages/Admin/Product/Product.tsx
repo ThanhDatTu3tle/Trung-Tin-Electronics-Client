@@ -19,7 +19,7 @@ const cx = classNames.bind(styles);
 
 const products = [
   {
-    'id': 'M21-KB1385PRO',
+    'id': 'M26-KB1385PRO',
     'name': 'Máy Khoan 3 Chức Năng Dekton',
     'img': 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-li913798joy418',
     'price': 1190000,
@@ -40,7 +40,7 @@ const products = [
     'id_category': 1
   },
   {
-    'id': 'M21-KB1385PRO',
+    'id': 'M27-KB1385PRO',
     'name': 'Máy Khoan 3 Chức Năng Dekton',
     'img': 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-li913798joy418',
     'price': 1190000,
@@ -61,7 +61,7 @@ const products = [
     'id_category': 1
   },
   {
-    'id': 'M21-KB1385PRO',
+    'id': 'M28-KB1385PRO',
     'name': 'Máy Khoan 3 Chức Năng Dekton',
     'img': 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-li913798joy418',
     'price': 1190000,
@@ -82,7 +82,7 @@ const products = [
     'id_category': 1
   },
   {
-    'id': 'M21-KB1385PRO',
+    'id': 'M29-KB1385PRO',
     'name': 'Máy Khoan 3 Chức Năng Dekton',
     'img': 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-li913798joy418',
     'price': 1190000,
@@ -103,7 +103,7 @@ const products = [
     'id_category': 1
   },
   {
-    'id': 'M21-KB1385PRO',
+    'id': 'M30s-KB1385PRO',
     'name': 'Máy Khoan 3 Chức Năng Dekton',
     'img': 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-li913798joy418',
     'price': 1190000,
@@ -241,7 +241,7 @@ const Product: React.FC<any> = () => {
               <>
                   <div className={cx('product')}>
                       {products.map((data) => (
-                          <ProductComponent key={data} data={data} />
+                          <ProductComponent key={data.id} data={data} />
                       ))}
                   </div>
               </>

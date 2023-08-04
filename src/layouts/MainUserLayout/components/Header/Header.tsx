@@ -215,7 +215,7 @@ const Header: React.FC = () => {
                                                     <MenuList id="split-button-menu" autoFocusItem>
                                                         {options.map((option, index) => (
                                                             <MenuItem
-                                                                key={option}
+                                                                key={index}
                                                                 // disabled={index === 0}
                                                                 // selected={index === selectedIndex}
                                                                 onClick={(event) => handleMenuItemClick(event, index)}

@@ -39,9 +39,10 @@
   .outline {
     border-color: #018ec3;
     color: #018ec3;
+    border-radius: 5px;
   
     &:hover {
-      background-color: rgba(254, 44, 85, 0.06);
+      background-color: rgba(44, 152, 254, 0.06);
     }
   }
   

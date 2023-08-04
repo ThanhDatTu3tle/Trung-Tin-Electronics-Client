@@ -1,47 +1,182 @@
-/* eslint-disable react/jsx-no-undef */
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
-import { axiosClient } from '../../axios';
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import 'sweetalert2/dist/sweetalert2.min.css';
+import Backdrop from '@mui/material/Backdrop';
 
 import styles from './BrandComponent.module.scss';
+import ImageBrand from '../ImageBrand';
+import Image from '../Image';
+import Button from '../Button';
+import { axiosClient } from '../../axios';
 
 const cx = classNames.bind(styles);
 
-interface BrandComponentProps {
-  ngu: {
-    image: string;
-  };
-}
+const currentPath = window.location.pathname;
 
-const BrandComponent: React.FC<any> = ({ ngu }) => {
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
+const BrandComponent: React.FC<any> = ({ data }) => {
+  const MySwal = withReactContent(Swal);
+
+  const [open, setOpen] = useState(false);
+  const handleCloseAddForm = () => setOpen(false);
+  const handleOpenAddForm = () => {
+    // Set the z-index for SweetAlert2 modal container
+    const swalContainer = document.querySelector('.swal2-container') as HTMLElement;
+    if (swalContainer) {
+      swalContainer.style.zIndex = '99999';
+    }
+
+    setOpen(true);
+  };
+  const handleDeleteForm = () => {
+    // console.log("Cook");
+  }
+
+  const [name, setName] = React.useState('');
+  const [imageUrl, setImageUrl] = React.useState('');
+
+  const linkRef = React.useRef<HTMLAnchorElement>(null);
+
+  const upload = (file: File) => {
+    if (!file || !file.type.match(/image.*/)) return;
+  
+    MySwal.fire({
+      title: 'Đang tải lên...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        const popup = MySwal.getPopup();
+        if (popup) {
+          popup.style.zIndex = "9999"; // Set a higher z-index for the modal
+        }
+        MySwal.showLoading();
+      },
+      timer: 2000,
+    });
+  
+    const fd = new FormData();
+    fd.append('image', file);
+  
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://api.imgur.com/3/image.json');
+    xhr.onload = function () {
+      const link = JSON.parse(xhr.responseText).data.link;
+      if (linkRef.current) {
+        linkRef.current.href = link;
+        linkRef.current.innerHTML = link;
+      }
+  
+      MySwal.close(); // Close the loading state
+      setImageUrl(link);
+    };
+    xhr.setRequestHeader('Authorization', 'Client-ID 983c8532c49a20e');
+    xhr.send(fd);
+  };
+  
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      upload(file);
+    }
+  };
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
 
   useEffect(() => {
-    const getImageData = async () => {
-      try {
-        const imageName = ngu.image;
-        const response = await axiosClient.get(`brand/image/${imageName}`);
+    console.log('ImageUrl:', imageUrl);
+  }, [imageUrl]);
 
-        // Extract the base64 image data from the response JSON
-        const base64Image = response.data.imageData;
-
-        // Create the data URI from the base64 string
-        const imageDataUrl = `data:image/png;base64,${base64Image}`;
-        setImageSrc(imageDataUrl);
-      } catch (error) {
-        console.error('Failed to fetch image:', error);
-      }
-    };
-
-    getImageData();
-  }, [ngu.image]);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('image', imageUrl);
+  
+    try {
+      const response = await axiosClient.post('brand/create', formData);
+      MySwal.fire({
+        title: "Thêm thành công!",
+        icon: "success",
+        didOpen: () => {
+          MySwal.showLoading();
+        },
+        timer: 1500,
+      });
+      console.log('Response from server:', response);
+  
+    } catch (error) {
+      MySwal.fire({
+        title: "Đã có lỗi xảy ra!",
+        icon: "error",
+        didOpen: () => {
+          MySwal.showLoading();
+        },
+        timer: 1500,
+      });
+      console.error('Error:', error);
+    }
+  };
 
   return (
     <div className={cx('wrapper')}>
       <div className={cx('inner')}>
-          <p>{imageSrc}</p>
-          {/* <Image src={imageSrc}/> */}
+        {currentPath === '/brand' ? (
+          <>
+            <ImageBrand src={data.image}/>
+            <h3>Tên hãng: {data.name}</h3>
+            <div className={cx('btns')}>
+              <Button outline onClick={handleOpenAddForm} style={{marginBottom: '0.5rem'}}>Chỉnh sửa thông tin</Button>
+              <Button primary onClick={handleDeleteForm}>Xóa hãng</Button>
+            </div>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: 9 }}
+                open={open}
+              >
+                <div className={cx('add-form')}>
+                  <form action="/upload" method="post" className={cx('form')} onSubmit={handleSubmit} encType="multipart/form-data">
+                    <div className={cx('title')}>
+                      <p style={{fontSize: '1.5rem', fontWeight: '500'}}>CHỈNH SỬA THÔNG TIN HÃNG SẢN XUẤT</p>
+                      <button type='button' className={cx('close-btn')} onClick={handleCloseAddForm}>×</button>
+                    </div>
+                    <br />
+                    <div className={cx('inputs')}>
+                      <label>Chỉnh sửa tên hãng sản xuất:</label>
+                      <input 
+                        id="name"
+                        type='text' 
+                        name="name"
+                        placeholder='Tên hãng sản xuất' 
+                        className={cx('input-name')}
+                        value={name}
+                        onChange={handleNameChange}
+                      />
+                      <br />
+                      <label>Chọn/chỉnh sửa hình ảnh:</label>
+                      <input 
+                        id="image"  
+                        type="file"
+                        accept="image/*"
+                        name="image"
+                        onChange={handleImageUpload}
+                      />
+                    </div>
+                    <div className={cx('show-image')}>
+                      <Image src={imageUrl}/>
+                    </div>
+                    <Button small primary>Xác nhận</Button>
+                  </form>   
+                </div>
+              </Backdrop>
+          </>
+        ) : (
+          <>
+              <ImageBrand src={data.image}/>
+          </>
+        )}
       </div>
     </div>
   );

@@ -35,3 +35,7 @@ a[href] {
   color: #142f43;
   text-decoration: none;
 }
+
+.swal2-container {
+  z-index: 99999 !important; /* Set a high z-index for the SweetAlert2 modal container */
+}

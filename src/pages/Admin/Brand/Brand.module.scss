@@ -45,7 +45,35 @@
     }
 
     .main-container {
-    
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        font-size: 1.2rem;
+        margin-top: 1rem;
+
+        .brands {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: fit-content;
+
+            .brand {
+                display: flex;
+            }
+        }
+
+        .filter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            width: 20%;
+            height: fit-content;
+        }
     }
 }
 
@@ -53,10 +81,10 @@
     display: flex;
     align-items: center;
     margin: 0;
-    padding: 1rem;
+    padding: 1.5rem;
     outline: 0;
-    width: 30%;
-    height: 40%;
+    width: 40%;
+    height: fit-content;
     border-radius: 10px;
     background-color: rgb(255, 255, 255);
 
@@ -66,7 +94,7 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        height: 100%;
+        height: fit-content;
         color: black;
 
         .title {
@@ -124,7 +152,6 @@
         .show-image {
             width: 70%;
             height: 30%;
-            margin-bottom: 5rem;
         }
     }
 }

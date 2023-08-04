@@ -1,10 +1,10 @@
 import { useState, forwardRef } from "react";
 // import { Link } from "react-router-dom";
-import styles from './Image.module.scss';
+import styles from './ImageBrand.module.scss';
 import classNames from 'classnames';
 
 // fallback: customFallback = images.icon_profile,
-const Image: React.FC<any> = forwardRef(({ 
+const ImageBrand: React.FC<any> = forwardRef(({ 
     onClick, 
     children, 
     src, 
@@ -42,4 +42,4 @@ const Image: React.FC<any> = forwardRef(({
   )
 })
 
-export default Image;
+export default ImageBrand;

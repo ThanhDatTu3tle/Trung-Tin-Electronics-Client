@@ -101,7 +101,7 @@ const LoginAdmin: React.FC<any> = () => {
                     />
                     <br />
                     <input 
-                        type='text' 
+                        type='password' 
                         placeholder='Mật khẩu' 
                         className={cx('input-pass')}
                         {...register("password", {required:true})}

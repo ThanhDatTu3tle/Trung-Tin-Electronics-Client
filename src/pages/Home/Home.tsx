@@ -35,7 +35,7 @@ const products = [
       'id_category': 1
     },
     {
-      'id': 'M21-KB1385PRO',
+      'id': 'M22-KB1385PRO',
       'name': 'Máy Khoan 3 Chức Năng Dekton',
       'img': 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-li913798joy418',
       'price': 1190000,
@@ -56,7 +56,7 @@ const products = [
       'id_category': 1
     },
     {
-      'id': 'M21-KB1385PRO',
+      'id': 'M23-KB1385PRO',
       'name': 'Máy Khoan 3 Chức Năng Dekton',
       'img': 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-li913798joy418',
       'price': 1190000,
@@ -77,7 +77,7 @@ const products = [
       'id_category': 1
     },
     {
-      'id': 'M21-KB1385PRO',
+      'id': 'M24-KB1385PRO',
       'name': 'Máy Khoan 3 Chức Năng Dekton',
       'img': 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-li913798joy418',
       'price': 1190000,
@@ -98,7 +98,7 @@ const products = [
       'id_category': 1
     },
     {
-      'id': 'M21-KB1385PRO',
+      'id': 'M25-KB1385PRO',
       'name': 'Máy Khoan 3 Chức Năng Dekton',
       'img': 'https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-li913798joy418',
       'price': 1190000,
@@ -168,59 +168,50 @@ const categoriesFourElement = categories.slice(0, 4);
 const categoriesTwoElement = categories.slice(0, 2);
 
 let screenWidth = window.innerWidth;
-
 function updateScreenSize() {
   screenWidth = window.innerWidth;
 }
-
 updateScreenSize();
-
 window.addEventListener("resize", updateScreenSize);
 
-interface BrandImage {
-    // id: number;
+interface Brand {
+    id: number;
     name: string;
-    // image: File | null;
+    image: string;
 }
 
-const Home: React.FC<any> = ({ children }) => {
-    const [brandImages, setBrandImages] = useState<BrandImage[]>([]);
-    const fetchAPIBrandImages = async () => {
+const Home: React.FC<any> = () => {
+    const [brands, setBrands] = useState<Brand[]>([]);
+    const fetchAPIBrands = async () => {
         try {
             const res = await BrandService.GetAllBrand();
-            // console.log(res.data);
             return res.data; 
-        } catch (error) {
-  
-        }
+        } catch (error) {}
     };
 
     const { data, refetch } = useQuery(
         ["brandImages"],
-        fetchAPIBrandImages,
+        fetchAPIBrands,
         {}
     );
-    // console.log(brandImages);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             refetch()
         }, 1000)
-        setBrandImages(data);
-
+        setBrands(data);
         return() => {
             clearTimeout(timer);
         }
     }, [data, refetch]);
     
-
     return (
         <div className={cx('wrapper')}>
-            {brandImages !== undefined ? (
+            {brands ? (
               <>
                   <div className={cx('brand')}>
-                    {brandImages.map((data) => (
-                        <BrandComponent ngu={data} />
+                    {brands.map((brand) => (
+                        <BrandComponent key={brand.id} data={brand} />
                     ))}
                   </div>
               </>
@@ -254,7 +245,7 @@ const Home: React.FC<any> = ({ children }) => {
                         Danh mục sản phẩm
                         <div className={cx('category')}>
                             {categories.map((data) => (
-                                <CategoryComponent key={data} data={data} />
+                                <CategoryComponent key={data.id} data={data} />
                             ))}
                         </div>
                     </>
@@ -281,7 +272,7 @@ const Home: React.FC<any> = ({ children }) => {
                     <>
                         <div className={cx('product')}>
                             {productsThreeElement.map((data) => (
-                                <ProductComponent key={data} data={data} />
+                                <ProductComponent key={data.id} data={data} />
                             ))}
                         </div>
                     </>
@@ -289,7 +280,7 @@ const Home: React.FC<any> = ({ children }) => {
                     <>
                         <div className={cx('product')}>
                             {productsFourElement.map((data) => (
-                                <ProductComponent key={data} data={data} />
+                                <ProductComponent key={data.id} data={data} />
                             ))}
                         </div>
                     </>
@@ -298,14 +289,15 @@ const Home: React.FC<any> = ({ children }) => {
             </div>
 
             <div className={cx('machine')}>
-                <div className={cx('title')}>
-                    <p>Các loại máy khoan</p>
+                <div className={cx('title-wrapper')}>
+                    <div className={cx('title')}>Các loại máy khoan</div>
+                    <div className={cx('show-all')}>Xem tất cả</div>
                 </div>
                 {screenWidth <= 899 && screenWidth >= 600 ? (
                     <>
                         <div className={cx('product')}>
                             {productsThreeElement.map((data) => (
-                                <ProductComponent key={data} data={data} />
+                                <ProductComponent key={data.id} data={data} />
                             ))}
                         </div>
                     </>
@@ -313,7 +305,7 @@ const Home: React.FC<any> = ({ children }) => {
                     <>
                         <div className={cx('product')}>
                             {productsFourElement.map((data) => (
-                                <ProductComponent key={data} data={data} />
+                                <ProductComponent key={data.id} data={data} />
                             ))}
                         </div>
                     </>
@@ -321,14 +313,15 @@ const Home: React.FC<any> = ({ children }) => {
                 }
             </div>
             <div className={cx('machine')}>
-                <div className={cx('title')}>
-                    <p>Các loại máy cắt</p>
+            <div className={cx('title-wrapper')}>
+                    <div className={cx('title')}>Các loại máy cắt</div>
+                    <div className={cx('show-all')}>Xem tất cả</div>
                 </div>
                 {screenWidth <= 899 && screenWidth >= 600 ? (
                     <>
                         <div className={cx('product')}>
                             {productsThreeElement.map((data) => (
-                                <ProductComponent key={data} data={data} />
+                                <ProductComponent key={data.id} data={data} />
                             ))}
                         </div>
                     </>
@@ -336,7 +329,7 @@ const Home: React.FC<any> = ({ children }) => {
                     <>
                         <div className={cx('product')}>
                             {productsFourElement.map((data) => (
-                                <ProductComponent key={data} data={data} />
+                                <ProductComponent key={data.id} data={data} />
                             ))}
                         </div>
                     </>
@@ -344,14 +337,15 @@ const Home: React.FC<any> = ({ children }) => {
                 }
             </div>
             <div className={cx('machine')}>
-                <div className={cx('title')}>
-                    <p>Các loại máy mài</p>
+            <div className={cx('title-wrapper')}>
+                    <div className={cx('title')}>Các loại máy mài</div>
+                    <div className={cx('show-all')}>Xem tất cả</div>
                 </div>
                 {screenWidth <= 899 && screenWidth >= 600 ? (
                     <>
                         <div className={cx('product')}>
                             {productsThreeElement.map((data) => (
-                                <ProductComponent key={data} data={data} />
+                                <ProductComponent key={data.id} data={data} />
                             ))}
                         </div>
                     </>
@@ -359,7 +353,7 @@ const Home: React.FC<any> = ({ children }) => {
                     <>
                         <div className={cx('product')}>
                             {productsFourElement.map((data) => (
-                                <ProductComponent key={data} data={data} />
+                                <ProductComponent key={data.id} data={data} />
                             ))}
                         </div>
                     </>
