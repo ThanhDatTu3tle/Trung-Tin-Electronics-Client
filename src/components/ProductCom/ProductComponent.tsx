@@ -14,13 +14,13 @@ const ProductComponent: React.FC<any> = ({ data }) => {
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
                 {}
-                <Image src={data.img}/>
+                <Image src={data.imageProducts[0].image}/>
                 <div className={cx('name')}>
-                    <a title="" href="/category/product">{data.name}</a>
+                    <a title="" href="/category/product">{data.name} {data.id}</a>
                 </div>
                 <div className={cx('specifications')}>
-                    {data.specification.map((content: string) => (
-                        <div key={content} className={cx('specification')}>{content}</div>
+                    {data.specification.map((content: any) => (
+                        <div key={content.id} className={cx('specification')}>{content.specification}</div>
                     ))}
                 </div>
                 <div className={cx('description')}>{data.description}</div>

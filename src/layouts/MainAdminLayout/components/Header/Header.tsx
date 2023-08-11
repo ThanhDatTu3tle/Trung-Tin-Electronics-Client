@@ -22,7 +22,7 @@ const faGearIcon = faGear as IconProp;
 const Header: React.FC<any> = () => {
   return (
     <Grid container className={cx('wrapper')}>
-        <Grid md={2} className={cx('left-function')}>
+        <Grid item md={2} className={cx('left-function')}>
             <div className={cx('logo-brand')}>
                 <Link to={config.routes.home}>
                     <img 
@@ -38,7 +38,7 @@ const Header: React.FC<any> = () => {
             </div>
         </Grid>
       
-        <Grid md={10} className={cx('right-function')}>
+        <Grid item md={10} className={cx('right-function')}>
             <div className={cx('search-bar')}>
                 <InputSearch />
             </div>

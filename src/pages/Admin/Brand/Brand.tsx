@@ -37,12 +37,10 @@ const Brand: React.FC<any> = () => {
   const [open, setOpen] = useState(false);
   const handleCloseAddForm = () => setOpen(false);
   const handleOpenAddForm = () => {
-    // Set the z-index for SweetAlert2 modal container
     const swalContainer = document.querySelector('.swal2-container') as HTMLElement;
     if (swalContainer) {
       swalContainer.style.zIndex = '99999';
     }
-
     setOpen(true);
   };
 
@@ -60,7 +58,7 @@ const Brand: React.FC<any> = () => {
       didOpen: () => {
         const popup = MySwal.getPopup();
         if (popup) {
-          popup.style.zIndex = "9999"; // Set a higher z-index for the modal
+          popup.style.zIndex = "9999"; 
         }
         MySwal.showLoading();
       },
@@ -79,7 +77,7 @@ const Brand: React.FC<any> = () => {
         linkRef.current.innerHTML = link;
       }
   
-      MySwal.close(); // Close the loading state
+      MySwal.close(); 
       setImageUrl(link);
     };
     xhr.setRequestHeader('Authorization', 'Client-ID 983c8532c49a20e');
@@ -96,10 +94,6 @@ const Brand: React.FC<any> = () => {
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
-
-  useEffect(() => {
-    console.log('ImageUrl:', imageUrl);
-  }, [imageUrl]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -119,8 +113,8 @@ const Brand: React.FC<any> = () => {
         timer: 1500,
       });
       setOpen(false);
+      window.location.reload();
       console.log('Response from server:', response);
-  
     } catch (error) {
       MySwal.fire({
         title: "Đã có lỗi xảy ra!",
@@ -231,13 +225,15 @@ const Brand: React.FC<any> = () => {
                   </div>
               </>
               ) : (
-              <></>
+              <>
+                <p>Chưa có hãng sản xuất!!!</p>
+              </>
               )
           }
         </div>
 
         <div className={cx('filter')}>
-
+          FILTER
         </div>
       </div>
     </div>

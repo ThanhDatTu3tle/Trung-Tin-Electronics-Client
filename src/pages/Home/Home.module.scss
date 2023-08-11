@@ -7,12 +7,14 @@
 
     .brand {
         display: flex;
+        margin-bottom: -10rem;
     }
 
     .category {
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: center;
         padding: 1rem;
         width: 100%;
         height: fit-content;

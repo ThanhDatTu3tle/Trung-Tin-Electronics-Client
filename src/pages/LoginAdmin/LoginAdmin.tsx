@@ -67,7 +67,7 @@ const LoginAdmin: React.FC<any> = () => {
     }, [username, password])
     
     
-    const handleLogin:SubmitHandler<IFormInput>= async(res: { username: React.SetStateAction<String | null>; password: React.SetStateAction<String | null>; })=>{
+    const handleLogin: SubmitHandler<IFormInput>= async(res: { username: React.SetStateAction<String | null>; password: React.SetStateAction<String | null>; })=>{
         if(res.username && res.password) {
           // console.log(res)
           setUsername(res.username)
@@ -82,7 +82,7 @@ const LoginAdmin: React.FC<any> = () => {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('form')}>
+            <form className={cx('form')}>
                 <div className={cx('logo-brand')}>
                     <img 
                         className={cx('logo')}
@@ -110,7 +110,7 @@ const LoginAdmin: React.FC<any> = () => {
                 </div>
                 <Button primary small onClick={handleSubmit(handleLogin)}>Đăng nhập</Button>
                 <br />
-            </div>
+            </form>
         </div>
     )
 }

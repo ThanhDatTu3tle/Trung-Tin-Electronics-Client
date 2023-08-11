@@ -55,14 +55,16 @@
 
         .brands {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 100%;
+            width: 80%;
             height: fit-content;
 
             .brand {
                 display: flex;
+                flex-flow: row wrap;
+                width: 100%;
             }
         }
 

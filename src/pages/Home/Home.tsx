@@ -8,7 +8,9 @@ import styles from './Home.module.scss';
 import BrandComponent from '../../components/BrandCom/BrandComponent';
 import CategoryComponent from '../../components/CategoryCom/CategoryComponent';
 import ProductComponent from '../../components/ProductCom/ProductComponent';
+
 import BrandService from '../../service/BrandService';
+import CategoryService from '../../service/CategoryService';
 
 const cx = classNames.bind(styles);
 
@@ -122,50 +124,50 @@ const products = [
 const productsFourElement = products.slice(0, 4);
 const productsThreeElement = products.slice(0, 3);
 
-const categories = [
-    {
-        'id': '1',
-        'name': 'Máy khoan',
-        'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
-    },
-    {
-        'id': '2',
-        'name': 'Máy cắt',
-        'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
-    },
-    {
-        'id': '3',
-        'name': 'Máy mài',
-        'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
-    },
-    {
-        'id': '4',
-        'name': 'Máy pin',
-        'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
-    },
-    {
-        'id': '5',
-        'name': 'Máy điện',
-        'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
-    },
-    {
-        'id': '6',
-        'name': 'Máy xịt rửa',
-        'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
-    },
-    {
-        'id': '7',
-        'name': 'Thiết bị đo',
-        'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
-    },
-    {
-        'id': '8',
-        'name': 'Đồ bảo hộ',
-        'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
-    },
-];
-const categoriesFourElement = categories.slice(0, 4);
-const categoriesTwoElement = categories.slice(0, 2);
+// const categories = [
+//     {
+//         'id': '1',
+//         'name': 'Máy khoan',
+//         'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
+//     },
+//     {
+//         'id': '2',
+//         'name': 'Máy cắt',
+//         'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
+//     },
+//     {
+//         'id': '3',
+//         'name': 'Máy mài',
+//         'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
+//     },
+//     {
+//         'id': '4',
+//         'name': 'Máy pin',
+//         'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
+//     },
+//     {
+//         'id': '5',
+//         'name': 'Máy điện',
+//         'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
+//     },
+//     {
+//         'id': '6',
+//         'name': 'Máy xịt rửa',
+//         'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
+//     },
+//     {
+//         'id': '7',
+//         'name': 'Thiết bị đo',
+//         'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
+//     },
+//     {
+//         'id': '8',
+//         'name': 'Đồ bảo hộ',
+//         'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
+//     },
+// ];
+// const categoriesFourElement = categories.slice(0, 4);
+// const categoriesTwoElement = categories.slice(0, 2);
 
 let screenWidth = window.innerWidth;
 function updateScreenSize() {
@@ -180,30 +182,61 @@ interface Brand {
     image: string;
 }
 
+interface Category {
+    id: number;
+    name: string;
+    image: string;
+  }
+
 const Home: React.FC<any> = () => {
     const [brands, setBrands] = useState<Brand[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
+
     const fetchAPIBrands = async () => {
         try {
             const res = await BrandService.GetAllBrand();
             return res.data; 
         } catch (error) {}
     };
+    const fetchAPICategories = async () => {
+        try {
+            const res = await CategoryService.GetAllCategory();
+            return res.data; 
+        } catch (error) {}
+    };
 
-    const { data, refetch } = useQuery(
+    const { data: brandsData, refetch: refetchBrands } = useQuery(
         ["brandImages"],
         fetchAPIBrands,
         {}
     );
+    const { data: categoriesData, refetch: refetchCategories } = useQuery(
+        ["categoryImages"],
+        fetchAPICategories,
+        {}
+    );
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            refetch()
-        }, 1000)
-        setBrands(data);
-        return() => {
-            clearTimeout(timer);
+        const fetchAllAPIs = async () => {
+            await Promise.all([
+                refetchBrands(), 
+                refetchCategories()
+            ]);
+        };
+        fetchAllAPIs();
+    }, [
+        refetchBrands, 
+        refetchCategories
+    ]);
+    useEffect(() => {
+        if (brandsData && categoriesData) {
+            setBrands(brandsData); 
+            setCategories(categoriesData);
         }
-    }, [data, refetch]);
+    }, [
+        brandsData, 
+        categoriesData
+    ]);
     
     return (
         <div className={cx('wrapper')}>
@@ -224,7 +257,7 @@ const Home: React.FC<any> = () => {
               <>
                 Danh mục sản phẩm
                 <div className={cx('category')}>
-                    {categoriesFourElement.map((data) => (
+                    {categories.map((data) => (
                         <CategoryComponent key={data.id} data={data} />
                     ))}
                 </div>
@@ -235,7 +268,7 @@ const Home: React.FC<any> = () => {
                     <>
                         Danh mục sản phẩm
                         <div className={cx('category')}>
-                            {categoriesTwoElement.map((data) => (
+                            {categories.map((data) => (
                                 <CategoryComponent key={data.id} data={data} />
                             ))}
                         </div>

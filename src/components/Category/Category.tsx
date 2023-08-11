@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import classNames from "classnames/bind";
 
 import styles from './Category.module.scss';
@@ -21,7 +20,7 @@ const categories = [
     {
         'id': 3,
         'img': 'https://storethietbi.com/upload/product/may-nen-khi-6389_55x50.png',
-        'name': 'Máy nén khí',
+        'name': 'Máy bơm/nén khí',
     },
     {
         'id': 4,

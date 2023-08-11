@@ -11,13 +11,13 @@ const cx = classNames.bind(styles)
 
 const MainAdminLayout: React.FC<any> = ({ children }) => {
     return (
-        <Grid>
+        <Grid container>
             <Header/>
             <Grid container className={cx('wrapper')}>
-                <Grid md={2}>
+                <Grid item md={2}>
                     <SideNav />
                 </Grid>
-                <Grid md={10} className={cx('content')}>
+                <Grid item md={10} className={cx('content')}>
                     {children}
                 </Grid>
             </Grid>  

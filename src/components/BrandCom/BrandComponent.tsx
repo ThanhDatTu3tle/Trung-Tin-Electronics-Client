@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import classNames from 'classnames/bind';
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -14,15 +14,15 @@ import { axiosClient } from '../../axios';
 
 const cx = classNames.bind(styles);
 
-const currentPath = window.location.pathname;
-
 const BrandComponent: React.FC<any> = ({ data }) => {
+  const currentPath = window.location.pathname;
+
   const MySwal = withReactContent(Swal);
+  const [idBrand, setIdBrand] = useState(data.id)
 
   const [open, setOpen] = useState(false);
   const handleCloseAddForm = () => setOpen(false);
   const handleOpenAddForm = () => {
-    // Set the z-index for SweetAlert2 modal container
     const swalContainer = document.querySelector('.swal2-container') as HTMLElement;
     if (swalContainer) {
       swalContainer.style.zIndex = '99999';
@@ -48,7 +48,7 @@ const BrandComponent: React.FC<any> = ({ data }) => {
       didOpen: () => {
         const popup = MySwal.getPopup();
         if (popup) {
-          popup.style.zIndex = "9999"; // Set a higher z-index for the modal
+          popup.style.zIndex = "9999"; 
         }
         MySwal.showLoading();
       },
@@ -67,7 +67,7 @@ const BrandComponent: React.FC<any> = ({ data }) => {
         linkRef.current.innerHTML = link;
       }
   
-      MySwal.close(); // Close the loading state
+      MySwal.close();
       setImageUrl(link);
     };
     xhr.setRequestHeader('Authorization', 'Client-ID 983c8532c49a20e');
@@ -85,29 +85,30 @@ const BrandComponent: React.FC<any> = ({ data }) => {
     setName(event.target.value);
   };
 
-  useEffect(() => {
-    console.log('ImageUrl:', imageUrl);
-  }, [imageUrl]);
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   
     const formData = new FormData();
+    formData.append('id', idBrand);
     formData.append('name', name);
     formData.append('image', imageUrl);
   
     try {
-      const response = await axiosClient.post('brand/create', formData);
+      const response = await axiosClient.put(`brand/edit/${idBrand}`, formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       MySwal.fire({
-        title: "Thêm thành công!",
+        title: "Chỉnh sửa thành công!",
         icon: "success",
         didOpen: () => {
           MySwal.showLoading();
         },
         timer: 1500,
       });
+      setOpen(false);
       console.log('Response from server:', response);
-  
     } catch (error) {
       MySwal.fire({
         title: "Đã có lỗi xảy ra!",
@@ -144,6 +145,16 @@ const BrandComponent: React.FC<any> = ({ data }) => {
                     </div>
                     <br />
                     <div className={cx('inputs')}>
+                      <label>ID hãng sản xuất:</label>
+                      <input 
+                        id="id"
+                        type='number' 
+                        name="id"
+                        placeholder='ID hãng sản xuất' 
+                        className={cx('input-name')}
+                        value={idBrand}                     
+                      />
+                      <br />
                       <label>Chỉnh sửa tên hãng sản xuất:</label>
                       <input 
                         id="name"
@@ -174,7 +185,9 @@ const BrandComponent: React.FC<any> = ({ data }) => {
           </>
         ) : (
           <>
+            <div className={cx('user-ui')}>
               <ImageBrand src={data.image}/>
+            </div>
           </>
         )}
       </div>
