@@ -4,10 +4,13 @@
     max-width: 25%;
     padding: 0 1rem;
     margin-bottom: 1rem;
+    cursor: pointer;
 }
 
 .inner {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     border-radius: 10px;
     padding: 12px 12px;
     margin: 0;
@@ -19,7 +22,7 @@
     box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
 
     .name {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     .specifications {
@@ -40,6 +43,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: 1rem;
     }
     
     .product-price {
@@ -62,13 +66,13 @@
         margin-top: 10px;
     
         .price-sale {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: #018ec3;
         }
     
         .price-origin {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: #c0b6b6;
         }
@@ -178,7 +182,7 @@
         box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
 
         .name {
-            font-size: 0.9 rem;
+            font-size: 0.9rem;
         }
 
         .specifications {

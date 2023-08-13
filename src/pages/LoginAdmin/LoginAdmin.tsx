@@ -38,7 +38,6 @@ const LoginAdmin: React.FC<any> = () => {
         } 
     });
       
-    const onSubmit: SubmitHandler<IFormInput> = (res: any) => console.log("form data", res);
     const {data, isLoading, isSuccess, refetch} = LoginQuery({username, password});
     
     if(isSuccess) {
@@ -46,7 +45,7 @@ const LoginAdmin: React.FC<any> = () => {
     }
     useEffect(() => {
         if(token) {
-          navigate('/')
+          navigate('/admin')
         }
     }, [token])
     
@@ -69,7 +68,7 @@ const LoginAdmin: React.FC<any> = () => {
     
     const handleLogin: SubmitHandler<IFormInput>= async(res: { username: React.SetStateAction<String | null>; password: React.SetStateAction<String | null>; })=>{
         if(res.username && res.password) {
-          // console.log(res)
+          console.log(res)
           setUsername(res.username)
           setPassword(res.password)
           setError1(false)

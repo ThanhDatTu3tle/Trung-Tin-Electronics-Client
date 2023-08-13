@@ -46,8 +46,8 @@ const Product: React.FC<any> = () => {
     id: string;
     name: string;
     description: string;
-    specification: [];
-    imageProducts: [];
+    specification: { id: number; specification: string }[];
+    imageProducts: { id: number; image: string }[];
     price: number;
     status: boolean;
     idBrand: number;

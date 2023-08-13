@@ -107,6 +107,7 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
             timer: 1500,
         });
         setOpen(false);
+        window.location.reload();
         console.log('Response from server:', response);
         } catch (error) {
         MySwal.fire({
@@ -126,11 +127,13 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
             <div className={cx('inner')}>
             {currentPath === '/category' ? (
           <>
-            <Image src={data.image}/>
+            <div className={cx('img')}>
+              <Image src={data.image} />
+            </div>
             <p>Tên: {data.name}</p>
             <div className={cx('btns')}>
               <Button outline onClick={handleOpenAddForm} style={{marginBottom: '0.5rem'}}>Chỉnh sửa thông tin</Button>
-              <Button primary onClick={handleDeleteForm}>Xóa hãng</Button>
+              <Button primary onClick={handleDeleteForm}>Xóa danh mục</Button>
             </div>
             <Backdrop
                 sx={{ color: '#fff', zIndex: 9 }}
@@ -185,7 +188,9 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
         ) : (
           <>
             <div className={cx('user-ui')}>
-              <Image src={data.image}/>
+              <div className={cx('image')}>
+                <Image src={data.image}/>
+              </div>
               <b>{data.name}</b>
             </div>
           </>

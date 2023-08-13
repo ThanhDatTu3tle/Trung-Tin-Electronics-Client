@@ -8,7 +8,7 @@ async function Login (username: String, password:String){
         }        
         const res = await AuthService.login(user);
         localStorage.removeItem('errorlogin');
-        // localStorage.removeItem('token');
+        localStorage.removeItem('token');
         localStorage.setItem('token', res.data.token);
         return res.data;
       } catch (error) {
@@ -20,7 +20,7 @@ interface LoginQueryProps{
     password: any;
 }
 function LoginQuery({username, password}: LoginQueryProps) {
-    const { data, isLoading, isFetching, isSuccess, refetch }= useQuery(['user'], ()=>Login(username, password),{
+    const { data, isLoading, isFetching, isSuccess, refetch } = useQuery(['user'], () => Login(username, password),{
         enabled: false,
         refetchOnWindowFocus: false,
         staleTime: Infinity,});

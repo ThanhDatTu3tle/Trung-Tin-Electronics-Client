@@ -16,9 +16,7 @@ root.render(
   // <React.StrictMode>
     <GlobalStyles>
       <QueryClientProvider client={queryClient}>
-
           <App />
-
       </QueryClientProvider>
     </GlobalStyles>
   // </React.StrictMode>

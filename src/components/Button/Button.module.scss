@@ -45,13 +45,24 @@
       background-color: rgba(44, 152, 254, 0.06);
     }
   }
+
+  .cart {
+    border-color: #018ec3;
+    color: #018ec3;
+    border-radius: 5px;
+    font-size: 0.6rem;
+  
+    &:hover {
+      background-color: rgba(44, 152, 254, 0.06);
+    }
+  }
   
   // Button size
   .small {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 88px;
+    min-width: 70px;
     min-height: 28px;
     padding: 4px 16px;
     color: white;
@@ -64,7 +75,7 @@
   }
   
   .large {
-    min-width: 140px;
+    min-width: 120px;
     min-height: 28px;
     padding: 4px 16px;
   }
