@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
@@ -22,6 +23,20 @@ updateScreenSize();
 window.addEventListener('resize', updateScreenSize);
 
 const CartButton: React.FC = () => {
+    const location = useLocation();
+
+    const shouldHideCartUI = location.pathname.includes('/admin') ||
+        location.pathname.includes('/brand') ||
+        location.pathname.includes('/category') ||
+        location.pathname.includes('/product') ||
+        location.pathname.includes('/dashboard') ||
+        location.pathname.includes('/login');
+
+    if (shouldHideCartUI) {
+        return null; // Hoặc bạn có thể render một component trống tùy theo cách bạn muốn
+    }
+    
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { cartItems } = useCart();
   
     const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);

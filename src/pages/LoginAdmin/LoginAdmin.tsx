@@ -88,7 +88,7 @@ const LoginAdmin: React.FC<any> = () => {
                         src={logo} 
                         alt='Logo'
                     />
-                    <p>Công ty Trung Tín</p>
+                    <h3>Công ty Trung Tín</h3>
                 </div>
                 <h4 style={{color: '#4f7496'}}>Đăng nhập</h4>
                 <div className={cx('inputs')}>
