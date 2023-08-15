@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -124,73 +125,75 @@ const BrandComponent: React.FC<any> = ({ data }) => {
 
   return (
     <div className={cx('wrapper')}>
-      <div className={cx('inner')}>
-        {currentPath === '/brand' ? (
-          <>
-            <ImageBrand src={data.image}/>
-            <h3>Tên hãng: {data.name}</h3>
-            <div className={cx('btns')}>
-              <Button outline onClick={handleOpenAddForm} style={{marginBottom: '0.5rem'}}>Chỉnh sửa thông tin</Button>
-              <Button primary onClick={handleDeleteForm}>Xóa hãng</Button>
-            </div>
-            <Backdrop
-                sx={{ color: '#fff', zIndex: 9 }}
-                open={open}
-              >
-                <div className={cx('add-form')}>
-                  <form action="/upload" method="post" className={cx('form')} onSubmit={handleSubmit} encType="multipart/form-data">
-                    <div className={cx('title')}>
-                      <p style={{fontSize: '1.5rem', fontWeight: '500'}}>CHỈNH SỬA THÔNG TIN HÃNG SẢN XUẤT</p>
-                      <button type='button' className={cx('close-btn')} onClick={handleCloseAddForm}>×</button>
-                    </div>
-                    <br />
-                    <div className={cx('inputs')}>
-                      <label>ID hãng sản xuất:</label>
-                      <input 
-                        id="id"
-                        type='number' 
-                        name="id"
-                        placeholder='ID hãng sản xuất' 
-                        className={cx('input-name')}
-                        value={idBrand}                     
-                      />
-                      <br />
-                      <label>Chỉnh sửa tên hãng sản xuất:</label>
-                      <input 
-                        id="name"
-                        type='text' 
-                        name="name"
-                        placeholder='Tên hãng sản xuất' 
-                        className={cx('input-name')}
-                        value={name}
-                        onChange={handleNameChange}
-                      />
-                      <br />
-                      <label>Chọn/chỉnh sửa hình ảnh:</label>
-                      <input 
-                        id="image"  
-                        type="file"
-                        accept="image/*"
-                        name="image"
-                        onChange={handleImageUpload}
-                      />
-                    </div>
-                    <div className={cx('show-image')}>
-                      <Image src={imageUrl}/>
-                    </div>
-                    <Button small primary>Xác nhận</Button>
-                  </form>   
-                </div>
-              </Backdrop>
-          </>
-        ) : (
-          <>
-            <div className={cx('user-ui')}>
+      <Link to={`/detailBrand/${data.name}`}>
+        <div className={cx('inner')}>
+          {currentPath === '/brand' ? (
+            <>
               <ImageBrand src={data.image}/>
-            </div>
-          </>
-        )}
-      </div>
+              <h3>Tên hãng: {data.name}</h3>
+              <div className={cx('btns')}>
+                <Button outline onClick={handleOpenAddForm} style={{marginBottom: '0.5rem'}}>Chỉnh sửa thông tin</Button>
+                <Button primary onClick={handleDeleteForm}>Xóa hãng</Button>
+              </div>
+              <Backdrop
+                  sx={{ color: '#fff', zIndex: 9 }}
+                  open={open}
+                >
+                  <div className={cx('add-form')}>
+                    <form action="/upload" method="post" className={cx('form')} onSubmit={handleSubmit} encType="multipart/form-data">
+                      <div className={cx('title')}>
+                        <p style={{fontSize: '1.5rem', fontWeight: '500'}}>CHỈNH SỬA THÔNG TIN HÃNG SẢN XUẤT</p>
+                        <button type='button' className={cx('close-btn')} onClick={handleCloseAddForm}>×</button>
+                      </div>
+                      <br />
+                      <div className={cx('inputs')}>
+                        <label>ID hãng sản xuất:</label>
+                        <input 
+                          id="id"
+                          type='number' 
+                          name="id"
+                          placeholder='ID hãng sản xuất' 
+                          className={cx('input-name')}
+                          value={idBrand}                     
+                        />
+                        <br />
+                        <label>Chỉnh sửa tên hãng sản xuất:</label>
+                        <input 
+                          id="name"
+                          type='text' 
+                          name="name"
+                          placeholder='Tên hãng sản xuất' 
+                          className={cx('input-name')}
+                          value={name}
+                          onChange={handleNameChange}
+                        />
+                        <br />
+                        <label>Chọn/chỉnh sửa hình ảnh:</label>
+                        <input 
+                          id="image"  
+                          type="file"
+                          accept="image/*"
+                          name="image"
+                          onChange={handleImageUpload}
+                        />
+                      </div>
+                      <div className={cx('show-image')}>
+                        <Image src={imageUrl}/>
+                      </div>
+                      <Button small primary>Xác nhận</Button>
+                    </form>   
+                  </div>
+                </Backdrop>
+            </>
+          ) : (
+            <>
+              <div className={cx('user-ui')}>
+                <ImageBrand src={data.image}/>
+              </div>
+            </>
+          )}
+        </div>
+      </Link>
     </div>
   );
 };

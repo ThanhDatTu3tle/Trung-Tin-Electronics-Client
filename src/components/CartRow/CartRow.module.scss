@@ -1,0 +1,42 @@
+.wrapper {
+    display: flex;
+    width: 100%;
+    height: fit-content;
+
+    .content {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: fit-content;
+        padding-top: 0.2rem;
+        padding-bottom: 0.2rem;
+
+        .image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 25%;
+        }
+
+        .name {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35%;
+            font-size: 1.2rem;
+        }
+    
+        .small-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 10%;
+            font-size: 1.2rem;
+        }
+
+        .img {
+            width: 50%;
+            height: auto;
+        }
+    }
+}

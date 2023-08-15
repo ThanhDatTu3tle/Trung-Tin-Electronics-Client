@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
-
 import classNames from "classnames/bind";
 
 import styles from './Home.module.scss';
@@ -27,16 +26,19 @@ const Home: React.FC<any> = () => {
     const [brands, setBrands] = useState<{ id: number; name: string }[]>([]);
     const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
     const [products, setProducts] = useState<{
-      id: string;
-      name: string;
-      description: string;
-      specification: { id: number; specification: string }[];
-      imageProducts: { id: number; image: string }[];
-      price: number;
-      status: boolean;
-      idBrand: number;
-      idCategory: number;
-      idEvent: number;
+        id: string;
+        name: string;
+        description: string;
+        specification: { id: number; specification: string }[];
+        imageProducts: { id: number; image: string }[];
+        price: number;
+        brand: string;
+        event: null;
+        status: boolean;
+        category: string;
+        idBrand: number;
+        idCategory: number;
+        idEvent: number;
     }[]>([]);
     const brandFourElement = brands.slice(0, 4);
     const brandTwoElement = brands.slice(0, 2);

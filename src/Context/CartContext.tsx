@@ -35,7 +35,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setTimeout(() => {
           setCartItems([]);
           localStorage.removeItem('cart');
-        }, 3600000); // 1 giờ = 3600000 ms
+        }, 36000000); 
     };
 
     const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);

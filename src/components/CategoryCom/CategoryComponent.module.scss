@@ -4,6 +4,7 @@
     max-width: 25%;
     padding: 0 0.5rem;
     margin-bottom: 1rem;
+    cursor: pointer;
 }
 
 .inner {
@@ -132,7 +133,8 @@
         flex-grow: 1;
         flex-basis: 25%;
         max-width: 25%;
-        padding: 0 0.5rem;;
+        padding: 0 0.5rem;
+        cursor: pointer;
     }
     
     .inner {
@@ -263,6 +265,7 @@
         flex-basis: 50%;
         max-width: 50%;
         padding: 0 0.5rem;
+        cursor: pointer;
     }
     
     .inner {

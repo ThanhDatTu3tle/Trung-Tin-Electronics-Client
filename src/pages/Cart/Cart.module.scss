@@ -1,0 +1,59 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: fit-content;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+
+    .table {
+        width: 100%;
+        height: fit-content;
+        border-radius: 10px;
+        padding: 1rem;
+        background: rgb(255, 255, 255);
+        box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
+
+        .titles {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            font-size: 1.2rem;
+            color: #fff;
+            background-color: #018ec3;
+            padding: 1rem;
+            height: 50px;
+            border-radius: 10px;
+        
+            .image {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 25%;
+            }
+
+            .name {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 35%;
+            }
+        
+            .small-title {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 10%;
+            }
+        }
+
+        .information {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            border-radius: 10px;
+        }
+    }
+}

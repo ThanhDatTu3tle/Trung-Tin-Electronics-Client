@@ -14,10 +14,12 @@ import ProtectedRoute from "./ProtectedRoute";
 import DetailProduct from "./pages/DetailProduct";
 import { CartProvider } from "./Context/CartContext";
 import CartButton from "./components/CartButton";
+import DetailBrand from "./pages/DetailBrand";
+import DetailCategory from "./pages/DetailCategory";
 
 const App: React.FC = () => {
   const [search, setSearch] = useState<string | null>(null);
-  const [ token, setToken]  = useState<string|null>(null);
+  const [token, setToken]  = useState<string|null>(null);
 
   return (
     <AuthContext.Provider value={{ token, setToken, search, setSearch }}>
@@ -75,6 +77,8 @@ const App: React.FC = () => {
                   />
                 )
               })}
+              <Route path="/detailBrand/:name/*" element={<DetailBrand />} />
+              <Route path="/detailCategory/:name/*" element={<DetailCategory />} />
               <Route path="/detailProduct/:id/*" element={<DetailProduct />} />
             </Routes>
             <CartButton />

@@ -6,9 +6,11 @@ const routes = {
     news: "/tin-tuc",
     contact: "/lien-he",
     login: "/login",
-
-    detailProduct: "/detailProduct/:id",
     cart: "/cart",
+
+    detailBrand: "/detailBrand/:name",
+    detailCategory: "/detailCategory/:name",
+    detailProduct: "/detailProduct/:id",
 
     admin: "/admin",
     product: "/product",

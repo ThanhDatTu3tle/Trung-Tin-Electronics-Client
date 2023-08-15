@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -124,78 +125,80 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('inner')}>
+          <Link to={`/detailCategory/${data.name}`}>
+          <div className={cx('inner')}>
             {currentPath === '/category' ? (
-          <>
-            <div className={cx('img')}>
-              <Image src={data.image} />
-            </div>
-            <p>Tên: {data.name}</p>
-            <div className={cx('btns')}>
-              <Button outline onClick={handleOpenAddForm} style={{marginBottom: '0.5rem'}}>Chỉnh sửa thông tin</Button>
-              <Button primary onClick={handleDeleteForm}>Xóa danh mục</Button>
-            </div>
-            <Backdrop
-                sx={{ color: '#fff', zIndex: 9 }}
-                open={open}
-              >
-                <div className={cx('add-form')}>
-                  <form action="/upload" method="post" className={cx('form')} onSubmit={handleSubmit} encType="multipart/form-data">
-                    <div className={cx('title')}>
-                      <p style={{fontSize: '1.5rem', fontWeight: '500'}}>CHỈNH SỬA THÔNG TIN HÃNG SẢN XUẤT</p>
-                      <button type='button' className={cx('close-btn')} onClick={handleCloseAddForm}>×</button>
-                    </div>
-                    <br />
-                    <div className={cx('inputs')}>
-                      <label>ID hãng sản xuất:</label>
-                      <input 
-                        id="id"
-                        type='number' 
-                        name="id"
-                        placeholder='ID hãng sản xuất' 
-                        className={cx('input-name')}
-                        value={idCategory}                     
-                      />
-                      <br />
-                      <label>Chỉnh sửa tên hãng sản xuất:</label>
-                      <input 
-                        id="name"
-                        type='text' 
-                        name="name"
-                        placeholder='Tên hãng sản xuất' 
-                        className={cx('input-name')}
-                        value={name}
-                        onChange={handleNameChange}
-                      />
-                      <br />
-                      <label>Chọn/chỉnh sửa hình ảnh:</label>
-                      <input 
-                        id="image"  
-                        type="file"
-                        accept="image/*"
-                        name="image"
-                        onChange={handleImageUpload}
-                      />
-                    </div>
-                    <div className={cx('show-image')}>
-                      <Image src={imageUrl}/>
-                    </div>
-                    <Button small primary>Xác nhận</Button>
-                  </form>   
-                </div>
-              </Backdrop>
-          </>
-        ) : (
-          <>
-            <div className={cx('user-ui')}>
-              <div className={cx('image')}>
-                <Image src={data.image}/>
+            <>
+              <div className={cx('img')}>
+                <Image src={data.image} />
               </div>
-              <b>{data.name}</b>
+              <p>Tên: {data.name}</p>
+              <div className={cx('btns')}>
+                <Button outline onClick={handleOpenAddForm} style={{marginBottom: '0.5rem'}}>Chỉnh sửa thông tin</Button>
+                <Button primary onClick={handleDeleteForm}>Xóa danh mục</Button>
+              </div>
+              <Backdrop
+                  sx={{ color: '#fff', zIndex: 9 }}
+                  open={open}
+                >
+                  <div className={cx('add-form')}>
+                    <form action="/upload" method="post" className={cx('form')} onSubmit={handleSubmit} encType="multipart/form-data">
+                      <div className={cx('title')}>
+                        <p style={{fontSize: '1.5rem', fontWeight: '500'}}>CHỈNH SỬA THÔNG TIN HÃNG SẢN XUẤT</p>
+                        <button type='button' className={cx('close-btn')} onClick={handleCloseAddForm}>×</button>
+                      </div>
+                      <br />
+                      <div className={cx('inputs')}>
+                        <label>ID hãng sản xuất:</label>
+                        <input 
+                          id="id"
+                          type='number' 
+                          name="id"
+                          placeholder='ID hãng sản xuất' 
+                          className={cx('input-name')}
+                          value={idCategory}                     
+                        />
+                        <br />
+                        <label>Chỉnh sửa tên hãng sản xuất:</label>
+                        <input 
+                          id="name"
+                          type='text' 
+                          name="name"
+                          placeholder='Tên hãng sản xuất' 
+                          className={cx('input-name')}
+                          value={name}
+                          onChange={handleNameChange}
+                        />
+                        <br />
+                        <label>Chọn/chỉnh sửa hình ảnh:</label>
+                        <input 
+                          id="image"  
+                          type="file"
+                          accept="image/*"
+                          name="image"
+                          onChange={handleImageUpload}
+                        />
+                      </div>
+                      <div className={cx('show-image')}>
+                        <Image src={imageUrl}/>
+                      </div>
+                      <Button small primary>Xác nhận</Button>
+                    </form>   
+                  </div>
+                </Backdrop>
+            </>
+          ) : (
+            <>
+              <div className={cx('user-ui')}>
+                <div className={cx('image')}>
+                  <Image src={data.image}/>
+                </div>
+                <b>{data.name}</b>
+              </div>
+            </>
+          )}
             </div>
-          </>
-        )}
-            </div>
+          </Link>
         </div>
     )
 }

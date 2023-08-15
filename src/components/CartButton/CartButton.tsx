@@ -1,11 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+
 import styles from './CartButton.module.scss';
 import Button from '../Button';
 import { useCart } from '../../Context/CartContext';
+import config from '../../config';
 
 const faCartShoppingIcon = faCartShopping as IconProp;
 
@@ -25,27 +28,29 @@ const CartButton: React.FC = () => {
   
     return (
       <div className={cx('wrapper')}>
-        {screenWidth >= 800 ? (
-          <>
-            <Button cart="true">
-              <FontAwesomeIcon
-                icon={faCartShoppingIcon}
-                style={{ color: '#fec806', marginRight: '1rem' }}
-              />
-              Giỏ Hàng ({totalQuantity})
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button cart="true">
-              <FontAwesomeIcon
-                icon={faCartShoppingIcon}
-                style={{ color: '#fec806', marginRight: '1rem' }}
-              />
-              ({totalQuantity})
-            </Button>
-          </>
-        )}
+        <Link to={config.routes.cart}>
+          {screenWidth >= 800 ? (
+            <>
+              <Button cart="true">
+                <FontAwesomeIcon
+                  icon={faCartShoppingIcon}
+                  style={{ color: '#fec806', marginRight: '1rem' }}
+                />
+                Giỏ Hàng ({totalQuantity})
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button cart="true">
+                <FontAwesomeIcon
+                  icon={faCartShoppingIcon}
+                  style={{ color: '#fec806', marginRight: '1rem' }}
+                />
+                ({totalQuantity})
+              </Button>
+            </>
+          )}
+        </Link>
       </div>
     );
   };
