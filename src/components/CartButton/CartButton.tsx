@@ -1,4 +1,5 @@
-import React from 'react';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
@@ -33,13 +34,19 @@ const CartButton: React.FC = () => {
         location.pathname.includes('/login');
 
     if (shouldHideCartUI) {
-        return null; // Hoặc bạn có thể render một component trống tùy theo cách bạn muốn
+        return null;
     }
     
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { cartItems } = useCart();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [totalQuantity, setTotalQuantity] = useState(0);
   
-    const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      const newTotalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+      setTotalQuantity(newTotalQuantity);
+    }, [cartItems]);
   
     return (
       <div className={cx('wrapper')}>

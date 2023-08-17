@@ -316,7 +316,8 @@ const Product: React.FC<any> = () => {
                 open={open}
               >
                 <div className={cx('add-form')}>
-                  <form action="/upload" method="post" className={cx('form')} onSubmit={(event) => handleSubmit(event, images)}>                    <div className={cx('title')}>
+                  <form action="/upload" method="post" className={cx('form')} onSubmit={(event) => handleSubmit(event, images)}>                    
+                    <div className={cx('title')}>
                       <p style={{fontSize: '1.5rem', fontWeight: '500'}}>THÊM SẢN PHẨM</p>
                       <button type='button' className={cx('close-btn')} onClick={handleCloseAddForm}>×</button>
                     </div>
