@@ -113,58 +113,6 @@ const Home: React.FC<any> = () => {
         <div className={cx('wrapper')}>
             {screenWidth <= 899 && screenWidth >= 600 ? (
               <>
-                {brands ? (
-                    <>
-                        <div className={cx('brand')}>
-                            {brandFourElement.map((brand) => (
-                                <BrandComponent key={brand.id} data={brand} />
-                            ))}
-                        </div>
-                    </>
-                    ) : (
-                    <></>
-                    )
-                }
-              </>
-              ) : (
-              <>
-                {screenWidth <= 599 && screenWidth >= 200 ? (
-                    <>
-                        {brands ? (
-                            <>
-                                <div className={cx('brand')}>
-                                    {brandTwoElement.map((brand) => (
-                                        <BrandComponent key={brand.id} data={brand} />
-                                    ))}
-                                </div>
-                            </>
-                            ) : (
-                            <></>
-                            )
-                        }
-                    </>
-                ): (
-                    <>
-                        {brands ? (
-                            <>
-                                <div className={cx('brand')}>
-                                    {brands.map((brand) => (
-                                        <BrandComponent key={brand.id} data={brand} />
-                                    ))}
-                                </div>
-                            </>
-                            ) : (
-                            <></>
-                            )
-                        }
-                    </>
-                )}
-              </>
-              )
-            }
-            <br />
-            {screenWidth <= 899 && screenWidth >= 600 ? (
-              <>
                 Danh mục sản phẩm
                 <div className={cx('category')}>
                     {categoriesFourElement.map((data) => (

@@ -29,7 +29,6 @@ const LoginAdmin: React.FC<any> = () => {
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm<IFormInput>({
         defaultValues:{
@@ -38,7 +37,7 @@ const LoginAdmin: React.FC<any> = () => {
         } 
     });
       
-    const {data, isLoading, isSuccess, refetch} = LoginQuery({username, password});
+    const {isSuccess, refetch} = LoginQuery({username, password});
     
     if(isSuccess) {
         setToken(localStorage.getItem('token')as string);
@@ -47,7 +46,7 @@ const LoginAdmin: React.FC<any> = () => {
         if(token) {
           navigate('/admin')
         }
-    }, [token])
+    }, [navigate, token])
     
     const getError = localStorage.getItem('errorlogin') || null;
     
@@ -63,7 +62,7 @@ const LoginAdmin: React.FC<any> = () => {
           setUsername("")
           setPassword("")
         }
-    }, [username, password])
+    }, [username, password, refetch])
     
     
     const handleLogin: SubmitHandler<IFormInput>= async(res: { username: React.SetStateAction<String | null>; password: React.SetStateAction<String | null>; })=>{

@@ -49,6 +49,7 @@ const Cart: React.FC<any> = () => {
     }[]>([]);
     const [address, setAddress] = useState('');
     const [content, setContent] = useState('');
+    const [status, setStatus] = useState(false);
     
     const [selectedWard, setSelectedWard] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
@@ -214,17 +215,18 @@ const Cart: React.FC<any> = () => {
         `;
         const lines = addressRaw.split('\n').filter(line => line.trim() !== '');
         const completeAddress = lines.map(line => line.trim()).join(' ');
+        // let status = 1;
 
-        formData.append('customer_name', fullName);
+        formData.append('customerName', fullName);
         formData.append('phone', phoneNumber);
         formData.append('email', email);
         formData.append('address', completeAddress);
         formData.append('content', content);
-        formData.append('status', 'false');
+        formData.append('status', status.toString());
     
         products.forEach((product, index) => {
-            formData.append(`products[${index}].id_product`, product.id);
-            formData.append(`products[${index}].number`, product.quantity.toString());
+            formData.append(`invoiceDetail[${index}].idProduct`, product.id);
+            formData.append(`invoiceDetail[${index}].number`, product.quantity.toString());
         });
         formData.append('total', totalPrice.toString());
         formData.append('payment', selectedOption);
@@ -244,6 +246,7 @@ const Cart: React.FC<any> = () => {
                 timer: 1500,
             });
             console.log('Response from server:', response);
+            window.location.href = "/";
         } catch (error) {
             MySwal.fire({
                 title: 'Đã có lỗi xảy ra!',
