@@ -1,16 +1,15 @@
 // apiService.js
-
 import { axiosClient } from "../axios";// Đường dẫn tới file axiosClient
 
 const baseImageUrl = 'https://api.imgur.com/3/image';
 
-const getToken = () => localStorage.getItem('token');
+// const getToken = () => localStorage.getItem('token');
 
 const uploadImageToImgur = async (imageFile: string | Blob) => {
   try {
     const clientId = '983c8532c49a20e'; // Thay YOUR_CLIENT_ID bằng Client ID của bạn
     const apiUrl = baseImageUrl;
-    const token = getToken();
+    // const token = getToken();
 
     const formData = new FormData();
     formData.append('image', imageFile);

@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Link, useNavigate  } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import classNames from "classnames/bind";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 import styles from './Cart.module.scss';
 import CartRow from '../../components/CartRow';
@@ -12,6 +15,7 @@ import { axiosClient } from '../../axios';
 const cx = classNames.bind(styles);
 
 const Cart: React.FC<any> = () => {
+    const MySwal = withReactContent(Swal);
     const history = useNavigate();
 
     const [products, setProducts] = useState<any[]>([]);
@@ -45,6 +49,11 @@ const Cart: React.FC<any> = () => {
     }[]>([]);
     const [address, setAddress] = useState('');
     const [content, setContent] = useState('');
+    
+    const [selectedWard, setSelectedWard] = useState('');
+    const [selectedDistrict, setSelectedDistrict] = useState('');
+    const [selectedProvince, setSelectedProvince] = useState('');
+    const [selectedOption, setSelectedOption] = useState('');
 
     const handleFullNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFullName(event.target.value);
@@ -78,6 +87,9 @@ const Cart: React.FC<any> = () => {
             const selectedDistricts = data.filter((district: { province_code: number; }) => district.province_code === selectedProvinceCode);
             
             setDistricts(selectedDistricts);
+            setSelectedProvince(event.target.value); 
+            setSelectedDistrict(''); 
+            setWards([]); 
         } catch (error) {
             console.error(error);
         }
@@ -87,6 +99,7 @@ const Cart: React.FC<any> = () => {
             try {
                 const responseDistricts = await fetch("https://provinces.open-api.vn/api/w");
                 const dataDistricts = await responseDistricts.json();
+
                 setDistricts(dataDistricts);
             } catch (error) {
                 console.error(error);
@@ -105,16 +118,23 @@ const Cart: React.FC<any> = () => {
             const selectedWards = data.filter((ward: { district_code: number; }) => ward.district_code === selectedDistrictCode);
             
             setWards(selectedWards);
+            setSelectedDistrict(event.target.value); 
         } catch (error) {
             console.error(error);
         }
     };
+    const handleWardChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedWard(event.target.value);
+    };
     
     const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAddress(event.target.value);
+        setAddress(event.target.value.trim());
     };
     const handleContentChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setContent(event.target.value);
+    };
+    const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedOption(event.target.value);
     };
 
     if (cartData.length === 0) {
@@ -185,37 +205,54 @@ const Cart: React.FC<any> = () => {
     const handleOrder = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
     
-        // Tạo một đối tượng FormData để chứa dữ liệu cần gửi
         const formData = new FormData();
-    
-        // Thêm thông tin cá nhân của người dùng vào formData
-        formData.append('fullName', fullName);
-        formData.append('phoneNumber', phoneNumber);
+        const addressRaw = `
+            ${address} 
+            ${wards.find(ward => ward.code === Number(selectedWard))?.name || ''} 
+            ${districts.find(district => district.code === Number(selectedDistrict))?.name || ''} 
+            ${provinces.find(province => province.code === Number(selectedProvince))?.name || ''}
+        `;
+        const lines = addressRaw.split('\n').filter(line => line.trim() !== '');
+        const completeAddress = lines.map(line => line.trim()).join(' ');
+
+        formData.append('customer_name', fullName);
+        formData.append('phone', phoneNumber);
         formData.append('email', email);
-        formData.append('address', address);
+        formData.append('address', completeAddress);
         formData.append('content', content);
+        formData.append('status', 'false');
     
-        // Thêm thông tin sản phẩm trong giỏ hàng vào formData
         products.forEach((product, index) => {
-            formData.append(`products[${index}].id`, product.id);
-            formData.append(`products[${index}].quantity`, product.quantity.toString());
-            // Thêm các thông tin khác của sản phẩm nếu cần
+            formData.append(`products[${index}].id_product`, product.id);
+            formData.append(`products[${index}].number`, product.quantity.toString());
         });
+        formData.append('total', totalPrice.toString());
+        formData.append('payment', selectedOption);
     
-        // Thêm tổng giá vào formData
-        formData.append('totalPrice', totalPrice.toString());
-    
-        // Thực hiện cuộc gọi POST với axios hoặc phương thức bạn sử dụng
         try {
             const response = await axiosClient.post('invoice/create', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data', // Đảm bảo đúng Content-Type
+                    'Content-Type': 'application/json', 
                 },
             });
-    
-            // Xử lý phản hồi từ server (nếu cần)
+            MySwal.fire({
+                title: 'Đặt hàng thành công!',
+                icon: 'success',
+                didOpen: () => {
+                  MySwal.showLoading();
+                },
+                timer: 1500,
+            });
             console.log('Response from server:', response);
         } catch (error) {
+            MySwal.fire({
+                title: 'Đã có lỗi xảy ra!',
+                icon: 'error',
+                didOpen: () => {
+                  MySwal.showLoading();
+                },
+                timer: 1500,
+            });
             console.error('Error:', error);
         }
     }
@@ -299,6 +336,7 @@ const Cart: React.FC<any> = () => {
                         <select
                             name="ward"
                             className={cx('input')}
+                            onChange={handleWardChange}
                         >
                             <option value="">Chọn phường/xã</option>
                             {wards.map((ward) => (
@@ -323,6 +361,32 @@ const Cart: React.FC<any> = () => {
                             onChange={handleContentChange}
                             rows={3} 
                         />
+                    </div>
+                    <br />
+                    <h3>HÌNH THỨC GIAO DỊCH</h3>
+                    <div className={cx('payments')}>
+                        <div>
+                            <input 
+                                id="transfer"
+                                type='radio' 
+                                className={cx('payment')}
+                                value="transfer"
+                                checked={selectedOption === 'transfer'}
+                                onChange={handleOptionChange}
+                            />
+                            <label htmlFor="transfer">Thanh toán bằng hình thức chuyển khoản</label>
+                        </div>
+                        <div>
+                            <input 
+                                id="cash"
+                                type='radio' 
+                                className={cx('payment')}
+                                value="cash"
+                                checked={selectedOption === 'cash'}
+                                onChange={handleOptionChange}
+                            />
+                            <label htmlFor="cash">Thanh toán khi nhận hàng</label>
+                        </div>
                     </div>
                 </form>            
                 <div className={cx('buttons')}>

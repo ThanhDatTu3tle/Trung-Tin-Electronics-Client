@@ -87,6 +87,17 @@
             color: black;
             padding: 1rem;
 
+            .payments {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                width: 90%;
+
+                .payment {
+                    margin-right: 1rem;
+                }
+            }
+
             .inputs {
                 display: flex;
                 flex-direction: column;

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
+import { Link } from 'react-router-dom';
 import classNames from "classnames/bind";
 
 import styles from './Home.module.scss';
@@ -257,7 +258,9 @@ const Home: React.FC<any> = () => {
             <div className={cx('machine')}>
                 <div className={cx('title-wrapper')}>
                     <div className={cx('title')}>Dụng cụ máy điện</div>
-                    <div className={cx('show-all')}>Xem tất cả</div>
+                    <Link to={`/detailCategory/Dụng%20cụ%20máy%20điện`}>
+                        <div className={cx('show-all')}>Xem tất cả</div>
+                    </Link>
                 </div>
                 {screenWidth <= 899 && screenWidth >= 600 ? (
                     <>
