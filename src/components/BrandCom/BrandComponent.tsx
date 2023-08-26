@@ -19,7 +19,7 @@ const BrandComponent: React.FC<any> = ({ data }) => {
   const currentPath = window.location.pathname;
 
   const MySwal = withReactContent(Swal);
-  const [idBrand, setIdBrand] = useState(data.id)
+  const idBrand = data.id;
 
   const [open, setOpen] = useState(false);
   const handleCloseAddForm = () => setOpen(false);
@@ -44,7 +44,7 @@ const BrandComponent: React.FC<any> = ({ data }) => {
     if (!file || !file.type.match(/image.*/)) return;
   
     MySwal.fire({
-      title: 'Đang tải lên...',
+      title: 'Đang tải ảnh lên...',
       allowOutsideClick: false,
       didOpen: () => {
         const popup = MySwal.getPopup();
@@ -106,7 +106,7 @@ const BrandComponent: React.FC<any> = ({ data }) => {
         didOpen: () => {
           MySwal.showLoading();
         },
-        timer: 1500,
+        timer: 2000,
       });
       setOpen(false);
       console.log('Response from server:', response);
@@ -117,7 +117,7 @@ const BrandComponent: React.FC<any> = ({ data }) => {
         didOpen: () => {
           MySwal.showLoading();
         },
-        timer: 1500,
+        timer: 2000,
       });
       console.error('Error:', error);
     }
@@ -125,7 +125,6 @@ const BrandComponent: React.FC<any> = ({ data }) => {
 
   return (
     <div className={cx('wrapper')}>
-      <Link to={`/detailBrand/${data.name}`}>
         <div className={cx('inner')}>
           {currentPath === '/brand' ? (
             <>
@@ -187,13 +186,14 @@ const BrandComponent: React.FC<any> = ({ data }) => {
             </>
           ) : (
             <>
-              <div className={cx('user-ui')}>
-                <ImageBrand src={data.image}/>
-              </div>
+              <Link to={`/detailBrand/${data.name}`}>
+                <div className={cx('user-ui')}>
+                  <ImageBrand src={data.image}/>
+                </div>
+              </Link>
             </>
           )}
         </div>
-      </Link>
     </div>
   );
 };

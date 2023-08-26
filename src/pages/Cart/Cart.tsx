@@ -49,7 +49,7 @@ const Cart: React.FC<any> = () => {
     }[]>([]);
     const [address, setAddress] = useState('');
     const [content, setContent] = useState('');
-    const [status, setStatus] = useState(false);
+    const status = false;
     
     const [selectedWard, setSelectedWard] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
@@ -281,7 +281,7 @@ const Cart: React.FC<any> = () => {
                 </div>
             </div>
             <div className={cx('result')}>
-                    <h4>Tổng giá: {totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</h4>
+                <h4>Tổng giá: {totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</h4>
             </div>
             <br />
             <div className={cx('add-form')}>

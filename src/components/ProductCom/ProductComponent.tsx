@@ -11,8 +11,20 @@ const cx = classNames.bind(styles);
 const currentPath = window.location.pathname;
 
 const ProductComponent: React.FC<any> = ({ data }) => {
+    const handleClick = () => {
+        if (!localStorage.getItem('seen')) {
+            localStorage.setItem('seen', JSON.stringify([]));
+        }
+
+        const seenProducts = JSON.parse(localStorage.getItem('seen') || '[]');
+        if (!seenProducts.includes(data.id)) {
+            seenProducts.push(data.id);
+            localStorage.setItem('seen', JSON.stringify(seenProducts));
+        }
+    }
+
     return (
-        <div className={cx('wrapper')}>
+        <div className={cx('wrapper')} onClick={handleClick}>
             <Link to={`/detailProduct/${data.id}`}>
                 <div className={cx('inner')}>
                     {data.imageProducts && data.imageProducts.length > 0 && (

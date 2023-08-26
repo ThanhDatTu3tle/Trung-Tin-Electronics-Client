@@ -15,17 +15,47 @@ import styles from './DetailProduct.module.scss';
 import Button from '../../components/Button';
 import Image from '../../components/Image';
 import ProductService from '../../service/ProductService';
+import CategoryService from '../../service/CategoryService';
 import CartButton from '../../components/CartButton';
+import ProductComponent from '../../components/ProductCom/ProductComponent';
 import { useCart } from '../../Context/CartContext';
 
 const faStarIcon = faStar as IconProp;
 
 const cx = classNames.bind(styles);
 
+let screenWidth = window.innerWidth;
+function updateScreenSize() {
+  screenWidth = window.innerWidth;
+}
+updateScreenSize();
+window.addEventListener("resize", updateScreenSize);
+
 const DetailProduct: React.FC = () => {
   const MySwal = withReactContent(Swal);
   const { id } = useParams();
   const { addToCart } = useCart();
+
+  const [seenProducts, setSeenProducts] = useState<
+    {
+      id: string;
+      name: string;
+      description: string;
+      specification: { id: number; specification: string }[];
+      imageProducts: { id: number; image: string }[];
+      price: number;
+      brand: string;
+      event: null;
+      status: boolean;
+      category: string;
+      idBrand: number;
+      idCategory: number;
+      idEvent: number;
+    }[]
+  >([]);  
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const seenProductsLocal = JSON.parse(localStorage.getItem('seen') || '[]');
+
 
   const [count, setCount] = useState(1);
   const handleMinus = () => {
@@ -38,6 +68,12 @@ const DetailProduct: React.FC = () => {
     setCount(count + 1);
   };
 
+  let product: { id: string; name: string; description: string; specification: { id: number; specification: string; }[]; imageProducts: { id: number; image: string; }[]; price: number; brand: string; event: null; status: boolean; category: string; idBrand: number; idCategory: number; idEvent: number; } | undefined;
+
+  const [selectedImage, setSelectedImage] = useState<string | undefined>(
+    product ? product.imageProducts[0]?.image : undefined
+  );
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
   const [products, setProducts] = useState<
     {
       id: string;
@@ -81,11 +117,55 @@ const DetailProduct: React.FC = () => {
     }
   }, [productsData]);
 
-  const product = products.find((product) => product.id === id);
+  const filteredProducts = products.filter((product) => product.category === product?.category);
+  const relatedProducts = filteredProducts.filter((item) => item.id !== id)
+
+  useEffect(() => {
+    const fetchProductDetails = async (productId: string) => {
+      try {
+        const res = await ProductService.GetProduct(productId);
+        return res.data;
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+    };
+  
+    const fetchAllProductDetails = async () => {
+      const productDetails = await Promise.all(
+        seenProductsLocal.map(async (productId: string) => {
+          const productDetail = await fetchProductDetails(productId);
+          if (productDetail) {
+            return {
+              ...productDetail,
+            };
+          }
+          return null;
+        })
+      );
+  
+      setSeenProducts(productDetails.filter((seenProduct) => seenProduct !== null));
+      setIsLoadingProducts(false);
+    };
+  
+    if (isLoadingProducts) {
+      fetchAllProductDetails();
+    }
+  }, [isLoadingProducts, seenProductsLocal]);
+  
+  if (products.length > 0) {
+    product = products.find((product) => product.id === id);
+  }
 
   if (!product) {
     return <div>Sản phẩm không tồn tại</div>;
   }
+
+  const handleThumbnailClick = (image: string | undefined) => {
+    if (image) {
+      setSelectedImage(image);
+    }
+  };
 
   const addToCartAndShowAlert = (productId: string, quantity: number) => {
     const existingCart: { [productId: string]: number } = JSON.parse(
@@ -122,8 +202,7 @@ const DetailProduct: React.FC = () => {
       });
     }
   };
-  
-  
+
   return (
     <div className={cx('wrapper')}>
       <div className={cx('title-detail')}>
@@ -145,9 +224,28 @@ const DetailProduct: React.FC = () => {
       <div className={cx('product-info')}>
         <div className={cx('product-images')}>
           <br />
-          {product && product.imageProducts && product.imageProducts.length > 0 && (
-            <Image src={product.imageProducts[0]?.image} />
-          )}
+          <div className={cx('main-image')}>
+            {selectedImage != null ? (
+              <>
+                <Image src={selectedImage} />
+              </>
+            ) : (
+              <>
+                <Image src={product.imageProducts[0]?.image} />
+              </>
+            )}            
+          </div>
+          <div className={cx('thumbnail-images')}>
+            {product.imageProducts.map((imageData: { image: string | undefined; }, index: number) => (
+              <img
+                  key={String(index)} 
+                  src={imageData.image}
+                  alt={`Thumbnail ${index + 1}`}
+                  className={cx('thumbnail', { 'active': selectedImage === imageData.image })}
+                  onClick={() => handleThumbnailClick(imageData.image)}
+              />
+            ))}
+          </div>
         </div>
         <div className={cx('main-info')}>
           <br />
@@ -190,10 +288,80 @@ const DetailProduct: React.FC = () => {
             </div>
           </div>
           <br />
-          <Button primary onClick={() => addToCartAndShowAlert(product.id, count)}>
+          <Button primary onClick={() => addToCartAndShowAlert(product!.id, count)}>
             Mua sản phẩm
           </Button>
         </div>
+      </div>
+      <br />
+      <h3>Chi tiết sản phẩm</h3>
+      <p className={cx('main-description')}>{product.description}</p>
+      <br />
+      <h3>Thông số kĩ thuật</h3>
+      {product.specification.map((item) => (
+        <p key={item.id} className={cx('main-description')}>
+          {item.specification}
+        </p>
+      ))}
+      <div className={cx('seen-related')}>
+          {screenWidth >= 400 ? (
+              <>
+                  <h3>SẢN PHẨM ĐÃ XEM</h3>
+              </>
+          ): (
+              <>
+                  <h5>SẢN PHẨM ĐÃ XEM</h5>
+              </>
+          )}
+          <br />
+          {screenWidth <= 899 && screenWidth >= 600 ? (
+              <>
+                  <div className={cx('product')}>
+                      {seenProducts.map((data) => (
+                          <ProductComponent key={data.id} data={data} />
+                      ))}
+                  </div>
+              </>
+              ) : (
+              <>
+                  <div className={cx('product')}>
+                      {seenProducts.map((data) => (
+                          <ProductComponent key={data.id} data={data} />
+                      ))}
+                  </div>
+              </>
+              )
+          }
+      </div>
+      <div className={cx('seen-related')}>
+          {screenWidth >= 400 ? (
+              <>
+                  <h3>SẢN PHẨM LIÊN QUAN</h3>
+              </>
+          ): (
+              <>
+                  <h5>SẢN PHẨM LIÊN QUAN</h5>
+              </>
+          )}
+          <br />
+          {screenWidth <= 899 && screenWidth >= 600 ? (
+              <>
+                  <div className={cx('product')}>
+                      {relatedProducts.map((data) => (
+                          <ProductComponent key={data.id} data={data} />
+                      ))}
+                  </div>
+              </>
+              ) : (
+              <>
+                  <div className={cx('product')}>
+                      {relatedProducts.map((data) => (
+                          <ProductComponent key={data.id} data={data} />
+                      ))}
+                  </div>
+              </>
+              )
+          }
       </div>
       <CartButton />
     </div>

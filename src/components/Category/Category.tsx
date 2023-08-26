@@ -9,23 +9,23 @@ const cx = classNames.bind(styles)
 const categories = [
     {
         'id': 1,
-        'img': 'https://storethietbi.com/upload/product/dung-cu-may-pin-4476_55x50.png',
-        'name': 'Dụng cụ máy pin',
+        'img': 'https://i.imgur.com/RC694Aa.png',
+        'name': 'Máy rửa xe',
     },
     {
         'id': 2,
-        'img': 'https://storethietbi.com/upload/product/dung-cu-may-dien-6106_55x50.png',
-        'name': 'Dụng cụ máy điện',
+        'img': '	https://i.imgur.com/p4lR49U.png',
+        'name': 'Máy nén khí',
     },
     {
         'id': 3,
-        'img': 'https://storethietbi.com/upload/product/may-nen-khi-6389_55x50.png',
-        'name': 'Máy bơm/nén khí',
+        'img': 'https://i.imgur.com/1PjDi1k.png',
+        'name': 'Máy khoan',
     },
     {
         'id': 4,
-        'img': 'https://storethietbi.com/upload/product/may-xit-rua-9996_55x50.png',
-        'name': 'Máy xịt rửa',
+        'img': 'https://i.imgur.com/KUi1GlN.png',
+        'name': 'Máy cầm tay',
     }
 ]
 

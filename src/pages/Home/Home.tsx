@@ -3,13 +3,15 @@ import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import classNames from "classnames/bind";
+import Slider from "react-slick";
+
+import "../../../node_modules/slick-carousel/slick/slick.css"; 
+import "../../../node_modules/slick-carousel/slick/slick-theme.css";
 
 import styles from './Home.module.scss';
-import BrandComponent from '../../components/BrandCom/BrandComponent';
 import CategoryComponent from '../../components/CategoryCom/CategoryComponent';
 import ProductComponent from '../../components/ProductCom/ProductComponent';
 
-import BrandService from '../../service/BrandService';
 import CategoryService from '../../service/CategoryService';
 import ProductService from '../../service/ProductService';
 import CartButton from '../../components/CartButton';
@@ -24,7 +26,6 @@ updateScreenSize();
 window.addEventListener("resize", updateScreenSize);
 
 const Home: React.FC<any> = () => {
-    const [brands, setBrands] = useState<{ id: number; name: string }[]>([]);
     const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
     const [products, setProducts] = useState<{
         id: string;
@@ -41,19 +42,9 @@ const Home: React.FC<any> = () => {
         idCategory: number;
         idEvent: number;
     }[]>([]);
-    const brandFourElement = brands.slice(0, 4);
-    const brandTwoElement = brands.slice(0, 2);
-    const categoriesFourElement = categories.slice(0, 4);
-    const categoriesTwoElement = categories.slice(0, 2);
     const productsFourElement = products.slice(0, 4);
     const productsThreeElement = products.slice(0, 3);
 
-    const fetchAPIBrands = async () => {
-        try {
-            const res = await BrandService.GetAllBrand();
-            return res.data; 
-        } catch (error) {}
-    };
     const fetchAPICategories = async () => {
         try {
             const res = await CategoryService.GetAllCategory();
@@ -67,11 +58,6 @@ const Home: React.FC<any> = () => {
         } catch (error) {}
     };
 
-    const { data: brandsData, refetch: refetchBrands } = useQuery(
-        ["brandImages"],
-        fetchAPIBrands,
-        {}
-    );
     const { data: categoriesData, refetch: refetchCategories } = useQuery(
         ["categoryImages"],
         fetchAPICategories,
@@ -86,64 +72,83 @@ const Home: React.FC<any> = () => {
     useEffect(() => {
         const fetchAllAPIs = async () => {
             await Promise.all([
-                refetchBrands(), 
                 refetchCategories(),
                 refetchProducts()
             ]);
         };
         fetchAllAPIs();
       }, [
-          refetchBrands, 
           refetchCategories,
           refetchProducts
       ]);
     useEffect(() => {
-    if (brandsData && categoriesData && productsData) {
-        setBrands(brandsData); 
+    if (categoriesData && productsData) {
         setCategories(categoriesData);
         setProducts(productsData);
     }
     }, [
-        brandsData, 
         categoriesData,
         productsData
     ]);
+
+    const settings = {
+        infinite: false,
+        speed: 500,
+        slidesToShow: 8,
+        initialSlide: 0,
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 8,
+              slidesToScroll: 1,
+              infinite: false,
+            }
+          },
+          {
+            breakpoint: 1099,
+            settings: {
+              slidesToShow: 8,
+              slidesToScroll: 1,
+            }
+          },
+          {
+            breakpoint: 899,
+            settings: {
+              slidesToShow: 4,
+              slidesToScroll: 4,
+              infinite: true
+            }
+          },
+          {
+            breakpoint: 599,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 1,
+              infinite: true
+            }
+          },
+          {
+            breakpoint: 280,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 1,
+              infinite: true
+            }
+          }
+        ]
+    };
     
     return (
         <div className={cx('wrapper')}>
-            {screenWidth <= 899 && screenWidth >= 600 ? (
-              <>
-                Danh mục sản phẩm
-                <div className={cx('category')}>
-                    {categoriesFourElement.map((data) => (
+            Danh mục sản phẩm
+            <div>
+                <Slider {...settings}> 
+                    {categories.map((data) => (
                         <CategoryComponent key={data.id} data={data} />
                     ))}
-                </div>
-              </>
-              ) : (
-              <>
-                {screenWidth <= 599 && screenWidth >= 200 ? (
-                    <>
-                        Danh mục sản phẩm
-                        <div className={cx('category')}>
-                            {categoriesTwoElement.map((data) => (
-                                <CategoryComponent key={data.id} data={data} />
-                            ))}
-                        </div>
-                    </>
-                ): (
-                    <>
-                        Danh mục sản phẩm
-                        <div className={cx('category')}>
-                            {categories.map((data) => (
-                                <CategoryComponent key={data.id} data={data} />
-                            ))}
-                        </div>
-                    </>
-                )}
-              </>
-              )
-            }
+                </Slider>
+            </div>        
             {/* <div className={cx('flash-sale')}>
 
             </div> */}

@@ -39,6 +39,7 @@ const faPhoneIcon = faPhoneVolume as IconProp;
 const faClockIcon = faClock as IconProp;
 const faBarsIcon = faBars as IconProp;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let screenWidth = window.innerWidth;
 
 function updateScreenSize() {

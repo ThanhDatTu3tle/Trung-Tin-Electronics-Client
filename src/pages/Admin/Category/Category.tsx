@@ -14,7 +14,6 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Category.module.scss';
 import Button from '../../../components/Button';
-import Image from '../../../components/Image';
 import { axiosClient } from '../../../axios';
 import CategoryService from '../../../service/CategoryService';
 import CategoryComponent from '../../../components/CategoryCom/CategoryComponent';
@@ -175,7 +174,7 @@ const Category: React.FC<any> = () => {
           <div className={cx('add-btn')}>
             <Button primary small onClick={handleOpenAddForm}>Thêm danh mục</Button>
               <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                sx={{ color: '#fff', zIndex: 9 }}
                 open={open}
               >
                 <div className={cx('add-form')}>

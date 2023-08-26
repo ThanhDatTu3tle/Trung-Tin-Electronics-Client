@@ -11,5 +11,5 @@ export const AuthContext = createContext<AuthContextType>({
   token: null,
   setToken: () => {},
   search:null,
-  setSearch:() =>{}
+  setSearch:() => {}
 });

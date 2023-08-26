@@ -130,7 +130,6 @@ const Product: React.FC<any> = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0);
-  // const [idEvent, setIdEvent] = useState('');
   const [images, setImages] = useState<File[]>([]);
   const [specification, setSpecification] = useState<string[]>([]);
 
@@ -146,19 +145,7 @@ const Product: React.FC<any> = () => {
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const priceValue = Number(event.target.value); 
     setPrice(priceValue);
-  };
-  // const handleIdBrandChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const idBrandValue = Number(event.target.value); 
-  //   setIdBrand(idBrandValue);
-  // };
-  // const handleIdCategoryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const idCategoryValue = Number(event.target.value); 
-  //   setIdCategory(idCategoryValue);
-  // };
-  // const handleIdEventChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const idEventValue = Number(event.target.value); 
-  //   setIdEvent(idEventValue);
-  // };
+  };  
 
   const upload = async (files: File[]) => {
     try {

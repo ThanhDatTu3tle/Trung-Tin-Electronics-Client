@@ -1,6 +1,7 @@
 import { useQuery } from "react-query";
 import AuthService from "../service/AuthService";
-async function Login (username: String, password:String){
+
+async function Login (username: String, password: String){
     try {
         const user ={
           "username": username,
@@ -27,4 +28,4 @@ function LoginQuery({username, password}: LoginQueryProps) {
     return {data, isFetching, isLoading, isSuccess, refetch};
 }
 
-export default LoginQuery;
+export { LoginQuery, Login };

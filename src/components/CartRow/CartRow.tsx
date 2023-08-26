@@ -22,7 +22,7 @@ const CartRow: React.FC<any> = ({ data, onDeleteProduct }) => {
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
                 <div className={cx('image')}>
-                    <img className={cx('img')} src={data.imageProducts[0].image}/>
+                    <img className={cx('img')} src={data.imageProducts[0].image} alt=''/>
                 </div>
                 <div className={cx('name')}>{data.name} {data.id}</div>
                 <div className={cx('small-title')}>
