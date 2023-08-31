@@ -14,6 +14,13 @@ import { axiosClient } from '../../axios';
 
 const cx = classNames.bind(styles);
 
+let screenWidth = window.innerWidth;
+function updateScreenSize() {
+  screenWidth = window.innerWidth;
+}
+updateScreenSize();
+window.addEventListener("resize", updateScreenSize);
+
 const Cart: React.FC<any> = () => {
     const MySwal = withReactContent(Swal);
     const history = useNavigate();
@@ -266,11 +273,17 @@ const Cart: React.FC<any> = () => {
             <br />
             <div className={cx('table')}>
                 <div className={cx("titles")}>
-                    <div className={cx("image")}>Hình ảnh</div>
+                    {screenWidth >= 279 ? (
+                        <>
+                            <div className={cx("image")}>Hình ảnh</div>
+                        </>
+                    ): (
+                        <></>
+                    )}
                     <div className={cx("name")}>Tên sản phẩm</div>
                     <div className={cx("small-title")}>Giá tiền</div>
                     <div className={cx("small-title")}>Số lượng</div>
-                    <div className={cx("small-title")}>Tổng giá</div>
+                    <div className={cx("small-title")}>Tổng</div>
                     <div className={cx("small-title")}>Xóa</div>
                 </div>
 
@@ -281,12 +294,12 @@ const Cart: React.FC<any> = () => {
                 </div>
             </div>
             <div className={cx('result')}>
-                <h4>Tổng giá: {totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</h4>
+                <p className={cx('price')}>Tổng giá: {totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</p>
             </div>
             <br />
             <div className={cx('add-form')}>
                 <form action="/upload" method="post" onSubmit={(event) => handleOrder(event)}>  
-                    <h3>THÔNG TIN KHÁCH HÀNG</h3>
+                    <p className={cx('big-title')}>THÔNG TIN KHÁCH HÀNG</p>
                     <div className={cx('inputs')}>
                         <input 
                             id="customer_name"
@@ -356,7 +369,7 @@ const Cart: React.FC<any> = () => {
                             value={address}
                             onChange={handleAddressChange}
                         />
-                        <label htmlFor="content">Nội dung:</label>
+                        <label htmlFor="content" className={cx('big-title')}>Nội dung:</label>
                         <textarea
                             id="content"
                             name="content"
@@ -366,7 +379,7 @@ const Cart: React.FC<any> = () => {
                         />
                     </div>
                     <br />
-                    <h3>HÌNH THỨC GIAO DỊCH</h3>
+                    <p className={cx('big-title')}>HÌNH THỨC GIAO DỊCH</p>
                     <div className={cx('payments')}>
                         <div>
                             <input 
@@ -377,7 +390,7 @@ const Cart: React.FC<any> = () => {
                                 checked={selectedOption === 'transfer'}
                                 onChange={handleOptionChange}
                             />
-                            <label htmlFor="transfer">Thanh toán bằng hình thức chuyển khoản</label>
+                            <label htmlFor="transfer" className={cx('title-transfer')}>Thanh toán bằng hình thức chuyển khoản</label>
                         </div>
                         <div>
                             <input 
@@ -388,7 +401,7 @@ const Cart: React.FC<any> = () => {
                                 checked={selectedOption === 'cash'}
                                 onChange={handleOptionChange}
                             />
-                            <label htmlFor="cash">Thanh toán khi nhận hàng</label>
+                            <label htmlFor="cash" className={cx('title-cash')}>Thanh toán khi nhận hàng</label>
                         </div>
                     </div>
                 </form>            

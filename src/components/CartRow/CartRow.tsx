@@ -34,7 +34,7 @@ const CartRow: React.FC<any> = ({ data, onDeleteProduct }) => {
                 </div>
                 <div className={cx('small-title')}>
                     <Button onClick={handleDeleteProductClick }>
-                        <FontAwesomeIcon icon={faTrashCanIcon} style={{ color: '#fec806', fontSize: '2rem' }} />
+                        <FontAwesomeIcon icon={faTrashCanIcon} className={cx('icon')} />
                     </Button>
                 </div>
             </div>

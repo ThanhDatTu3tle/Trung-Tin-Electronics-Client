@@ -87,6 +87,11 @@
             color: black;
             padding: 1rem;
 
+            .big-title {
+                font-weight: 700;
+                font-size: 2rem;
+            }
+
             .payments {
                 display: flex;
                 flex-direction: column;
@@ -95,6 +100,14 @@
 
                 .payment {
                     margin-right: 1rem;
+                }
+
+                .title-transfer {
+                    font-size: 1.2rem;
+                }
+
+                .title-cash {
+                    font-size: 1.2rem;
                 }
             }
 
@@ -151,6 +164,708 @@
 
             .continue {
                 width: 40%;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1099px) and (min-width: 900px) {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: fit-content;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    
+        .table {
+            width: 100%;
+            height: fit-content;
+            border-radius: 10px;
+            padding: 1rem;
+            background: rgb(255, 255, 255);
+            box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
+    
+            .titles {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                font-size: 1rem;
+                color: #fff;
+                background-color: #018ec3;
+                padding: 1rem;
+                height: 50px;
+                border-radius: 10px;
+            
+                .image {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 20%;
+                }
+    
+                .name {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 40%;
+                }
+            
+                .small-title {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 10%;
+                }
+            }
+    
+            .information {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                border-radius: 10px;
+            }
+        }
+    
+        .result {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            height: fit-content;
+            padding-top: 1rem;
+        }
+    
+        .add-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 1rem;
+            outline: 0;
+            width: 100%;
+            height: fit-content;
+            border-radius: 10px;
+            background-color: rgb(255, 255, 255);
+    
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                height: fit-content;
+                color: black;
+                padding: 1rem;
+    
+                .big-title {
+                    font-size: 1.6rem;
+                    font-weight: 700;
+                }
+    
+                .payments {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    width: 90%;
+    
+                    .payment {
+                        margin-right: 1rem;
+                    }
+    
+                    .title-transfer {
+                        font-size: 1.1rem;
+                    }
+    
+                    .title-cash {
+                        font-size: 1.1rem;
+                    }
+                }
+    
+                .inputs {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    width: 80%;
+                    height: 70%;
+                    padding: 1rem 0;
+    
+                    .input {
+                        width: 100%;
+                        height: 4rem;
+                        font-size: 1rem;
+                        margin-bottom: 1rem;
+                        border: 1px solid rgb(199, 192, 192);
+                        border-radius: 0.3rem;
+                        padding: 1rem;
+                        color: black;
+            
+                        &:hover {
+                            border: 1px solid black;
+                        }
+                    }
+    
+                    textarea {
+                        border-radius: 0.3rem;
+                        padding: 1rem;
+                        resize: vertical;
+                        width: 100%; 
+                        height: 5rem; 
+    
+                        &:hover {
+                            border: 1px solid black;
+                        }
+                    }
+                }
+            }
+    
+            .buttons {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+                width: 100%;
+                height: fit-content;
+                padding: 1rem 0;
+    
+                .confirm {
+                    width: 40%;
+                }
+    
+                .continue {
+                    width: 40%;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 899px) and (min-width: 600px) {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: fit-content;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    
+        .table {
+            width: 100%;
+            height: fit-content;
+            border-radius: 10px;
+            padding: 1rem;
+            background: rgb(255, 255, 255);
+            box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
+    
+            .titles {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                font-size: 0.8rem;
+                color: #fff;
+                background-color: #018ec3;
+                padding: 1rem;
+                height: 50px;
+                border-radius: 10px;
+            
+                .image {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 20%;
+                }
+    
+                .name {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 34%;
+                }
+            
+                .small-title {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 12%;
+                }
+            }
+    
+            .information {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                border-radius: 10px;
+            }
+        }
+    
+        .result {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            height: fit-content;
+            padding-top: 1rem;
+        }
+    
+        .add-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 1rem;
+            outline: 0;
+            width: 100%;
+            height: fit-content;
+            border-radius: 10px;
+            background-color: rgb(255, 255, 255);
+    
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                height: fit-content;
+                color: black;
+                padding: 1rem;
+    
+                .big-title {
+                    font-size: 1.4rem;
+                    font-weight: 700;
+                }
+    
+                .payments {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    width: 90%;
+    
+                    .payment {
+                        margin-right: 1rem;
+                    }
+    
+                    .title-transfer {
+                        font-size: 1rem;
+                    }
+    
+                    .title-cash {
+                        font-size: 1rem;
+                    }
+                }
+    
+                .inputs {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    width: 80%;
+                    height: 70%;
+                    padding: 1rem 0;
+    
+                    .input {
+                        width: 100%;
+                        height: 4rem;
+                        font-size: 0.9rem;
+                        margin-bottom: 0.9rem;
+                        border: 1px solid rgb(199, 192, 192);
+                        border-radius: 0.3rem;
+                        padding: 1rem;
+                        color: black;
+            
+                        &:hover {
+                            border: 1px solid black;
+                        }
+                    }
+    
+                    textarea {
+                        border-radius: 0.3rem;
+                        padding: 1rem;
+                        resize: vertical;
+                        width: 100%; 
+                        height: 5rem; 
+    
+                        &:hover {
+                            border: 1px solid black;
+                        }
+                    }
+                }
+            }
+    
+            .buttons {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+                width: 100%;
+                height: fit-content;
+                padding: 1rem 0;
+    
+                .confirm {
+                    width: 40%;
+                }
+    
+                .continue {
+                    width: 40%;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 599px) and (min-width: 281px) {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: fit-content;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    
+        .table {
+            width: 100%;
+            height: fit-content;
+            border-radius: 10px;
+            padding: 1rem;
+            background: rgb(255, 255, 255);
+            box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
+    
+            .titles {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                font-size: 0.6rem;
+                color: #fff;
+                background-color: #018ec3;
+                padding: 0.3rem;
+                height: 50px;
+                border-radius: 10px;
+            
+                .image {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 18%;
+                }
+    
+                .name {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 30%;
+                }
+            
+                .small-title {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 14%;
+                }
+            }
+    
+            .information {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                border-radius: 10px;
+            }
+        }
+    
+        .result {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            height: fit-content;
+            padding-top: 1rem;
+
+            .price {
+                font-size: 1.2rem;
+                font-weight: 700;
+            }
+        }
+    
+        .add-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 1rem;
+            outline: 0;
+            width: 100%;
+            height: fit-content;
+            border-radius: 10px;
+            background-color: rgb(255, 255, 255);
+    
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                height: fit-content;
+                color: black;
+                padding: 1rem;
+    
+                .big-title {
+                    font-size: 1.4rem;
+                    font-weight: 700;
+                }
+    
+                .payments {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    width: 90%;
+    
+                    .payment {
+                        margin-right: 1rem;
+                    }
+    
+                    .title-transfer {
+                        font-size: 0.8rem;
+                    }
+    
+                    .title-cash {
+                        font-size: 0.8rem;
+                    }
+                }
+    
+                .inputs {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    width: 100%;
+                    height: 70%;
+                    padding: 1rem 0;
+    
+                    .input {
+                        width: 100%;
+                        height: 4rem;
+                        font-size: 0.9rem;
+                        margin-bottom: 0.9rem;
+                        border: 1px solid rgb(199, 192, 192);
+                        border-radius: 0.3rem;
+                        padding: 1rem;
+                        color: black;
+            
+                        &:hover {
+                            border: 1px solid black;
+                        }
+                    }
+    
+                    textarea {
+                        border-radius: 0.3rem;
+                        padding: 1rem;
+                        resize: vertical;
+                        width: 100%; 
+                        height: 5rem; 
+    
+                        &:hover {
+                            border: 1px solid black;
+                        }
+                    }
+                }
+            }
+    
+            .buttons {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+                width: 100%;
+                height: fit-content;
+                padding: 1rem 0;
+    
+                .confirm {
+                    width: 40%;
+                }
+    
+                .continue {
+                    width: 40%;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 280px) and (min-width: 200px) {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: fit-content;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    
+        .table {
+            width: 100%;
+            height: fit-content;
+            border-radius: 10px;
+            padding: 1rem;
+            background: rgb(255, 255, 255);
+            box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
+    
+            .titles {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                font-size: 0.4rem;
+                color: #fff;
+                background-color: #018ec3;
+                padding: 1rem;
+                height: 50px;
+                border-radius: 10px;
+            
+                .image {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 0;
+                }
+    
+                .name {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 24%;
+                }
+            
+                .small-title {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 19%;
+                }
+            }
+    
+            .information {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                border-radius: 10px;
+            }
+        }
+    
+        .result {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            height: fit-content;
+            padding-top: 1rem;
+
+            .price {
+                font-size: 1.1rem;
+                font-weight: 700;
+            }
+        }
+    
+        .add-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 1rem;
+            outline: 0;
+            width: 100%;
+            height: fit-content;
+            border-radius: 10px;
+            background-color: rgb(255, 255, 255);
+    
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                height: fit-content;
+                color: black;
+                padding: 1rem;
+    
+                .big-title {
+                    font-size: 0.8rem;
+                    font-weight: 700;
+                }
+    
+                .payments {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    width: 90%;
+    
+                    .payment {
+                        margin-right: 1rem;
+                    }
+    
+                    .title-transfer {
+                        font-size: 0.4rem;
+                    }
+    
+                    .title-cash {
+                        font-size: 0.4rem;
+                    }
+                }
+    
+                .inputs {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    width: 100%;
+                    height: 70%;
+                    padding: 1rem 0;
+    
+                    .input {
+                        width: 100%;
+                        height: 3rem;
+                        font-size: 0.8rem;
+                        margin-bottom: 0.9rem;
+                        border: 1px solid rgb(199, 192, 192);
+                        border-radius: 0.3rem;
+                        padding: 1rem;
+                        color: black;
+            
+                        &:hover {
+                            border: 1px solid black;
+                        }
+                    }
+    
+                    textarea {
+                        border-radius: 0.3rem;
+                        padding: 1rem;
+                        resize: vertical;
+                        width: 100%; 
+                        height: 5rem; 
+    
+                        &:hover {
+                            border: 1px solid black;
+                        }
+                    }
+                }
+            }
+    
+            .buttons {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+                width: 100%;
+                height: fit-content;
+                padding: 1rem 0;
+    
+                .confirm {
+                    width: 40%;
+                }
+    
+                .continue {
+                    width: 40%;
+                }
             }
         }
     }

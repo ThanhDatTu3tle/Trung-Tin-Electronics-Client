@@ -26,7 +26,7 @@ updateScreenSize();
 window.addEventListener("resize", updateScreenSize);
 
 const Home: React.FC<any> = () => {
-    const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+    const [categories, setCategories] = useState<{ id: number; name: string; status: boolean }[]>([]);
     const [products, setProducts] = useState<{
         id: string;
         name: string;
@@ -183,105 +183,36 @@ const Home: React.FC<any> = () => {
                     )
                 }
             </div>
-
-            <div className={cx('machine')}>
-                <div className={cx('title-wrapper')}>
-                    <div className={cx('title')}>Dụng cụ máy pin</div>
-                    <div className={cx('show-all')}>Xem tất cả</div>
+            {categories.map((data) => (
+                <div className={cx('machine')}>
+                    <div className={cx('title-wrapper')}>
+                        <div className={cx('title')}>{data.name}</div>
+                        <div className={cx('show-all')}>
+                            <Link to={`/detailCategory/${data.name}`}>
+                                Xem tất cả
+                            </Link>
+                        </div>
+                    </div>
+                    {screenWidth <= 899 && screenWidth >= 600 ? (
+                        <>
+                            <div className={cx('product')}>
+                                {products.filter((product) => product.category === data.name).slice(0, 3).map((data) => (
+                                    <ProductComponent key={data.id} data={data} />
+                                ))}
+                            </div>
+                        </>
+                        ) : (
+                        <>
+                            <div className={cx('product')}>
+                                {products.filter((product) => product.category === data.name).slice(0, 4).map((data) => (
+                                    <ProductComponent key={data.id} data={data} />
+                                ))}
+                            </div>
+                        </>
+                        )
+                    }
                 </div>
-                {screenWidth <= 899 && screenWidth >= 600 ? (
-                    <>
-                        <div className={cx('product')}>
-                            {productsThreeElement.map((data) => (
-                                <ProductComponent key={data.id} data={data} />
-                            ))}
-                        </div>
-                    </>
-                    ) : (
-                    <>
-                        <div className={cx('product')}>
-                            {productsFourElement.map((data) => (
-                                <ProductComponent key={data.id} data={data} />
-                            ))}
-                        </div>
-                    </>
-                    )
-                }
-            </div>
-            <div className={cx('machine')}>
-                <div className={cx('title-wrapper')}>
-                    <div className={cx('title')}>Dụng cụ máy điện</div>
-                    <Link to={`/detailCategory/Dụng%20cụ%20máy%20điện`}>
-                        <div className={cx('show-all')}>Xem tất cả</div>
-                    </Link>
-                </div>
-                {screenWidth <= 899 && screenWidth >= 600 ? (
-                    <>
-                        <div className={cx('product')}>
-                            {productsThreeElement.map((data) => (
-                                <ProductComponent key={data.id} data={data} />
-                            ))}
-                        </div>
-                    </>
-                    ) : (
-                    <>
-                        <div className={cx('product')}>
-                            {productsFourElement.map((data) => (
-                                <ProductComponent key={data.id} data={data} />
-                            ))}
-                        </div>
-                    </>
-                    )
-                }
-            </div>
-            <div className={cx('machine')}>
-                <div className={cx('title-wrapper')}>
-                    <div className={cx('title')}>Máy bơm/nén khí</div>
-                    <div className={cx('show-all')}>Xem tất cả</div>
-                </div>
-                {screenWidth <= 899 && screenWidth >= 600 ? (
-                    <>
-                        <div className={cx('product')}>
-                            {productsThreeElement.map((data) => (
-                                <ProductComponent key={data.id} data={data} />
-                            ))}
-                        </div>
-                    </>
-                    ) : (
-                    <>
-                        <div className={cx('product')}>
-                            {productsFourElement.map((data) => (
-                                <ProductComponent key={data.id} data={data} />
-                            ))}
-                        </div>
-                    </>
-                    )
-                }
-            </div>
-            <div className={cx('machine')}>
-                <div className={cx('title-wrapper')}>
-                    <div className={cx('title')}>Máy bơm xịt rửa</div>
-                    <div className={cx('show-all')}>Xem tất cả</div>
-                </div>
-                {screenWidth <= 899 && screenWidth >= 600 ? (
-                    <>
-                        <div className={cx('product')}>
-                            {productsThreeElement.map((data) => (
-                                <ProductComponent key={data.id} data={data} />
-                            ))}
-                        </div>
-                    </>
-                    ) : (
-                    <>
-                        <div className={cx('product')}>
-                            {productsFourElement.map((data) => (
-                                <ProductComponent key={data.id} data={data} />
-                            ))}
-                        </div>
-                    </>
-                    )
-                }
-            </div>
+            ))}
             <CartButton />
         </div>
     )

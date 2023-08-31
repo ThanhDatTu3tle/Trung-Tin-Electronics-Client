@@ -32,11 +32,215 @@
             justify-content: center;
             width: 10%;
             font-size: 1.2rem;
+
+            .icon {
+                color: #fec806;
+                font-size: 2rem;
+            }
         }
 
         .img {
             width: 50%;
             height: auto;
+        }
+    }
+}
+
+@media screen and (max-width: 1099px) and (min-width: 900px) {
+    .wrapper {
+        display: flex;
+        width: 100%;
+        height: fit-content;
+    
+        .content {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: fit-content;
+            padding-top: 0.2rem;
+            padding-bottom: 0.2rem;
+    
+            .image {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 20%;
+            }
+    
+            .name {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40%;
+                font-size: 1rem;
+            }
+        
+            .small-title {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 10%;
+                font-size: 1rem;
+
+                .icon {
+                    color: #fec806;
+                    font-size: 1.5rem;
+                }
+            }
+    
+            .img {
+                width: 50%;
+                height: auto;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 899px) and (min-width: 600px) {
+    .wrapper {
+        display: flex;
+        width: 100%;
+        height: fit-content;
+    
+        .content {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: fit-content;
+            padding-top: 0.2rem;
+            padding-bottom: 0.2rem;
+    
+            .image {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 20%;
+            }
+    
+            .name {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 34%;
+                font-size: 0.8rem;
+            }
+        
+            .small-title {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 12%;
+                font-size: 0.8rem;
+
+                .icon {
+                    color: #fec806;
+                    font-size: 1.2rem;
+                }
+            }
+    
+            .img {
+                width: 50%;
+                height: auto;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 599px) and (min-width: 281px) {
+    .wrapper {
+        display: flex;
+        width: 100%;
+        height: fit-content;
+    
+        .content {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: fit-content;
+            padding-top: 0.2rem;
+            padding-bottom: 0.2rem;
+    
+            .image {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 18%;
+            }
+    
+            .name {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 30%;
+                font-size: 0.6rem;
+            }
+        
+            .small-title {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 14%;
+                font-size: 0.6rem;
+
+                .icon {
+                    color: #fec806;
+                    font-size: 1rem;
+                }
+            }
+    
+            .img {
+                width: 50%;
+                height: auto;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 280px) and (min-width: 200px) {
+    .wrapper {
+        display: flex;
+        width: 100%;
+        height: fit-content;
+    
+        .content {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: fit-content;
+            padding: 0.3rem;
+    
+            .image {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 0;
+            }
+    
+            .name {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 24%;
+                font-size: 0.4rem;
+            }
+        
+            .small-title {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 19%;
+                font-size: 0.4rem;
+
+                .icon {
+                    color: #fec806;
+                    font-size: 0.5rem;
+                }
+            }
+    
+            .img {
+                width: 50%;
+                height: auto;
+            }
         }
     }
 }

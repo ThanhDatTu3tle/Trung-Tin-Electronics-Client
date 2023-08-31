@@ -30,6 +30,7 @@ const LoginAdmin: React.FC<any> = () => {
   const {
     register,
     handleSubmit,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     formState: { errors },
   } = useForm<IFormInput>({
     defaultValues: {
@@ -38,6 +39,7 @@ const LoginAdmin: React.FC<any> = () => {
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { refetch } = LoginQuery({ username, password });
 
   const isTokenValid = (token: string | null): boolean => {
@@ -65,8 +67,8 @@ const LoginAdmin: React.FC<any> = () => {
         setUsername("");
         setPassword("");
         MySwal.fire({
-          title: 'Đăng nhập thành công!',
-          icon: 'success',
+          title: 'Đã có lỗi xảy ra!',
+          icon: 'error',
           didOpen: () => {
             MySwal.showLoading();
           },

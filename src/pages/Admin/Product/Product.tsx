@@ -30,6 +30,38 @@ const cx = classNames.bind(styles);
 const Product: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
 
+  const [selectedCategoryButton, setSelectedCategoryButton] = useState<number | null>(null);
+  const [selectedBrandButton, setSelectedBrandButton] = useState<number | null>(null);
+
+  const [brand0, setBrand0] = useState(true);
+  const [brandAll, setBrandAll] = useState(false);
+  const [filteredBrands, setFilteredBrands] = useState<{ id: number; name: string }[]>([]);
+  const handleClickBrand0 = () => {
+    setBrand0(!brand0);
+    setBrandAll(false);
+  }
+  const handleClickBrandAll = (brandId: number) => {
+    // Toggle trạng thái nút
+    setSelectedBrandButton(brandId === selectedBrandButton ? null : brandId);
+  
+    // Lọc danh sách hãng tương ứng
+    if (brandId === selectedBrandButton) {
+      setFilteredBrands([]);
+    } else {
+      setFilteredBrands(brands.filter((brand) => brand.id === brandId));
+    }
+  };
+
+  const [category0, setCategory0] = useState(true);
+  const [categoryAll, setCategoryAll] = useState(false);
+  const [filteredCategory, setFilteredCategory] = useState<{ id: number; name: string; status: boolean }[]>([]);
+  const [categoryChanged, setCategoryChanged] = useState(false);
+  const handleClickCategory0 = () => {
+    setCategory0(!category0);
+    setCategoryChanged(false);
+  }
+
+
   const [open, setOpen] = useState(false);
   const handleCloseAddForm = () => setOpen(false);
   const handleOpenAddForm = () => {
@@ -41,7 +73,7 @@ const Product: React.FC<any> = () => {
   };
 
   const [brands, setBrands] = useState<{ id: number; name: string }[]>([]);
-  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+  const [categories, setCategories] = useState<{ id: number; name: string; status: boolean }[]>([]);
   const [products, setProducts] = useState<{
     id: string;
     name: string;
@@ -49,7 +81,10 @@ const Product: React.FC<any> = () => {
     specification: { id: number; specification: string }[];
     imageProducts: { id: number; image: string }[];
     price: number;
+    brand: string;
+    event: null;
     status: boolean;
+    category: string;
     idBrand: number;
     idCategory: number;
     idEvent: number;
@@ -116,6 +151,30 @@ const Product: React.FC<any> = () => {
       productsData
   ]);
 
+  const handleClickCategoryAll = (categoryId: number) => {
+    // Toggle trạng thái nút
+    setSelectedCategoryButton(categoryId === selectedCategoryButton ? null : categoryId);
+    
+    // Lọc danh sách danh mục tương ứng
+    let updatedFilteredCategory: React.SetStateAction<{ id: number; name: string; status: boolean; }[]> = [];
+    if (categoryId !== selectedCategoryButton) {
+      updatedFilteredCategory = categories.filter((category) => category.id === categoryId);
+    }
+    
+    // Sử dụng updatedFilteredCategory trong hàm setState
+    setFilteredCategory(updatedFilteredCategory);
+
+    setCategory0(false);
+  };
+
+  useEffect(() => {
+    if (categoryChanged) {
+      console.log(filteredCategory);
+      // Đặt lại trạng thái của biến trung gian
+      setCategoryChanged(false);
+    }
+  }, [filteredCategory, categoryChanged]);
+
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
@@ -139,7 +198,7 @@ const Product: React.FC<any> = () => {
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
-  const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(event.target.value);
   };
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -210,9 +269,9 @@ const Product: React.FC<any> = () => {
     setImages([...images, ...newImages]);
   };
 
-  const handleSpecChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSpecChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = event.target.value;
-    const newSpecificationArray = newValue.split(',').map(item => item.trim());
+    const newSpecificationArray = newValue.split('\n').map(item => item.trim());
     setSpecification(newSpecificationArray);
   };
 
@@ -246,7 +305,6 @@ const Product: React.FC<any> = () => {
       specification.forEach((specItem, index) => {
         formData.append(`specification[${index}]`, specItem);
       });
-
       const config = {
         headers: {
           'Content-Type': 'application/json',
@@ -282,7 +340,7 @@ const Product: React.FC<any> = () => {
     <div className={cx('wrapper')}>
       <div className={cx('header')}>
         <div className={cx('left')}>
-          <p style={{width: 'fit-content'}}>Sản phẩm</p>
+          <p style={{width: 'fit-content'}}>TẤT CẢ SẢN PHẨM</p>
         </div>
         <div className={cx('right')}>
           <div className={cx('current-position')}>
@@ -326,12 +384,12 @@ const Product: React.FC<any> = () => {
                         onChange={handleNameChange}
                       />
                       <label htmlFor="description">Mô tả sản phẩm:</label>
-                      <input 
+                      <textarea
                         id="description"
-                        type='text' 
-                        placeholder='Mô tả sản phẩm' 
-                        className={cx('input-name')}
+                        name="description"
+                        value={description}
                         onChange={handleDescriptionChange}
+                        rows={3} 
                       />
                       <label htmlFor="price">Giá tiền sản phẩm:</label>
                       <input 
@@ -385,14 +443,12 @@ const Product: React.FC<any> = () => {
                       />
                       <br />
                       <label htmlFor="specification">Thêm thông số cho sản phẩm:</label>
-                      <input 
-                        id="specification"  
-                        type="text"
-                        name="spec"
-                        placeholder='Thông số sản phẩm' 
-                        className={cx('input-name')}
+                      <textarea
+                        id="specification"
+                        name="specification"
                         value={specification}
                         onChange={handleSpecChange}
+                        rows={3} 
                       />
                     </div>
                     <Button primary small>Xác nhận</Button>
@@ -404,24 +460,71 @@ const Product: React.FC<any> = () => {
       </div>
       <div className={cx('main-container')}>
         <div className={cx('products')}>
-          {products !== null ? (
-              <>
-                  <div className={cx('product')}>
-                      {products.map((data) => (
-                          <ProductComponent key={data.id} data={data} />
-                      ))}
+          {category0 === true ? (
+            <>
+              {categories.map((data) => (
+                <div className={cx('machine')}>
+                  <div className={cx('title-wrapper')}>
+                    <div className={cx('title')}>{data.name}</div>
                   </div>
-              </>
-              ) : (
-              <>
-                <p>Chưa có sản phẩm!!!</p>
-              </>
-              )
-          }
+                  <div className={cx('product')}>
+                    {products.filter((product) => product.category === data.name).map((data) => (
+                        <ProductComponent key={data.id} data={data} />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </>
+          ) : (
+            <>
+              {filteredCategory.map((data) => (
+                <div className={cx('machine')}>
+                  <div className={cx('title-wrapper')}>
+                    <div className={cx('title')}>{data.name}</div>
+                  </div>
+                  <div className={cx('product')}>
+                    {products.filter((product) => product.category === data.name).map((data) => (
+                        <ProductComponent key={data.id} data={data} />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
         </div>
 
         <div className={cx('filter')}>
-          FILTER
+          <h3>Bộ lọc</h3>
+          <h4>Lọc theo danh mục</h4>
+          <>
+            <Button primary onClick={handleClickCategory0}>Tất cả sản phẩm</Button>
+          </>
+          {categories.map((category) => (
+            <>
+              {selectedCategoryButton === category.id ? (
+                <Button primary onClick={() => handleClickCategoryAll(category!.id)} key={category.id}>{category.name}</Button>
+              ) : (
+                <Button outline onClick={() => handleClickCategoryAll(category!.id)} key={category.id}>{category.name}</Button>
+              )}
+            </>
+          ))}
+          <h4>Lọc theo hãng</h4>
+          <>
+            <Button primary onClick={handleClickBrand0}>Tất cả các hãng</Button>
+          </>
+          {brandAll === true ? (
+            <>
+              {brands.map((brand) => (
+                <Button primary onClick={() => handleClickBrandAll(brand!.id)} key={brand.id}>{brand.name}</Button>
+              ))}
+            </>
+          ) : (
+            <>
+              {brands.map((brand) => (
+                <Button outline onClick={() => handleClickBrandAll(brand!.id)} key={brand.id}>{brand.name}</Button>
+              ))}
+            </>
+          )}
         </div>
       </div>
     </div>

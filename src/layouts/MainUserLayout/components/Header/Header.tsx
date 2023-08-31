@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { Link, useNavigate } from 'react-router-dom';
+// import { Navigate } from 'react-router-dom';
 import classNames from "classnames/bind";
 
 import Grid from '@mui/material/Grid';
@@ -29,6 +31,7 @@ import Titles from './MenuTitles';
 import Category from '../../../../components/Category';
 import SocialMedia from '../../../../components/SocialMedia';
 import InputSearch from '../../../../components/InputSearch';
+import CategoryService from '../../../../service/CategoryService';
 
 const cx = classNames.bind(styles)
 
@@ -50,28 +53,42 @@ updateScreenSize();
 
 window.addEventListener("resize", updateScreenSize);
 
-const options = [
-    'Máy khoan',
-    'Máy cắt',
-    'Máy mài',
-    'Máy pin',
-    'Máy điện',
-    'Máy xịt rửa',
-    'Thiết bị đo',
-    'Đồ bảo hộ',
-];
-
 const Header: React.FC = () => {
+    const history = useNavigate();
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-    // const [dropDown, setDropDown] = useState(false);
-    // const dropdownRef = useRef<HTMLDivElement>(null);
 
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLDivElement>(null);
 
+    const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+    const fetchAPICategories = async () => {
+        try {
+            const res = await CategoryService.GetAllCategory();
+            return res.data; 
+        } catch (error) {}
+    };
+    const { data: categoriesData, refetch: refetchCategories } = useQuery(
+        ["categoryImages"],
+        fetchAPICategories,
+        {}
+    );
+    useEffect(() => {
+        const fetchAllAPIs = async () => {
+            await Promise.all([
+                refetchCategories(),
+            ]);
+        };
+        fetchAllAPIs();
+      }, [refetchCategories]);
+    useEffect(() => {
+    if (categoriesData) {
+        setCategories(categoriesData);
+    }
+    }, [categoriesData]);
+
     const handleMenuItemClick = (
         event: React.MouseEvent<HTMLLIElement, MouseEvent>,
-        index: number,
+        index: number
       ) => {
         setOpen(false);
     };
@@ -214,15 +231,17 @@ const Header: React.FC = () => {
                                             <Paper>
                                                 <ClickAwayListener onClickAway={handleClose}>
                                                     <MenuList id="split-button-menu" autoFocusItem>
-                                                        {options.map((option, index) => (
+                                                        {categories.map((category, index) => (
                                                             <MenuItem
                                                                 key={index}
-                                                                // disabled={index === 0}
-                                                                // selected={index === selectedIndex}
-                                                                onClick={(event) => handleMenuItemClick(event, index)}
+                                                                onClick={(event) => {
+                                                                    handleMenuItemClick(event, index);
+                                                                    history(`/detailCategory/${category.name}`);
+                                                                    setOpen(true);
+                                                                }}
                                                                 sx={{ fontSize: '1.2rem', backgroundColor: '#434343', color: '#fff' }}
                                                             >
-                                                                {option}
+                                                                {category.name}
                                                             </MenuItem>
                                                         ))}
                                                     </MenuList>

@@ -15,7 +15,6 @@ import styles from './DetailProduct.module.scss';
 import Button from '../../components/Button';
 import Image from '../../components/Image';
 import ProductService from '../../service/ProductService';
-import CategoryService from '../../service/CategoryService';
 import CartButton from '../../components/CartButton';
 import ProductComponent from '../../components/ProductCom/ProductComponent';
 import { useCart } from '../../Context/CartContext';
@@ -73,7 +72,6 @@ const DetailProduct: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
     product ? product.imageProducts[0]?.image : undefined
   );
-  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
   const [products, setProducts] = useState<
     {
       id: string;
@@ -117,7 +115,8 @@ const DetailProduct: React.FC = () => {
     }
   }, [productsData]);
 
-  const filteredProducts = products.filter((product) => product.category === product?.category);
+  const chosenProduct = products.find((product) => product.id === id);
+  const filteredProducts = products.filter((product) => product.category === chosenProduct?.category);
   const relatedProducts = filteredProducts.filter((item) => item.id !== id)
 
   useEffect(() => {
