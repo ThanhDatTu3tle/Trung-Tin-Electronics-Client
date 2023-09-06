@@ -40,7 +40,7 @@ const ProductComponent: React.FC<any> = ({ data }) => {
                     </div>
                     <div className={cx('description')}>{data.description}</div>
                     <br />
-                    {data.id_event === null ? (
+                    {data.event === null ? (
                         <>
                             <div className={cx('product-price')}>
                                 {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
