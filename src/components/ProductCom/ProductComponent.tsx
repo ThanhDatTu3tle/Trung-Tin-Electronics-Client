@@ -33,11 +33,11 @@ const ProductComponent: React.FC<any> = ({ data }) => {
                     <div className={cx('name')}>
                         <a title="" href="/category/product">{data.name} {data.id}</a>
                     </div>
-                    <div className={cx('specifications')}>
+                    {/* <div className={cx('specifications')}>
                         {data.specification.map((content: any) => (
                             <div key={content.id} className={cx('specification')}>{content.specification}</div>
                         ))}
-                    </div>
+                    </div> */}
                     <div className={cx('description')}>{data.description}</div>
                     <br />
                     {data.event === null ? (
