@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect  } from 'react';
 import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -19,7 +20,6 @@ import { axiosClient } from '../../../axios';
 
 import BrandService from '../../../service/BrandService';
 import CategoryService from '../../../service/CategoryService';
-import ProductService from '../../../service/ProductService';
 
 const faHouseIcon = faHouse as IconProp;
 const faArrowRightIcon = faArrowRight as IconProp;
@@ -29,38 +29,26 @@ const cx = classNames.bind(styles);
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 const Product: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
+  const { nameParent } = useParams();
 
-  const [selectedCategoryButton, setSelectedCategoryButton] = useState<number | null>(null);
   const [selectedBrandButton, setSelectedBrandButton] = useState<number | null>(null);
 
   const [brand0, setBrand0] = useState(true);
-  const [brandAll, setBrandAll] = useState(false);
-  const [filteredBrands, setFilteredBrands] = useState<{ id: number; name: string }[]>([]);
+  const [filteredBrands, setFilteredBrands] = useState<{ id: number; name: string; status: boolean }[]>([]);
+  const [brandChanged, setBrandChanged] = useState(false);
   const handleClickBrand0 = () => {
     setBrand0(!brand0);
-    setBrandAll(false);
+    setBrandChanged(false);
   }
-  const handleClickBrandAll = (brandId: number) => {
-    // Toggle trạng thái nút
-    setSelectedBrandButton(brandId === selectedBrandButton ? null : brandId);
-  
-    // Lọc danh sách hãng tương ứng
-    if (brandId === selectedBrandButton) {
-      setFilteredBrands([]);
-    } else {
-      setFilteredBrands(brands.filter((brand) => brand.id === brandId));
-    }
-  };
 
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
   const [category0, setCategory0] = useState(true);
-  const [categoryAll, setCategoryAll] = useState(false);
   const [filteredCategory, setFilteredCategory] = useState<{ id: number; name: string; status: boolean }[]>([]);
   const [categoryChanged, setCategoryChanged] = useState(false);
   const handleClickCategory0 = () => {
     setCategory0(!category0);
     setCategoryChanged(false);
   }
-
 
   const [open, setOpen] = useState(false);
   const handleCloseAddForm = () => setOpen(false);
@@ -72,24 +60,12 @@ const Product: React.FC<any> = () => {
     setOpen(true);
   };
 
-  const [brands, setBrands] = useState<{ id: number; name: string }[]>([]);
+  const [brands, setBrands] = useState<{ id: number; name: string; status: boolean }[]>([]);
   const [categories, setCategories] = useState<{ id: number; name: string; status: boolean }[]>([]);
-  const [products, setProducts] = useState<{
-    id: string;
-    name: string;
-    description: string;
-    specification: { id: number; specification: string }[];
-    imageProducts: { id: number; image: string }[];
-    price: number;
-    brand: string;
-    event: null;
-    status: boolean;
-    category: string;
-    idBrand: number;
-    idCategory: number;
-    idEvent: number;
-  }[]>([]);
   
+  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
+  const [filteredProductsResult, setFilteredProductsResult] = useState<any[]>([]);
+
   const fetchAPIBrands = async () => {
     try {
         const res = await BrandService.GetAllBrand();
@@ -99,12 +75,6 @@ const Product: React.FC<any> = () => {
   const fetchAPICategories = async () => {
       try {
           const res = await CategoryService.GetAllCategory();
-          return res.data; 
-      } catch (error) {}
-  };
-  const fetchAPIProducts = async () => {
-      try {
-          const res = await ProductService.GetAllProduct();
           return res.data; 
       } catch (error) {}
   };
@@ -119,61 +89,80 @@ const Product: React.FC<any> = () => {
       fetchAPICategories,
       {}
   );
-  const { data: productsData, refetch: refetchProducts } = useQuery(
-      ["productImages"],
-      fetchAPIProducts,
-      {}
-  );
 
   useEffect(() => {
     const fetchAllAPIs = async () => {
         await Promise.all([
             refetchBrands(), 
-            refetchCategories(),
-            refetchProducts()
+            refetchCategories()
         ]);
     };
     fetchAllAPIs();
   }, [
       refetchBrands, 
       refetchCategories,
-      refetchProducts
   ]);
   useEffect(() => {
-    if (brandsData && categoriesData && productsData) {
+    if (brandsData && categoriesData) {
         setBrands(brandsData); 
         setCategories(categoriesData);
-        setProducts(productsData);
     }
   }, [
       brandsData, 
-      categoriesData,
-      productsData
+      categoriesData
   ]);
 
-  const handleClickCategoryAll = (categoryId: number) => {
+  const handleClickBrandAll = (brandId: number) => {
     // Toggle trạng thái nút
-    setSelectedCategoryButton(categoryId === selectedCategoryButton ? null : categoryId);
-    
-    // Lọc danh sách danh mục tương ứng
-    let updatedFilteredCategory: React.SetStateAction<{ id: number; name: string; status: boolean; }[]> = [];
-    if (categoryId !== selectedCategoryButton) {
-      updatedFilteredCategory = categories.filter((category) => category.id === categoryId);
-    }
-    
-    // Sử dụng updatedFilteredCategory trong hàm setState
-    setFilteredCategory(updatedFilteredCategory);
-
+    setSelectedBrandButton(brandId === selectedBrandButton ? null : brandId);
+    // Lọc danh sách hãng tương ứng
+    let updatedFilteredBrand: React.SetStateAction<{ id: number; name: string; status: boolean; }[]> = [];
+    if (brandId !== selectedBrandButton) {
+      updatedFilteredBrand = brands.filter((brand) => brand.id === brandId);
+    } 
+    // Sử dụng updatedFilteredBrand trong hàm setState
+    setFilteredBrands(updatedFilteredBrand);
     setCategory0(false);
   };
 
-  useEffect(() => {
-    if (categoryChanged) {
-      console.log(filteredCategory);
-      // Đặt lại trạng thái của biến trung gian
-      setCategoryChanged(false);
+  const handleCategoryToggle = (categoryName: string) => {
+    
+    // const category = categories.find((category) => category.name === categoryName);
+
+    if (selectedCategoryIds.includes(categoryName)) {
+      setSelectedCategoryIds(selectedCategoryIds.filter(id => id !== categoryName));
+    } else {
+      setSelectedCategoryIds([...selectedCategoryIds, categoryName]);
+      // console.log(selectedCategoryIds);
     }
-  }, [filteredCategory, categoryChanged]);
+  };
+
+  useEffect(() => {
+    // console.log(filteredProducts)
+    
+    const filteredProductsResult = filteredProducts.filter((product: { categoryName: string; }) =>
+      console.log(selectedCategoryIds.includes(product.categoryName))
+    );
+    setFilteredProductsResult(filteredProductsResult);
+    console.log(filteredProductsResult)
+  }, [selectedCategoryIds, filteredProducts]);
+
+  // const category = categories.find((category) => category.name === nameParent);
+
+  // useEffect(() => {
+  //   if (!category || filteredProducts.length > 0) {
+  //     return;
+  //   }
+
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axiosClient.post('product/getAllByIdCategory', selectedCategoryIds);
+  //       setFilteredProducts(response.data);
+  //     } catch (error) {}
+  //   };
+
+  //   fetchData();
+  // }, [selectedCategoryIds, filteredProducts]);
 
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -468,7 +457,7 @@ const Product: React.FC<any> = () => {
                     <div className={cx('title')}>{data.name}</div>
                   </div>
                   <div className={cx('product')}>
-                    {products.filter((product) => product.category === data.name).map((data) => (
+                    {filteredProductsResult.filter((product: { category: string; }) => product.category === data.name).map((data: { id: any; }) => (
                         <ProductComponent key={data.id} data={data} />
                     ))}
                   </div>
@@ -483,7 +472,7 @@ const Product: React.FC<any> = () => {
                     <div className={cx('title')}>{data.name}</div>
                   </div>
                   <div className={cx('product')}>
-                    {products.filter((product) => product.category === data.name).map((data) => (
+                    {filteredProductsResult.filter((product: { category: string; }) => product.category === data.name).map((data: { id: any; }) => (
                         <ProductComponent key={data.id} data={data} />
                     ))}
                   </div>
@@ -499,12 +488,12 @@ const Product: React.FC<any> = () => {
           <>
             <Button primary onClick={handleClickCategory0}>Tất cả sản phẩm</Button>
           </>
-          {categories.map((category) => (
+          {categories.map(category => (
             <>
-              {selectedCategoryButton === category.id ? (
-                <Button primary onClick={() => handleClickCategoryAll(category!.id)} key={category.id}>{category.name}</Button>
+              {selectedCategoryIds.includes(category.name) === true ? (
+                <Button primary onClick={() => handleCategoryToggle(category!.name)} key={category.id}>{category.name}</Button>
               ) : (
-                <Button outline onClick={() => handleClickCategoryAll(category!.id)} key={category.id}>{category.name}</Button>
+                <Button outline onClick={() => handleCategoryToggle(category!.name)} key={category.id}>{category.name}</Button>
               )}
             </>
           ))}
@@ -512,19 +501,15 @@ const Product: React.FC<any> = () => {
           <>
             <Button primary onClick={handleClickBrand0}>Tất cả các hãng</Button>
           </>
-          {brandAll === true ? (
+          {brands.map((brand) => (
             <>
-              {brands.map((brand) => (
+              {selectedBrandButton === brand.id ? (
                 <Button primary onClick={() => handleClickBrandAll(brand!.id)} key={brand.id}>{brand.name}</Button>
-              ))}
-            </>
-          ) : (
-            <>
-              {brands.map((brand) => (
+              ) : (
                 <Button outline onClick={() => handleClickBrandAll(brand!.id)} key={brand.id}>{brand.name}</Button>
-              ))}
+              )}
             </>
-          )}
+          ))}
         </div>
       </div>
     </div>
