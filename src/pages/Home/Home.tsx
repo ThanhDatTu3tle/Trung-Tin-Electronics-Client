@@ -34,10 +34,10 @@ const Home: React.FC<any> = () => {
         specification: { id: number; specification: string }[];
         imageProducts: { id: number; image: string }[];
         price: number;
-        brand: string;
+        brand: { id: number; name: string; image: string };
         event: null;
         status: boolean;
-        category: string;
+        category: { id: number; name: string; image: string; status: boolean };
         idBrand: number;
         idCategory: number;
         idEvent: number;
@@ -196,7 +196,7 @@ const Home: React.FC<any> = () => {
                     {screenWidth <= 899 && screenWidth >= 600 ? (
                         <>
                             <div className={cx('product')}>
-                                {products.filter((product) => product.category === data.name).slice(0, 3).map((data) => (
+                                {products.filter((product) => product.category.name === data.name).slice(0, 3).map((data) => (
                                     <ProductComponent key={data.id} data={data} />
                                 ))}
                             </div>
@@ -204,7 +204,7 @@ const Home: React.FC<any> = () => {
                         ) : (
                         <>
                             <div className={cx('product')}>
-                                {products.filter((product) => product.category === data.name).slice(0, 4).map((data) => (
+                                {products.filter((product) => product.category.name === data.name).slice(0, 4).map((data) => (
                                     <ProductComponent key={data.id} data={data} />
                                 ))}
                             </div>
