@@ -29,7 +29,7 @@ const cx = classNames.bind(styles);
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 const Product: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
-  const { nameParent } = useParams();
+  // const { nameParent } = useParams();
 
   const [selectedBrandButton, setSelectedBrandButton] = useState<number | null>(null);
 
