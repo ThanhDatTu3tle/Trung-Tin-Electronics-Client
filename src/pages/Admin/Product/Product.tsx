@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect  } from 'react';
 import { useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -20,6 +19,7 @@ import { axiosClient } from '../../../axios';
 
 import BrandService from '../../../service/BrandService';
 import CategoryService from '../../../service/CategoryService';
+import ProductService from '../../../service/ProductService';
 
 const faHouseIcon = faHouse as IconProp;
 const faArrowRightIcon = faArrowRight as IconProp;
@@ -29,7 +29,6 @@ const cx = classNames.bind(styles);
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 const Product: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
-  // const { nameParent } = useParams();
 
   const [selectedBrandButton, setSelectedBrandButton] = useState<number | null>(null);
 
@@ -43,7 +42,6 @@ const Product: React.FC<any> = () => {
 
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
   const [category0, setCategory0] = useState(true);
-  const [filteredCategory, setFilteredCategory] = useState<{ id: number; name: string; status: boolean }[]>([]);
   const [categoryChanged, setCategoryChanged] = useState(false);
   const handleClickCategory0 = () => {
     setCategory0(!category0);
@@ -62,9 +60,22 @@ const Product: React.FC<any> = () => {
 
   const [brands, setBrands] = useState<{ id: number; name: string; status: boolean }[]>([]);
   const [categories, setCategories] = useState<{ id: number; name: string; status: boolean }[]>([]);
-  
-  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
-  const [filteredProductsResult, setFilteredProductsResult] = useState<any[]>([]);
+
+  const [filteredProductsResult, setFilteredProductsResult] = useState<{
+    id: string;
+    name: string;
+    description: string;
+    specification: { id: number; specification: string }[];
+    imageProducts: { id: number; image: string }[];
+    price: number;
+    brand: { id: number; name: string; image: string };
+    event: null;
+    status: boolean;
+    category: { id: number; name: string; image: string; status: boolean };
+    idBrand: number;
+    idCategory: number;
+    idEvent: number;
+  }[]>([]);
 
   const fetchAPIBrands = async () => {
     try {
@@ -78,6 +89,12 @@ const Product: React.FC<any> = () => {
           return res.data; 
       } catch (error) {}
   };
+  const fetchAPIProducts = async () => {
+    try {
+        const res = await ProductService.GetAllProduct();
+        return res.data; 
+    } catch (error) {}
+  };
 
   const { data: brandsData, refetch: refetchBrands } = useQuery(
       ["brandImages"],
@@ -89,27 +106,36 @@ const Product: React.FC<any> = () => {
       fetchAPICategories,
       {}
   );
+  const { data: productsData, refetch: refetchProducts } = useQuery(
+    ["productImages"],
+    fetchAPIProducts,
+    {}
+  );
 
   useEffect(() => {
     const fetchAllAPIs = async () => {
         await Promise.all([
             refetchBrands(), 
-            refetchCategories()
+            refetchCategories(),
+            refetchProducts()
         ]);
     };
     fetchAllAPIs();
   }, [
       refetchBrands, 
       refetchCategories,
+      refetchProducts
   ]);
   useEffect(() => {
-    if (brandsData && categoriesData) {
+    if (brandsData && categoriesData && productsData) {
         setBrands(brandsData); 
         setCategories(categoriesData);
+        setFilteredProductsResult(productsData);
     }
   }, [
       brandsData, 
-      categoriesData
+      categoriesData,
+      productsData
   ]);
 
   const handleClickBrandAll = (brandId: number) => {
@@ -124,46 +150,15 @@ const Product: React.FC<any> = () => {
     setFilteredBrands(updatedFilteredBrand);
     setCategory0(false);
   };
-
+  
   const handleCategoryToggle = (categoryName: string) => {
-    
-    // const category = categories.find((category) => category.name === categoryName);
-
-    if (selectedCategoryIds.includes(categoryName)) {
-      setSelectedCategoryIds(selectedCategoryIds.filter(id => id !== categoryName));
+    if (selectedCategoryIds.includes(categoryName)) {      
+      setSelectedCategoryIds(selectedCategoryIds.filter(name => name !== categoryName));
     } else {
       setSelectedCategoryIds([...selectedCategoryIds, categoryName]);
-      // console.log(selectedCategoryIds);
+      setCategory0(!true);
     }
   };
-
-  useEffect(() => {
-    // console.log(filteredProducts)
-    
-    const filteredProductsResult = filteredProducts.filter((product: { categoryName: string; }) =>
-      selectedCategoryIds.includes(product.categoryName)
-    );
-    setFilteredProductsResult(filteredProductsResult);
-    console.log(selectedCategoryIds);
-    console.log(filteredProductsResult);
-  }, [selectedCategoryIds, filteredProducts]);
-
-  // const category = categories.find((category) => category.name === nameParent);
-
-  // useEffect(() => {
-  //   if (!category || filteredProducts.length > 0) {
-  //     return;
-  //   }
-
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axiosClient.post('product/getAllByIdCategory', selectedCategoryIds);
-  //       setFilteredProducts(response.data);
-  //     } catch (error) {}
-  //   };
-
-  //   fetchData();
-  // }, [selectedCategoryIds, filteredProducts]);
 
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -452,13 +447,13 @@ const Product: React.FC<any> = () => {
         <div className={cx('products')}>
           {category0 === true ? (
             <>
-              {categories.map((data) => (
+              {categories.map((dataa) => (
                 <div className={cx('machine')}>
                   <div className={cx('title-wrapper')}>
-                    <div className={cx('title')}>{data.name}</div>
+                    <div className={cx('title')}>{dataa.name}</div>
                   </div>
                   <div className={cx('product')}>
-                    {filteredProductsResult.filter((product: { category: string; }) => product.category === data.name).map((data: { id: any; }) => (
+                    {filteredProductsResult.filter((data) => data.category.name === dataa.name).map((data) => (
                         <ProductComponent key={data.id} data={data} />
                     ))}
                   </div>
@@ -467,13 +462,13 @@ const Product: React.FC<any> = () => {
             </>
           ) : (
             <>
-              {filteredCategory.map((data) => (
+              {selectedCategoryIds.map((dataa) => (
                 <div className={cx('machine')}>
                   <div className={cx('title-wrapper')}>
-                    <div className={cx('title')}>{data.name}</div>
+                    <div className={cx('title')}>{dataa}</div>
                   </div>
                   <div className={cx('product')}>
-                    {filteredProductsResult.filter((product: { category: string; }) => product.category === data.name).map((data: { id: any; }) => (
+                    {filteredProductsResult.filter((data) => data.category.name === dataa).map((data) => (
                         <ProductComponent key={data.id} data={data} />
                     ))}
                   </div>
@@ -486,9 +481,11 @@ const Product: React.FC<any> = () => {
         <div className={cx('filter')}>
           <h3>Bộ lọc</h3>
           <h4>Lọc theo danh mục</h4>
-          <>
-            <Button primary onClick={handleClickCategory0}>Tất cả sản phẩm</Button>
-          </>
+          {category0 === true ? (
+            <Button primary onClick={handleClickCategory0}>Tất cả sản phẩm</Button>   
+          ) : (
+            <Button outline onClick={handleClickCategory0}>Tất cả sản phẩm</Button>   
+          )}
           {categories.map(category => (
             <>
               {selectedCategoryIds.includes(category.name) === true ? (
