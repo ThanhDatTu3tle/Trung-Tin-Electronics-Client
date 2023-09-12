@@ -141,10 +141,11 @@ const Product: React.FC<any> = () => {
     // console.log(filteredProducts)
     
     const filteredProductsResult = filteredProducts.filter((product: { categoryName: string; }) =>
-      console.log(selectedCategoryIds.includes(product.categoryName))
+      selectedCategoryIds.includes(product.categoryName)
     );
     setFilteredProductsResult(filteredProductsResult);
-    console.log(filteredProductsResult)
+    console.log(selectedCategoryIds);
+    console.log(filteredProductsResult);
   }, [selectedCategoryIds, filteredProducts]);
 
   // const category = categories.find((category) => category.name === nameParent);
