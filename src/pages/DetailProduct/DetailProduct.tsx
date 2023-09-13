@@ -43,10 +43,10 @@ const DetailProduct: React.FC = () => {
       specification: { id: number; specification: string }[];
       imageProducts: { id: number; image: string }[];
       price: number;
-      brand: string;
+      brand: { id: number; name: string; image: string };
       event: null;
       status: boolean;
-      category: string;
+      category: { id: number; name: string; image: string; status: boolean };
       idBrand: number;
       idCategory: number;
       idEvent: number;
@@ -54,7 +54,6 @@ const DetailProduct: React.FC = () => {
   >([]);  
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const seenProductsLocal = JSON.parse(localStorage.getItem('seen') || '[]');
-
 
   const [count, setCount] = useState(1);
   const handleMinus = () => {
@@ -67,7 +66,21 @@ const DetailProduct: React.FC = () => {
     setCount(count + 1);
   };
 
-  let product: { id: string; name: string; description: string; specification: { id: number; specification: string; }[]; imageProducts: { id: number; image: string; }[]; price: number; brand: string; event: null; status: boolean; category: string; idBrand: number; idCategory: number; idEvent: number; } | undefined;
+  let product: { 
+    id: string;
+    name: string;
+    description: string;
+    specification: { id: number; specification: string }[];
+    imageProducts: { id: number; image: string }[];
+    price: number;
+    brand: { id: number; name: string; image: string };
+    event: null;
+    status: boolean;
+    category: { id: number; name: string; image: string; status: boolean };
+    idBrand: number;
+    idCategory: number;
+    idEvent: number; 
+  } | undefined;
 
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
     product ? product.imageProducts[0]?.image : undefined
@@ -80,10 +93,10 @@ const DetailProduct: React.FC = () => {
       specification: { id: number; specification: string }[];
       imageProducts: { id: number; image: string }[];
       price: number;
-      brand: string;
+      brand: { id: number; name: string; image: string };
       event: null;
       status: boolean;
-      category: string;
+      category: { id: number; name: string; image: string; status: boolean };
       idBrand: number;
       idCategory: number;
       idEvent: number;
@@ -211,7 +224,7 @@ const DetailProduct: React.FC = () => {
             &nbsp;&nbsp;»&nbsp;&nbsp;
           </li>
           <li>
-            {product.category}
+            {product.category.name}
             &nbsp;&nbsp;»&nbsp;&nbsp;
           </li>
           <li>

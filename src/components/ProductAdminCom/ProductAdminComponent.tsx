@@ -2,13 +2,13 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import classNames from "classnames/bind";
 
-import styles from './ProductComponent.module.scss';
+import styles from './ProductAdminComponent.module.scss';
 import Image from "../Image";
 import Button from "../Button";
 
 const cx = classNames.bind(styles);
 
-const ProductComponent: React.FC<any> = ({ data }) => {
+const ProductAdminComponent: React.FC<any> = ({ data }) => {
     const handleClick = () => {
         if (!localStorage.getItem('seen')) {
             localStorage.setItem('seen', JSON.stringify([]));
@@ -57,11 +57,11 @@ const ProductComponent: React.FC<any> = ({ data }) => {
                         </>
                     )}
                     <br />  
-                    <Button primary>Đặt hàng</Button>
+                    <Button primary>Chỉnh sửa</Button>
                 </div>
             </Link>
         </div>
     )
 }
 
-export default ProductComponent;
+export default ProductAdminComponent;

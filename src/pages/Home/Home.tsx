@@ -196,7 +196,10 @@ const Home: React.FC<any> = () => {
                     {screenWidth <= 899 && screenWidth >= 600 ? (
                         <>
                             <div className={cx('product')}>
-                                {products.filter((product) => product.category.name === data.name).slice(0, 3).map((data) => (
+                                {products
+                                .filter((product) => product.category.name === data.name && product.status === true)
+                                .slice(0, 3)
+                                .map((data) => (
                                     <ProductComponent key={data.id} data={data} />
                                 ))}
                             </div>
@@ -204,7 +207,10 @@ const Home: React.FC<any> = () => {
                         ) : (
                         <>
                             <div className={cx('product')}>
-                                {products.filter((product) => product.category.name === data.name).slice(0, 4).map((data) => (
+                                {products
+                                .filter((product) => product.category.name === data.name && product.status === true)
+                                .slice(0, 4)
+                                .map((data) => (
                                     <ProductComponent key={data.id} data={data} />
                                 ))}
                             </div>

@@ -14,7 +14,7 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Product.module.scss';
 import Button from '../../../components/Button';
-import ProductComponent from '../../../components/ProductCom/ProductComponent';
+import ProductAdminComponent from '../../../components/ProductAdminCom/ProductAdminComponent';
 import { axiosClient } from '../../../axios';
 
 import BrandService from '../../../service/BrandService';
@@ -454,7 +454,7 @@ const Product: React.FC<any> = () => {
                   </div>
                   <div className={cx('product')}>
                     {filteredProductsResult.filter((data) => data.category.name === dataa.name).map((data) => (
-                        <ProductComponent key={data.id} data={data} />
+                        <ProductAdminComponent key={data.id} data={data} />
                     ))}
                   </div>
                 </div>
@@ -469,7 +469,7 @@ const Product: React.FC<any> = () => {
                   </div>
                   <div className={cx('product')}>
                     {filteredProductsResult.filter((data) => data.category.name === dataa).map((data) => (
-                        <ProductComponent key={data.id} data={data} />
+                        <ProductAdminComponent key={data.id} data={data} />
                     ))}
                   </div>
                 </div>
