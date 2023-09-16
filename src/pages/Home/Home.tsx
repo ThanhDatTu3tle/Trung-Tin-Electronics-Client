@@ -152,7 +152,7 @@ const Home: React.FC<any> = () => {
             {/* <div className={cx('flash-sale')}>
 
             </div> */}
-            <br />
+            {/* <br />
             <div className={cx('hot-sale')}>
                 {screenWidth >= 400 ? (
                     <>
@@ -182,7 +182,7 @@ const Home: React.FC<any> = () => {
                     </>
                     )
                 }
-            </div>
+            </div> */}
             {categories.map((data) => (
                 <div className={cx('machine')}>
                     <div className={cx('title-wrapper')}>

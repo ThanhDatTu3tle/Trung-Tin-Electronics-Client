@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import classNames from "classnames/bind";
 
 import Container from '@mui/material/Container';
@@ -8,6 +10,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
+
+import CategoryService from '../../../../service/CategoryService';
 
 import styles from './Footer.module.scss';
 import zaloLogo from '../../../../assets/zalo-icon.png';
@@ -29,6 +33,7 @@ updateScreenSize();
 window.addEventListener("resize", updateScreenSize);
 
 const Footer: React.FC<any> = () => {
+    const history = useNavigate();
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
     useEffect(() => {
@@ -41,7 +46,33 @@ const Footer: React.FC<any> = () => {
         return () => {
           window.removeEventListener("resize", handleResize);
         };
-      }, []);
+    }, []);
+
+    const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+    const fetchAPICategories = async () => {
+        try {
+            const res = await CategoryService.GetAllCategory();
+            return res.data; 
+        } catch (error) {}
+    };
+    const { data: categoriesData, refetch: refetchCategories } = useQuery(
+        ["categoryImages"],
+        fetchAPICategories,
+        {}
+    );
+    useEffect(() => {
+        const fetchAllAPIs = async () => {
+            await Promise.all([
+                refetchCategories(),
+            ]);
+        };
+        fetchAllAPIs();
+      }, [refetchCategories]);
+    useEffect(() => {
+    if (categoriesData) {
+        setCategories(categoriesData);
+    }
+    }, [categoriesData]);
 
     return (
         <div className={cx('wrapper')}>
@@ -78,24 +109,62 @@ const Footer: React.FC<any> = () => {
                     <div className={cx('categories')}>
                         <p>DANH MỤC SẢN PHẨM</p>
                         <div className={cx('details')}>
-                            <p>* Dụng cụ máy pin</p>
-                            <p>* Dụng cụ máy điện</p>
-                            <p>* Máy xịt rửa, phụ kiện</p>
-                            <p>* Máy nén khí</p>
-                            <p>* Dụng cụ đồ nghề</p>
-                            <p>* Thiết bị đo lường</p>
-                            <p>* Thùng, hộp đựng dụng cụ</p>
-                            <p>* Đồ bảo hộ</p>
+                            {categories.map((category, index) => (
+                                <p 
+                                    key={index}
+                                    onClick={(event) => {
+                                        history(`/detailCategory/${category.name}`);
+                                    }}
+                                    className={cx('detail')}
+                                >* 
+                                    {category.name}
+                                </p>
+                            ))}                        
                         </div>
                     </div>
                     <div className={cx('policies')}>
                         <p>CHÍNH SÁCH HỖ TRỢ</p>
                         <div className={cx('details')}>
-                            <p>* Chính sách bảo mật</p>
-                            <p>* Hướng dẫn mua hàng</p>
-                            <p>* Chính sách thanh toán</p>
-                            <p>* Chính sách vận chuyển</p>
-                            <p>* Chính sách đổi trả hoàn tiền</p>
+                            <p
+                                onClick={(event) => {
+                                    // history(`/chinh-sach-bao-mat`);
+                                }}
+                                className={cx('detail')}
+                            >
+                                * Chính sách bảo mật
+                            </p>
+                            <p
+                                onClick={(event) => {
+                                    // history(`/huong-dan-mua-hang`);
+                                }}
+                                className={cx('detail')}
+                            >
+                                * Hướng dẫn mua hàng
+                            </p>
+                            <p
+                                onClick={(event) => {
+                                    // history(`/chinh-sach-thanh-toan`);
+                                }}
+                                className={cx('detail')}
+                            >
+                                * Chính sách thanh toán
+                            </p>
+                            <p
+                                onClick={(event) => {
+                                    // history(`/chinh-sach-van-chuyen`);
+                                }}
+                                className={cx('detail')}
+                            >
+                                * Chính sách vận chuyển
+                            </p>
+                            <p
+                                onClick={(event) => {
+                                    // history(`/chinh-sach-hoan-tien`);
+                                }}
+                                className={cx('detail')}
+                            >
+                                * Chính sách đổi trả hoàn tiền
+                            </p>
                         </div>
                         <div className={cx('logo-legit')}>
                             <Image src="https://storethietbi.com/upload/hinhanh/bct-9539_160x60.png"/>

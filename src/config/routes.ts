@@ -11,6 +11,12 @@ const routes = {
     detailCategory: "/detailCategory/:name",
     detailProduct: "/detailProduct/:id",
 
+    privacyPolicy: "/chinh-sach-bao-mat",
+    shoppingGuide: "/huong-dan-mua-hang",
+    paymentGuide: "/chinh-sach-thanh-toan",
+    shippingPolicy: "/chinh-sach-van-chuyen",
+    refund: "/chinh-sach-hoan-tien",
+
     admin: "/admin",
     product: "/product",
     category: "/category",

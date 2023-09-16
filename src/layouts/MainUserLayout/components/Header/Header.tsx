@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { Link, useNavigate } from 'react-router-dom';
-// import { Navigate } from 'react-router-dom';
 import classNames from "classnames/bind";
 
 import Grid from '@mui/material/Grid';
