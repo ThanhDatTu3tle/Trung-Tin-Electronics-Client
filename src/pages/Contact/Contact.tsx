@@ -8,7 +8,9 @@ const cx = classNames.bind(styles)
 const Contact: React.FC<any> = () => {
     return (
         <div className={cx('wrapper')}>
-            LIÊN HỆ
+            <h3>LIÊN HỆ</h3>
+            <br />
+            <div className={cx('content')}></div>
         </div>
     )
 }

@@ -8,7 +8,12 @@ const cx = classNames.bind(styles)
 const News: React.FC<any> = () => {
     return (
         <div className={cx('wrapper')}>
-            TIN TỨC
+            <h3>TIN TỨC</h3>
+            <br />
+            <h4>Hiện vẫn chưa có tin tức mới</h4>
+            <div className={cx('content')}>
+
+            </div>
         </div>
     )
 }
