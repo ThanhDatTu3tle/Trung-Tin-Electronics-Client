@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
+import { useState } from 'react';
 import classNames from "classnames/bind";
 import styles from './ProductAdminComponent.module.scss';
 import Image from "../Image";
