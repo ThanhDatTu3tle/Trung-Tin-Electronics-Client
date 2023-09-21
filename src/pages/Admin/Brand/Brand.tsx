@@ -76,7 +76,6 @@ const Brand: React.FC<any> = () => {
         linkRef.current.href = link;
         linkRef.current.innerHTML = link;
       }
-  
       MySwal.close(); 
       setImageUrl(link);
     };
@@ -103,7 +102,7 @@ const Brand: React.FC<any> = () => {
     formData.append('image', imageUrl);
   
     try {
-      const response = await axiosClient.post('brand/create', formData);
+      await axiosClient.post('brand/create', formData);
       MySwal.fire({
         title: "Thêm thành công!",
         icon: "success",
@@ -114,7 +113,6 @@ const Brand: React.FC<any> = () => {
       });
       setOpen(false);
       window.location.reload();
-      console.log('Response from server:', response);
     } catch (error) {
       MySwal.fire({
         title: "Đã có lỗi xảy ra!",
@@ -124,7 +122,6 @@ const Brand: React.FC<any> = () => {
         },
         timer: 1500,
       });
-      console.error('Error:', error);
     }
   };
 

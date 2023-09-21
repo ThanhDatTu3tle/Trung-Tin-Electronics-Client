@@ -2,9 +2,15 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import classNames from "classnames/bind";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+
 import styles from './ProductComponent.module.scss';
 import Image from "../Image";
 import Button from "../Button";
+
+const faCartShoppingIcon = faCartShopping as IconProp;
 
 const cx = classNames.bind(styles);
 
@@ -57,7 +63,13 @@ const ProductComponent: React.FC<any> = ({ data }) => {
                         </>
                     )}
                     <br />  
-                    <Button primary>Đặt hàng</Button>
+                    <Button primary>
+                        <FontAwesomeIcon
+                            icon={faCartShoppingIcon}
+                            style={{ color: '#fff', marginRight: '1rem' }}
+                        />
+                        Đặt hàng
+                    </Button>
                 </div>
             </Link>
         </div>

@@ -47,21 +47,6 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
 
     const [brands, setBrands] = useState<{ id: number; name: string; status: boolean }[]>([]);
     const [categories, setCategories] = useState<{ id: number; name: string; status: boolean }[]>([]);
-    const [products, setProducts] = useState<{
-        id: string;
-        name: string;
-        description: string;
-        specification: { id: number; specification: string }[];
-        imageProducts: { id: number; image: string }[];
-        price: number;
-        brand: { id: number; name: string; image: string };
-        event: null;
-        status: boolean;
-        category: { id: number; name: string; image: string; status: boolean };
-        idBrand: number;
-        idCategory: number;
-        idEvent: number;
-    }[]>([]);
 
     const fetchAPIBrands = async () => {
         try {
@@ -72,12 +57,6 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
     const fetchAPICategories = async () => {
         try {
             const res = await CategoryService.GetAllCategory();
-            return res.data;
-        } catch (error) { }
-    };
-    const fetchAPIProducts = async () => {
-        try {
-            const res = await ProductService.GetAllProduct();
             return res.data;
         } catch (error) { }
     };
@@ -92,51 +71,63 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
         fetchAPICategories,
         {}
     );
-    const { data: productsData, refetch: refetchProducts } = useQuery(
-        ["productImages"],
-        fetchAPIProducts,
-        {}
-    );
 
     useEffect(() => {
         const fetchAllAPIs = async () => {
             await Promise.all([
                 refetchBrands(),
-                refetchCategories(),
-                refetchProducts()
+                refetchCategories()
             ]);
         };
         fetchAllAPIs();
     }, [
         refetchBrands,
-        refetchCategories,
-        refetchProducts
+        refetchCategories
     ]);
     useEffect(() => {
-        if (brandsData && categoriesData && productsData) {
+        if (brandsData && categoriesData) {
             setBrands(brandsData);
             setCategories(categoriesData);
-            setProducts(productsData);
         }
     }, [
         brandsData,
-        categoriesData,
-        productsData
+        categoriesData
     ]);
 
-    const updateProductStatus = async (productId: string, newStatus: number) => {
+    const updateProductStatus = async () => {
         try {
             if (data.status === true) {
-                const response = await ProductService.UpdateProductStatus(data.id, 0);
+                await ProductService.UpdateProductStatus(data.id, 0);
+                await MySwal.fire({
+                    title: 'Ẩn sản phẩm thành công!',
+                    icon: 'success',
+                    didOpen: () => {
+                        MySwal.showLoading();
+                    },
+                    timer: 2000,
+                });
                 setState(!state);
-                console.log('Response from server:', response);
             } else {
-                const response = await ProductService.UpdateProductStatus(data.id, 1);
+                await ProductService.UpdateProductStatus(data.id, 1);
+                await MySwal.fire({
+                    title: 'Hiện sản phẩm thành công!',
+                    icon: 'success',
+                    didOpen: () => {
+                        MySwal.showLoading();
+                    },
+                    timer: 2000,
+                });
                 setState(!state);
-                console.log('Response from server:', response);
             }
         } catch (error) {
-            console.error('Có lỗi xảy ra khi cập nhật trạng thái sản phẩm:', error);
+            await MySwal.fire({
+                title: 'Đã có lỗi xảy ra!',
+                icon: 'error',
+                didOpen: () => {
+                    MySwal.showLoading();
+                },
+                timer: 2000,
+            });
         }
     };
 
@@ -155,10 +146,12 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
     const [description, setDescription] = useState<string>(data.description);
     const [price, setPrice] = useState<number>(data.price);
     const [imageProducts, setImageProducts] = useState<File[]>(data.imageProducts.image);
-    const [specification, setSpecification] = useState<string[]>(data.specification.specification);
+    // const [specification, setSpecification] = useState<string[]>(data.specification.specification);
 
     const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        
         setId(event.target.value);
+        console.log(id);
     };
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
@@ -171,56 +164,56 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
         setPrice(priceValue);
     };
 
-    const upload = async (files: File[]) => {
-        try {
-            const uploadedImages = await Promise.all(
-                files.map(file => {
-                    if (!file || !file.type.match(/image.*/)) return null;
+    // const upload = async (files: File[]) => {
+    //     try {
+    //         const uploadedImages = await Promise.all(
+    //             files.map(file => {
+    //                 if (!file || !file.type.match(/image.*/)) return null;
 
-                    return new Promise<string | null>((resolve, reject) => {
-                        MySwal.fire({
-                            title: 'Đang tải lên...',
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                const popup = MySwal.getPopup();
-                                if (popup) {
-                                    popup.style.zIndex = "9999";
-                                }
-                                MySwal.showLoading();
-                            },
-                            timer: 2000,
-                        });
+    //                 return new Promise<string | null>((resolve, reject) => {
+    //                     MySwal.fire({
+    //                         title: 'Đang tải lên...',
+    //                         allowOutsideClick: false,
+    //                         didOpen: () => {
+    //                             const popup = MySwal.getPopup();
+    //                             if (popup) {
+    //                                 popup.style.zIndex = "9999";
+    //                             }
+    //                             MySwal.showLoading();
+    //                         },
+    //                         timer: 2000,
+    //                     });
 
-                        const fd = new FormData();
-                        fd.append('image', file);
+    //                     const fd = new FormData();
+    //                     fd.append('image', file);
 
-                        const xhr = new XMLHttpRequest();
-                        xhr.open('POST', 'https://api.imgur.com/3/image.json');
-                        xhr.onload = function () {
-                            const link = JSON.parse(xhr.responseText).data.link;
-                            resolve(link);
-                            MySwal.close();
-                        };
+    //                     const xhr = new XMLHttpRequest();
+    //                     xhr.open('POST', 'https://api.imgur.com/3/image.json');
+    //                     xhr.onload = function () {
+    //                         const link = JSON.parse(xhr.responseText).data.link;
+    //                         resolve(link);
+    //                         MySwal.close();
+    //                     };
 
-                        xhr.onerror = function () {
-                            reject(new Error('Failed to upload image'));
-                        };
-                        xhr.setRequestHeader('Authorization', 'Client-ID 983c8532c49a20e');
-                        xhr.send(fd);
-                    });
-                })
-            );
+    //                     xhr.onerror = function () {
+    //                         reject(new Error('Failed to upload image'));
+    //                     };
+    //                     xhr.setRequestHeader('Authorization', 'Client-ID 983c8532c49a20e');
+    //                     xhr.send(fd);
+    //                 });
+    //             })
+    //         );
 
-            return {
-                uploadedImages,
-            };
-        } catch (error) {
-            console.error('Error uploading images:', error);
-            return {
-                uploadedImages: [],
-            };
-        }
-    };
+    //         return {
+    //             uploadedImages,
+    //         };
+    //     } catch (error) {
+    //         console.error('Error uploading images:', error);
+    //         return {
+    //             uploadedImages: [],
+    //         };
+    //     }
+    // };
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files) return;
@@ -234,30 +227,24 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
         setImageProducts([...imageProducts, ...newImages]);
     };
 
-    const handleSpecChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const newValue = event.target.value;
-        const newSpecificationArray = newValue.split('\n').map(item => item.trim());
-        setSpecification(newSpecificationArray);
-    };
+    // const handleSpecChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    //     const newValue = event.target.value;
+    //     const newSpecificationArray = newValue.split('\n').map(item => item.trim());
+    //     setSpecification(newSpecificationArray);
+    // };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>, images: File[]) => {
         event.preventDefault();
 
         try {
             // const { uploadedImages } = await upload(images);
-            // console.log('uploadedImages: ', uploadedImages);
-
             // const validImages = uploadedImages.filter((link): link is string => link !== null);
-            // console.log('validImages: ', validImages)
-
-
             const selectedBrandData = brands.find(brand => brand.name === selectedBrand);
             const selectedCategoryData = categories.find(category => category.name === selectedCategory);
 
             if (!selectedBrandData || !selectedCategoryData) {
                 return;
             }
-            console.log(data.imageProducts)
 
             const formData = new FormData();
             formData.append('id', id);
@@ -266,40 +253,39 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
             formData.append('price', price.toString());
             formData.append('idBrand', selectedBrandData.id.toString());
             formData.append('idCategory', selectedCategoryData.id.toString());
-            data.imageProducts.forEach((image: string | Blob, index: any) => {
-                formData.append(`imageProducts[${index}].image`, image);
+            data.imageProducts.forEach((imgItem: any, index: any) => {
+                formData.append(`imageProducts[${index}].image`, imgItem.image);
             });
-            data.specification.forEach((specItem: string | Blob, index: any) => {
-                formData.append(`specification[${index}]`, specItem);
+            data.specification.forEach((specItem: any, index: any) => {
+                formData.append(`specification[${index}]`, specItem.specification);
             });
+
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
                 },
             };
 
-            const response = await axiosClient.put('product/update', formData, config);
-            MySwal.fire({
+            await axiosClient.put('product/update', formData, config);
+            await MySwal.fire({
                 title: 'Chỉnh sửa thành công!',
                 icon: 'success',
                 didOpen: () => {
                     MySwal.showLoading();
                 },
-                timer: 1500,
+                timer: 2000,
             });
             setOpen(false);
             window.location.reload();
-            console.log('Response from server:', response);
         } catch (error) {
-            MySwal.fire({
+            await MySwal.fire({
                 title: 'Đã có lỗi xảy ra!',
                 icon: 'error',
                 didOpen: () => {
                     MySwal.showLoading();
                 },
-                timer: 1500,
+                timer: 2000,
             });
-            console.error('Error:', error);
         }
     };
 
@@ -439,7 +425,7 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
                                             spec.specification
                                         ))
                                     }
-                                    onChange={handleSpecChange}
+                                    // onChange={handleSpecChange}
                                     rows={3}
                                 />
                             </div>

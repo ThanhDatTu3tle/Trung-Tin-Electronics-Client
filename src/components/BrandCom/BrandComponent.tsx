@@ -95,7 +95,7 @@ const BrandComponent: React.FC<any> = ({ data }) => {
     formData.append('image', imageUrl);
   
     try {
-      const response = await axiosClient.put(`brand/edit/${idBrand}`, formData, {
+      await axiosClient.put(`brand/edit/${idBrand}`, formData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -109,7 +109,6 @@ const BrandComponent: React.FC<any> = ({ data }) => {
         timer: 2000,
       });
       setOpen(false);
-      console.log('Response from server:', response);
     } catch (error) {
       MySwal.fire({
         title: "Đã có lỗi xảy ra!",
@@ -119,7 +118,6 @@ const BrandComponent: React.FC<any> = ({ data }) => {
         },
         timer: 2000,
       });
-      console.error('Error:', error);
     }
   };
 

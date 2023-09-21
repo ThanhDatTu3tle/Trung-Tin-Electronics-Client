@@ -14,7 +14,7 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Product.module.scss';
 import Button from '../../../components/Button';
-import Image from '../../../components/Image';
+// import Image from '../../../components/Image';
 import ProductAdminComponent from '../../../components/ProductAdminCom/ProductAdminComponent';
 
 import { axiosClient } from '../../../axios';
@@ -34,8 +34,8 @@ const Product: React.FC<any> = () => {
   const [selectedBrandButton, setSelectedBrandButton] = useState<number | null>(null);
 
   const [brand0, setBrand0] = useState(true);
-  const [filteredBrands, setFilteredBrands] = useState<{ id: number; name: string; status: boolean }[]>([]);
-  const [brandChanged, setBrandChanged] = useState(false);
+  const [, setFilteredBrands] = useState<{ id: number; name: string; status: boolean }[]>([]);
+  const [, setBrandChanged] = useState(false);
   const handleClickBrand0 = () => {
     setBrand0(!brand0);
     setBrandChanged(false);
@@ -43,7 +43,7 @@ const Product: React.FC<any> = () => {
 
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
   const [category0, setCategory0] = useState(true);
-  const [categoryChanged, setCategoryChanged] = useState(false);
+  const [, setCategoryChanged] = useState(false);
   const handleClickCategory0 = () => {
     setCategory0(!category0);
     setCategoryChanged(false);
@@ -259,11 +259,7 @@ const Product: React.FC<any> = () => {
   
     try {      
       const { uploadedImages } = await upload(images);
-      // console.log('uploadedImages: ', uploadedImages);
-
       const validImages = uploadedImages.filter((link): link is string => link !== null);
-      // console.log('validImages: ', validImages)
-
       const selectedBrandData = brands.find(brand => brand.name === selectedBrand);
       const selectedCategoryData = categories.find(category => category.name === selectedCategory);
     
@@ -284,34 +280,33 @@ const Product: React.FC<any> = () => {
       specification.forEach((specItem, index) => {
         formData.append(`specification[${index}]`, specItem);
       });
+
       const config = {
         headers: {
           'Content-Type': 'application/json',
         },
       };
     
-      const response = await axiosClient.post('product/create', formData, config);
-      MySwal.fire({
+      await axiosClient.post('product/create', formData, config);
+      await MySwal.fire({
         title: 'Thêm thành công!',
         icon: 'success',
         didOpen: () => {
           MySwal.showLoading();
         },
-        timer: 1500,
+        timer: 2000,
       });
       setOpen(false);
       window.location.reload();
-      console.log('Response from server:', response);
     } catch (error) {
-      MySwal.fire({
+      await MySwal.fire({
         title: 'Đã có lỗi xảy ra!',
         icon: 'error',
         didOpen: () => {
           MySwal.showLoading();
         },
-        timer: 1500,
+        timer: 2000,
       });
-      console.error('Error:', error);
     }
   };
 
