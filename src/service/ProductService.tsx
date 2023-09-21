@@ -11,6 +11,6 @@ class ProductService{
     static GetProductByIdCategory = (categoryIds: number[]) => axiosClient.post(`product/getAllByIdCategory`, categoryIds);
     static CreateProduct = (data: any) => axiosClient.post('product/create', data)
     static UpdateProductStatus = (id: string, status: number) => axiosClient.put(`product/updateStatus/?id=${id}&status=${status}`, {}, config)
-    static UpdateProduct = (id: number, data: any) => axiosClient.put(`product/edit/${id}`, data)
+    static UpdateProduct = (data: any) => axiosClient.put(`product/update`, data)
 }  
 export default ProductService;

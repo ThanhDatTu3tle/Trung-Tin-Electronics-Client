@@ -61,7 +61,7 @@ const DetailCategory: React.FC = () => {
     fetchData();
   }, [category, filteredProducts]);
 
-  // console.log(filteredProducts)
+  console.log(filteredProducts)
 
   if (!category) {
     return <div>Danh mục không tồn tại</div>;
@@ -74,7 +74,9 @@ const DetailCategory: React.FC = () => {
       <div className={cx('machine')}>
         {filteredProducts.length > 0 ? (
           <div className={cx('product')}>
-            {filteredProducts.map((data) => (
+            {filteredProducts
+            .filter((product) => product.status === true)
+            .map((data) => (
               <ProductComponent key={data.id} data={data} />
             ))}
           </div>

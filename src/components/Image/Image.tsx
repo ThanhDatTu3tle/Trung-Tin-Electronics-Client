@@ -37,6 +37,7 @@ const Image: React.FC<any> = forwardRef(({
       {...props} 
       onClick={editImage}
       onError={handleError} 
+      loading="lazy"
     >
     </img>
   )

@@ -14,9 +14,10 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Product.module.scss';
 import Button from '../../../components/Button';
+import Image from '../../../components/Image';
 import ProductAdminComponent from '../../../components/ProductAdminCom/ProductAdminComponent';
-import { axiosClient } from '../../../axios';
 
+import { axiosClient } from '../../../axios';
 import BrandService from '../../../service/BrandService';
 import CategoryService from '../../../service/CategoryService';
 import ProductService from '../../../service/ProductService';
@@ -60,7 +61,6 @@ const Product: React.FC<any> = () => {
 
   const [brands, setBrands] = useState<{ id: number; name: string; status: boolean }[]>([]);
   const [categories, setCategories] = useState<{ id: number; name: string; status: boolean }[]>([]);
-
   const [filteredProductsResult, setFilteredProductsResult] = useState<{
     id: string;
     name: string;
@@ -196,7 +196,6 @@ const Product: React.FC<any> = () => {
       const uploadedImages = await Promise.all(
         files.map(file => {
           if (!file || !file.type.match(/image.*/)) return null;
-  
           return new Promise<string | null>((resolve, reject) => {
             MySwal.fire({
               title: 'Đang tải lên...',
@@ -210,10 +209,8 @@ const Product: React.FC<any> = () => {
               },
               timer: 2000,
             });
-
             const fd = new FormData();
             fd.append('image', file);
-
             const xhr = new XMLHttpRequest();
             xhr.open('POST', 'https://api.imgur.com/3/image.json');
             xhr.onload = function () {
@@ -221,7 +218,6 @@ const Product: React.FC<any> = () => {
               resolve(link);
               MySwal.close();
             };
-
             xhr.onerror = function () {
               reject(new Error('Failed to upload image'));
             };
@@ -230,12 +226,10 @@ const Product: React.FC<any> = () => {
           });
         })
       );
-  
       return {
         uploadedImages,
       };
     } catch (error) {
-      console.error('Error uploading images:', error);
       return {
         uploadedImages: [],
       };
@@ -265,10 +259,10 @@ const Product: React.FC<any> = () => {
   
     try {      
       const { uploadedImages } = await upload(images);
-      console.log('uploadedImages: ', uploadedImages);
+      // console.log('uploadedImages: ', uploadedImages);
 
       const validImages = uploadedImages.filter((link): link is string => link !== null);
-      console.log('validImages: ', validImages)
+      // console.log('validImages: ', validImages)
 
       const selectedBrandData = brands.find(brand => brand.name === selectedBrand);
       const selectedCategoryData = categories.find(category => category.name === selectedCategory);
@@ -426,6 +420,11 @@ const Product: React.FC<any> = () => {
                         name="image"
                         onChange={handleImageUpload}
                       />
+                      {/* <div className={cx('show-image')}>
+                        {filteredProductsResult.imageProducts.map((img) => (
+                          <Image src={img.image}/>
+                        ))}
+                      </div> */}
                       <br />
                       <label htmlFor="specification">Thêm thông số cho sản phẩm:</label>
                       <textarea

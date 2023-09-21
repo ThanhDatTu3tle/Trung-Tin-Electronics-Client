@@ -51,23 +51,23 @@ const Category: React.FC<any> = () => {
 
   const upload = (file: File) => {
     if (!file || !file.type.match(/image.*/)) return;
-  
+
     MySwal.fire({
       title: 'Đang tải lên...',
       allowOutsideClick: false,
       didOpen: () => {
         const popup = MySwal.getPopup();
         if (popup) {
-          popup.style.zIndex = "9999"; 
+          popup.style.zIndex = "9999";
         }
         MySwal.showLoading();
       },
       timer: 2000,
     });
-  
+
     const fd = new FormData();
     fd.append('image', file);
-  
+
     const xhr = new XMLHttpRequest();
     xhr.open('POST', 'https://api.imgur.com/3/image.json');
     xhr.onload = function () {
@@ -76,14 +76,14 @@ const Category: React.FC<any> = () => {
         linkRef.current.href = link;
         linkRef.current.innerHTML = link;
       }
-  
-      MySwal.close(); 
+
+      MySwal.close();
       setImageUrl(link);
     };
     xhr.setRequestHeader('Authorization', 'Client-ID 983c8532c49a20e');
     xhr.send(fd);
   };
-  
+
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -97,11 +97,11 @@ const Category: React.FC<any> = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-  
+
     const formData = new FormData();
     formData.append('name', name);
     formData.append('image', imageUrl);
-  
+
     try {
       const response = await axiosClient.post('category/create', formData);
       MySwal.fire({
@@ -115,7 +115,7 @@ const Category: React.FC<any> = () => {
       setOpen(false);
       window.location.reload();
       console.log('Response from server:', response);
-  
+
     } catch (error) {
       MySwal.fire({
         title: "Đã có lỗi xảy ra!",
@@ -131,78 +131,77 @@ const Category: React.FC<any> = () => {
 
   const [categories, setCategories] = useState<Category[]>([]);
   const fetchAPIBrands = async () => {
-      try {
-          const res = await CategoryService.GetAllCategory();
-          return res.data; 
-      } catch (error) {}
+    try {
+      const res = await CategoryService.GetAllCategory();
+      return res.data;
+    } catch (error) { }
   };
 
   const { data, refetch } = useQuery(
-      ["brandImages"],
-      fetchAPIBrands,
-      {}
+    ["brandImages"],
+    fetchAPIBrands,
+    {}
   );
 
   useEffect(() => {
-      const timer = setTimeout(() => {
-          refetch()
-      }, 1000)
-      setCategories(data);
-      return() => {
-          clearTimeout(timer);
-      }
+    const timer = setTimeout(() => {
+      refetch()
+    }, 1000)
+    setCategories(data);
+    return () => {
+      clearTimeout(timer);
+    }
   }, [data, refetch]);
 
   return (
     <div className={cx('wrapper')}>
       <div className={cx('header')}>
         <div className={cx('left')}>
-          <p style={{width: 'fit-content'}}>Danh mục sản phẩm</p>
+          <p style={{ width: 'fit-content' }}>Danh mục sản phẩm</p>
         </div>
         <div className={cx('right')}>
           <div className={cx('current-position')}>
-            <FontAwesomeIcon 
-                icon={faHouseIcon}
-                style={{paddingRight: '1rem'}} 
+            <FontAwesomeIcon
+              icon={faHouseIcon}
+              style={{ paddingRight: '1rem' }}
             />
-            <FontAwesomeIcon 
-                icon={faArrowRightIcon}
-                style={{width: '1rem', height: '1rem', paddingRight: '1rem'}} 
+            <FontAwesomeIcon
+              icon={faArrowRightIcon}
+              style={{ width: '1rem', height: '1rem', paddingRight: '1rem' }}
             />
             <p>Danh mục sản phẩm</p>
           </div>
           <div className={cx('add-btn')}>
             <Button primary small onClick={handleOpenAddForm}>Thêm danh mục</Button>
-              <Backdrop
-                sx={{ color: '#fff', zIndex: 9 }}
-                open={open}
-              >
-                <div className={cx('add-form')}>
-                  <form action="/upload" method="post" className={cx('form')} onSubmit={handleSubmit}>
-                    <div className={cx('title')}>
-                      <p style={{fontSize: '1.5rem', fontWeight: '500'}}>THÊM DANH MỤC SẢN PHẨM</p>
-                      <button type='button' className={cx('close-btn')} onClick={handleCloseAddForm}>×</button>
-                    </div>
-                    <div className={cx('inputs')}>
-                      <label>Điền tên danh mục sản phẩm:</label>
-                      <input 
-                        type='text' 
-                        placeholder='Tên danh mục sản phẩm' 
-                        className={cx('input-name')}
-                        onChange={handleNameChange}
-                      />
-                      <label>Chọn hình ảnh:</label>
-                      <input 
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                      />
-                    </div>
-                    <Button primary small>Xác nhận</Button>
-                  </form>   
-                </div>
-                
-              </Backdrop>
+            <Backdrop
+              sx={{ color: '#fff', zIndex: 9 }}
+              open={open}
+            >
+              <div className={cx('add-form')}>
+                <form action="/upload" method="post" className={cx('form')} onSubmit={handleSubmit}>
+                  <div className={cx('title')}>
+                    <p style={{ fontSize: '1.5rem', fontWeight: '500' }}>THÊM DANH MỤC SẢN PHẨM</p>
+                    <button type='button' className={cx('close-btn')} onClick={handleCloseAddForm}>×</button>
+                  </div>
+                  <div className={cx('inputs')}>
+                    <label>Điền tên danh mục sản phẩm:</label>
+                    <input
+                      type='text'
+                      placeholder='Tên danh mục sản phẩm'
+                      className={cx('input-name')}
+                      onChange={handleNameChange}
+                    />
+                    <label>Chọn hình ảnh:</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                    />
+                  </div>
+                  <Button primary small>Xác nhận</Button>
+                </form>
+              </div>
+            </Backdrop>
           </div>
         </div>
       </div>
@@ -210,20 +209,16 @@ const Category: React.FC<any> = () => {
         <div className={cx('categories')}>
           {categories !== undefined ? (
             <>
-                <div className={cx('category')}>
-                    {categories.map((data) => (
-                        <CategoryComponent key={data.id} data={data} />
-                    ))}
-                </div>
+              <div className={cx('category')}>
+                {categories.map((data) => (
+                  <CategoryComponent key={data.id} data={data} />
+                ))}
+              </div>
             </>
-            ) : (
+          ) : (
             <></>
-            )
+          )
           }
-        </div>
-
-        <div className={cx('filter')}>
-          FILTER
         </div>
       </div>
     </div>

@@ -62,7 +62,7 @@ const LoginAdmin: React.FC<any> = () => {
     if (res.username && res.password) {
       try {
         const { data } = await Login(res.username, res.password);
-        console.log('Data from server:', data); // In dữ liệu từ server để kiểm tra cấu trúc
+        // console.log('Data from server:', data); // In dữ liệu từ server để kiểm tra cấu trúc
         setToken(data.token);
         setUsername("");
         setPassword("");

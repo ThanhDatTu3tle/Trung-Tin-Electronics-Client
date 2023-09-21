@@ -127,7 +127,7 @@
     padding: 1rem;
     outline: 0;
     width: 30%;
-    height: 90%;
+    height: 98%;
     border-radius: 10px;
     background-color: rgb(255, 255, 255);
 
@@ -277,6 +277,12 @@
                     border: 1px solid black;
                 }
             }   
+        }
+
+        .show-image {
+            display: flex;
+            flex-direction: row;
+            width: 50%;
         }
     }
 }

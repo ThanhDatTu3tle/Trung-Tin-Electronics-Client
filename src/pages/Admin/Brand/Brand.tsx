@@ -231,10 +231,6 @@ const Brand: React.FC<any> = () => {
               )
           }
         </div>
-
-        <div className={cx('filter')}>
-          FILTER
-        </div>
       </div>
     </div>
   );
