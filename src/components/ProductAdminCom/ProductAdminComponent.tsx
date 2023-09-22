@@ -20,7 +20,7 @@ const cx = classNames.bind(styles);
 
 const ProductAdminComponent: React.FC<any> = ({ data }) => {
     const MySwal = withReactContent(Swal);
-    
+
     const [state, setState] = useState(data.status);
     const [open, setOpen] = useState(false);
     const handleCloseAddForm = () => setOpen(false);
@@ -47,6 +47,7 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
 
     const [brands, setBrands] = useState<{ id: number; name: string; status: boolean }[]>([]);
     const [categories, setCategories] = useState<{ id: number; name: string; status: boolean }[]>([]);
+    const [imgs, setImgs] = useState<{ id: number; idProduct: string; image: string; name: null }[]>([]);
 
     const fetchAPIBrands = async () => {
         try {
@@ -145,11 +146,11 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
     const [name, setName] = useState<string>(data.name);
     const [description, setDescription] = useState<string>(data.description);
     const [price, setPrice] = useState<number>(data.price);
+    const [images, setImages] = useState<File[]>([]);
     const [imageProducts, setImageProducts] = useState<File[]>(data.imageProducts.image);
     // const [specification, setSpecification] = useState<string[]>(data.specification.specification);
 
     const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        
         setId(event.target.value);
         console.log(id);
     };
@@ -164,67 +165,61 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
         setPrice(priceValue);
     };
 
-    // const upload = async (files: File[]) => {
-    //     try {
-    //         const uploadedImages = await Promise.all(
-    //             files.map(file => {
-    //                 if (!file || !file.type.match(/image.*/)) return null;
-
-    //                 return new Promise<string | null>((resolve, reject) => {
-    //                     MySwal.fire({
-    //                         title: 'Đang tải lên...',
-    //                         allowOutsideClick: false,
-    //                         didOpen: () => {
-    //                             const popup = MySwal.getPopup();
-    //                             if (popup) {
-    //                                 popup.style.zIndex = "9999";
-    //                             }
-    //                             MySwal.showLoading();
-    //                         },
-    //                         timer: 2000,
-    //                     });
-
-    //                     const fd = new FormData();
-    //                     fd.append('image', file);
-
-    //                     const xhr = new XMLHttpRequest();
-    //                     xhr.open('POST', 'https://api.imgur.com/3/image.json');
-    //                     xhr.onload = function () {
-    //                         const link = JSON.parse(xhr.responseText).data.link;
-    //                         resolve(link);
-    //                         MySwal.close();
-    //                     };
-
-    //                     xhr.onerror = function () {
-    //                         reject(new Error('Failed to upload image'));
-    //                     };
-    //                     xhr.setRequestHeader('Authorization', 'Client-ID 983c8532c49a20e');
-    //                     xhr.send(fd);
-    //                 });
-    //             })
-    //         );
-
-    //         return {
-    //             uploadedImages,
-    //         };
-    //     } catch (error) {
-    //         console.error('Error uploading images:', error);
-    //         return {
-    //             uploadedImages: [],
-    //         };
-    //     }
-    // };
+    const upload = async (files: File[]) => {
+        try {
+          const uploadedImages = await Promise.all(
+            files.map(file => {
+              if (!file || !file.type.match(/image.*/)) return null;
+              return new Promise<string | null>((resolve, reject) => {
+                MySwal.fire({
+                  title: 'Đang tải lên...',
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                    const popup = MySwal.getPopup();
+                    if (popup) {
+                      popup.style.zIndex = "9999"; 
+                    }
+                    MySwal.showLoading();
+                  },
+                  timer: 2000,
+                });
+                const fd = new FormData();
+                fd.append('image', file);
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'https://api.imgur.com/3/image.json');
+                xhr.onload = function () {
+                  const link = JSON.parse(xhr.responseText).data.link;
+                  resolve(link);
+                  MySwal.close();
+                };
+                xhr.onerror = function () {
+                  reject(new Error('Failed to upload image'));
+                };
+                xhr.setRequestHeader('Authorization', 'Client-ID 983c8532c49a20e');
+                xhr.send(fd);
+              });
+            })
+          );
+          return {
+            uploadedImages,
+          };
+        } catch (error) {
+          return {
+            uploadedImages: [],
+          };
+        }
+    };
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files) return;
-
+      
         const newImages: File[] = [];
-
+      
         for (let i = 0; i < event.target.files.length; i++) {
-            newImages.push(event.target.files[i]);
+          newImages.push(event.target.files[i]);
         }
-
-        setImageProducts([...imageProducts, ...newImages]);
+      
+        setImages([...images, ...newImages]);
     };
 
     // const handleSpecChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -237,8 +232,16 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
         event.preventDefault();
 
         try {
-            // const { uploadedImages } = await upload(images);
-            // const validImages = uploadedImages.filter((link): link is string => link !== null);
+            const { uploadedImages } = await upload(images);
+            const validImages = uploadedImages.filter((link): link is string => link !== null);
+            // setImgs(
+            //     {
+            //         id: 5,  
+            //         idProduct: data.id,
+            //         image: validImages
+            //     }
+            // )
+            
             const selectedBrandData = brands.find(brand => brand.name === selectedBrand);
             const selectedCategoryData = categories.find(category => category.name === selectedCategory);
 
@@ -253,9 +256,17 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
             formData.append('price', price.toString());
             formData.append('idBrand', selectedBrandData.id.toString());
             formData.append('idCategory', selectedCategoryData.id.toString());
-            data.imageProducts.forEach((imgItem: any, index: any) => {
+
+            console.log('validImages: ', validImages);
+            console.log('data.imageProducts: ', data.imageProducts);
+            const imgProducts = data.imageProducts.map((item: { image: string; }) => item.image)
+            console.log('imgProducts: ', imgProducts)
+            const finalImgItem = [...validImages, ...imgProducts]
+            console.log('finalImgItem: ', finalImgItem);
+            finalImgItem.forEach((imgItem: any, index: any) => {
                 formData.append(`imageProducts[${index}].image`, imgItem.image);
             });
+
             data.specification.forEach((specItem: any, index: any) => {
                 formData.append(`specification[${index}]`, specItem.specification);
             });
@@ -276,7 +287,7 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
                 timer: 2000,
             });
             setOpen(false);
-            window.location.reload();
+            // window.location.reload();
         } catch (error) {
             await MySwal.fire({
                 title: 'Đã có lỗi xảy ra!',
@@ -336,98 +347,106 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
                                 <button type='button' className={cx('close-btn')} onClick={handleCloseAddForm}>×</button>
                             </div>
                             <div className={cx('inputs')}>
-                                <label htmlFor="id">Chỉnh sửa mã sản phẩm:</label>
-                                <input
-                                    id="id"
-                                    type='text'
-                                    value={id}
-                                    className={cx('input-name')}
-                                    onChange={handleIdChange}
-                                />
-                                <label htmlFor="name">Chỉnh sửa tên sản phẩm:</label>
-                                <input
-                                    id="name"
-                                    type='text'
-                                    value={name}
-                                    className={cx('input-name')}
-                                    onChange={handleNameChange}
-                                />
-                                <label htmlFor="description">Chỉnh sửa mô tả sản phẩm:</label>
-                                <textarea
-                                    id="description"
-                                    name="description"
-                                    value={description}
-                                    onChange={handleDescriptionChange}
-                                    rows={3}
-                                />
-                                <label htmlFor="price">Chỉnh sửa giá tiền sản phẩm:</label>
-                                <input
-                                    id="price"
-                                    type='number'
-                                    value={price}
-                                    className={cx('input-name')}
-                                    onChange={handlePriceChange}
-                                />
-                                <label htmlFor="brand">Chỉnh sửa hãng sản xuất:</label>
-                                <select
-                                    id="brand"
-                                    name="brand"
-                                    value={selectedBrand}
-                                    className={cx('selector')}
-                                    onChange={handleSelectBrandChange}
-                                >
-                                    <option className={cx('option-first')} value="" disabled>
-                                        Hãng sản xuất
-                                    </option>
-                                    {brands.map((brand) => (
-                                        <option className={cx('option')} key={brand.id} value={brand.name}>
-                                            {brand.name}
+                                <div className={cx('left')}>
+                                    <label htmlFor="id">Chỉnh sửa mã sản phẩm:</label>
+                                    <input
+                                        id="id"
+                                        type='text'
+                                        value={id}
+                                        className={cx('input-name')}
+                                        onChange={handleIdChange}
+                                    />
+                                    <label htmlFor="name">Chỉnh sửa tên sản phẩm:</label>
+                                    <input
+                                        id="name"
+                                        type='text'
+                                        value={name}
+                                        className={cx('input-name')}
+                                        onChange={handleNameChange}
+                                    />
+                                    <label htmlFor="description">Chỉnh sửa mô tả sản phẩm:</label>
+                                    <textarea
+                                        id="description"
+                                        name="description"
+                                        value={description}
+                                        onChange={handleDescriptionChange}
+                                        rows={3}
+                                    />
+                                    <br />
+                                    <label htmlFor="price">Chỉnh sửa giá tiền sản phẩm:</label>
+                                    <input
+                                        id="price"
+                                        type='number'
+                                        value={price}
+                                        className={cx('input-name')}
+                                        onChange={handlePriceChange}
+                                    />
+                                    <label htmlFor="brand">Chỉnh sửa hãng sản xuất:</label>
+                                    <select
+                                        id="brand"
+                                        name="brand"
+                                        value={selectedBrand}
+                                        className={cx('selector')}
+                                        onChange={handleSelectBrandChange}
+                                    >
+                                        <option className={cx('option-first')} value="" disabled>
+                                            Hãng sản xuất
                                         </option>
-                                    ))}
-                                </select>
-                                <label htmlFor="category">Chỉnh sửa danh mục sản phẩm:</label>
-                                <select
-                                    name="category"
-                                    value={selectedCategory}
-                                    className={cx('selector')}
-                                    onChange={handleSelectCategoryChange}
-                                >
-                                    <option className={cx('option-first')} value="" disabled>
-                                        Danh mục sản phẩm
-                                    </option>
-                                    {categories.map((category) => (
-                                        <option className={cx('option')} key={category.id} value={category.name}>
-                                            {category.name}
+                                        {brands.map((brand) => (
+                                            <option className={cx('option')} key={brand.id} value={brand.name}>
+                                                {brand.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <label htmlFor="category">Chỉnh sửa danh mục sản phẩm:</label>
+                                    <select
+                                        name="category"
+                                        value={selectedCategory}
+                                        className={cx('selector')}
+                                        onChange={handleSelectCategoryChange}
+                                    >
+                                        <option className={cx('option-first')} value="" disabled>
+                                            Danh mục sản phẩm
                                         </option>
-                                    ))}
-                                </select>
-                                <label htmlFor="image">Chỉnh sửa hình ảnh:</label>
-                                <input
-                                    id="image"
-                                    type="file"
-                                    accept="image/*"
-                                    multiple
-                                    name="image"
-                                    onChange={handleImageUpload}
-                                />
-                                <div className={cx('show-image')}>
-                                    {data.imageProducts.map((img: { image: any; }) => (
-                                        <Image src={img.image}/>
-                                    ))}
+                                        {categories.map((category) => (
+                                            <option className={cx('option')} key={category.id} value={category.name}>
+                                                {category.name}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
-                                <br />
-                                <label htmlFor="specification">Chỉnh sửa thông số cho sản phẩm:</label>
-                                <textarea
-                                    id="specification"
-                                    name="specification"
-                                    value={
-                                        data.specification.map((spec: { specification: any; }) => (
-                                            spec.specification
-                                        ))
-                                    }
-                                    // onChange={handleSpecChange}
-                                    rows={3}
-                                />
+
+                                <div className={cx('right')}>
+                                    <label htmlFor="image">Hình ảnh hiện tại:</label>
+                                    <div className={cx('show-image')}>
+                                        {data.imageProducts.map((img: { image: any; }) => (
+                                            <Image src={img.image} />
+                                        ))}
+                                    </div>
+                                    <br />
+                                    <label htmlFor="image">Thêm hình ảnh mới:</label>
+                                    <input
+                                        id="image"
+                                        type="file"
+                                        accept="image/*"
+                                        multiple
+                                        name="image"
+                                        onChange={handleImageUpload}
+                                    />
+                                    <br />
+                                    <label htmlFor="specification">Chỉnh sửa thông số cho sản phẩm:</label>
+                                    <textarea
+                                        id="specification"
+                                        name="specification"
+                                        value={
+                                            data.specification.map((spec: { specification: any; }) => (
+                                                spec.specification
+                                            ))
+                                        }
+                                        // onChange={handleSpecChange}
+                                        rows={5}
+                                    />
+                                </div>
                             </div>
                             <Button primary small>Xác nhận</Button>
                         </form>

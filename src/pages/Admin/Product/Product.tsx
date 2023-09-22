@@ -274,6 +274,7 @@ const Product: React.FC<any> = () => {
       formData.append('price', price.toString());
       formData.append('idBrand', selectedBrandData.id.toString());
       formData.append('idCategory', selectedCategoryData.id.toString());
+      console.log('validImages: ', validImages);
       validImages.forEach((image, index) => {
         formData.append(`imageProducts[${index}].image`, image);
       });
