@@ -21,6 +21,7 @@ import Cart from "../pages/Cart";
 import LoginAdmin from "../pages/LoginAdmin";
 import Dashboard from "../pages/Admin/Dashboard";
 import Product from "../pages/Admin/Product";
+import ProductManagement from "../pages/Admin/ProductManagement";
 import Category from "../pages/Admin/Category";
 import Brand from "../pages/Admin/Brand";
 
@@ -42,6 +43,7 @@ const publicRoutes = [
 const privateRoutes = [
     { path: config.routes.admin, component: Dashboard, layout: MainAdminLayout },
     { path: config.routes.product, component: Product, layout: MainAdminLayout },
+      { path: config.routes.productManagement, component: ProductManagement, layout: MainAdminLayout },
     { path: config.routes.category, component: Category, layout: MainAdminLayout },
     { path: config.routes.brand, component: Brand, layout: MainAdminLayout },
 ];

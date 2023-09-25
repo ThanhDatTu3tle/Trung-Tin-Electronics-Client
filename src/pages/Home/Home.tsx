@@ -42,8 +42,8 @@ const Home: React.FC<any> = () => {
         idCategory: number;
         idEvent: number;
     }[]>([]);
-    const productsFourElement = products.slice(0, 4);
-    const productsThreeElement = products.slice(0, 3);
+    // const productsFourElement = products.slice(0, 4);
+    // const productsThreeElement = products.slice(0, 3);
 
     const fetchAPICategories = async () => {
         try {

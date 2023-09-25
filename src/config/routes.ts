@@ -19,8 +19,12 @@ const routes = {
 
     admin: "/admin",
     product: "/product",
+        productManagement: "/management",
+        productEditor: "/editor",
     category: "/category",
-    brand: "/brand"
+    brand: "/brand",
+    orders: "/orders",
+    customers: "/customers"
 };
   
 export default routes;

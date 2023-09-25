@@ -288,9 +288,9 @@ const Cart: React.FC<any> = () => {
                 </div>
 
                 <div className={cx("information")}>
-                {products.map((product) => (
-                    <CartRow key={product.id} data={product} onDeleteProduct={handleDeleteProduct} />
-                ))}
+                    {products.map((product) => (
+                        <CartRow key={product.id} data={product} onDeleteProduct={handleDeleteProduct} />
+                    ))}
                 </div>
             </div>
             <div className={cx('result')}>

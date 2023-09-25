@@ -31,6 +31,8 @@ const CartButton: React.FC = () => {
         location.pathname.includes('/brand') ||
         location.pathname.includes('/category') ||
         location.pathname.includes('/product') ||
+        location.pathname.includes('/management') ||
+        location.pathname.includes('/editor') ||
         location.pathname.includes('/dashboard') ||
         location.pathname.includes('/login');
 

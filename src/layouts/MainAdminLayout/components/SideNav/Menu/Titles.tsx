@@ -4,10 +4,10 @@ import styles from './Titles.module.scss';
 
 const cx = classNames.bind(styles)
 
-const Titles: React.FC<any> = ({ children }) => {
+const Titles: React.FC<any> = ({ children, title }) => {
     return (
         <div className={cx('wrapper')}> 
-            {children}
+            {title}{children}
         </div>
     )
 }
