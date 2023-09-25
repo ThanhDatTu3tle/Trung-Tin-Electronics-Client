@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect  } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
@@ -14,13 +14,12 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './ProductManagement.module.scss';
 import Button from '../../../components/Button';
-// import Image from '../../../components/Image';
-import ProductAdminComponent from '../../../components/ProductAdminCom/ProductAdminComponent';
 
 import { axiosClient } from '../../../axios';
 import BrandService from '../../../service/BrandService';
 import CategoryService from '../../../service/CategoryService';
 import ProductService from '../../../service/ProductService';
+import ProductManagementRow from '../../../components/ProductManagementRow';
 
 const faHouseIcon = faHouse as IconProp;
 const faArrowRightIcon = faArrowRight as IconProp;
@@ -31,12 +30,6 @@ const cx = classNames.bind(styles);
 const ProductManagement: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
 
-  const [brand0, setBrand0] = useState(true);
-  const [, setBrandChanged] = useState(false);
-
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
-  const [category0, setCategory0] = useState(true);
-
   const [open, setOpen] = useState(false);
   const handleCloseAddForm = () => setOpen(false);
   const handleOpenAddForm = () => {
@@ -46,6 +39,17 @@ const ProductManagement: React.FC<any> = () => {
     }
     setOpen(true);
   };
+
+  const [statusProduct, setStatusProduct] = useState('all')
+  const handleStatusAllProduct = () => {
+    setStatusProduct('all');
+  }
+  const handleStatusPublishedProduct = () => {
+    setStatusProduct('published');
+  }
+  const handleStatusHidedProduct = () => {
+    setStatusProduct('hided');
+  }
 
   const [brands, setBrands] = useState<{ id: number; name: string; status: boolean }[]>([]);
   const [categories, setCategories] = useState<{ id: number; name: string; status: boolean }[]>([]);
@@ -67,32 +71,32 @@ const ProductManagement: React.FC<any> = () => {
 
   const fetchAPIBrands = async () => {
     try {
-        const res = await BrandService.GetAllBrand();
-        return res.data; 
-    } catch (error) {}
+      const res = await BrandService.GetAllBrand();
+      return res.data;
+    } catch (error) { }
   };
   const fetchAPICategories = async () => {
-      try {
-          const res = await CategoryService.GetAllCategory();
-          return res.data; 
-      } catch (error) {}
+    try {
+      const res = await CategoryService.GetAllCategory();
+      return res.data;
+    } catch (error) { }
   };
   const fetchAPIProducts = async () => {
     try {
-        const res = await ProductService.GetAllProduct();
-        return res.data; 
-    } catch (error) {}
+      const res = await ProductService.GetAllProduct();
+      return res.data;
+    } catch (error) { }
   };
 
   const { data: brandsData, refetch: refetchBrands } = useQuery(
-      ["brandImages"],
-      fetchAPIBrands,
-      {}
+    ["brandImages"],
+    fetchAPIBrands,
+    {}
   );
   const { data: categoriesData, refetch: refetchCategories } = useQuery(
-      ["categoryImages"],
-      fetchAPICategories,
-      {}
+    ["categoryImages"],
+    fetchAPICategories,
+    {}
   );
   const { data: productsData, refetch: refetchProducts } = useQuery(
     ["productImages"],
@@ -102,28 +106,28 @@ const ProductManagement: React.FC<any> = () => {
 
   useEffect(() => {
     const fetchAllAPIs = async () => {
-        await Promise.all([
-            refetchBrands(), 
-            refetchCategories(),
-            refetchProducts()
-        ]);
+      await Promise.all([
+        refetchBrands(),
+        refetchCategories(),
+        refetchProducts()
+      ]);
     };
     fetchAllAPIs();
   }, [
-      refetchBrands, 
-      refetchCategories,
-      refetchProducts
+    refetchBrands,
+    refetchCategories,
+    refetchProducts
   ]);
   useEffect(() => {
     if (brandsData && categoriesData && productsData) {
-        setBrands(brandsData); 
-        setCategories(categoriesData);
-        setFilteredProductsResult(productsData);
+      setBrands(brandsData);
+      setCategories(categoriesData);
+      setFilteredProductsResult(productsData);
     }
   }, [
-      brandsData, 
-      categoriesData,
-      productsData
+    brandsData,
+    categoriesData,
+    productsData
   ]);
 
   const [selectedBrand, setSelectedBrand] = useState('');
@@ -153,9 +157,9 @@ const ProductManagement: React.FC<any> = () => {
     setDescription(event.target.value);
   };
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const priceValue = Number(event.target.value); 
+    const priceValue = Number(event.target.value);
     setPrice(priceValue);
-  };  
+  };
 
   const upload = async (files: File[]) => {
     try {
@@ -169,7 +173,7 @@ const ProductManagement: React.FC<any> = () => {
               didOpen: () => {
                 const popup = MySwal.getPopup();
                 if (popup) {
-                  popup.style.zIndex = "9999"; 
+                  popup.style.zIndex = "9999";
                 }
                 MySwal.showLoading();
               },
@@ -201,16 +205,16 @@ const ProductManagement: React.FC<any> = () => {
       };
     }
   };
-  
+
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
-  
+
     const newImages: File[] = [];
-  
+
     for (let i = 0; i < event.target.files.length; i++) {
       newImages.push(event.target.files[i]);
     }
-  
+
     setImages([...images, ...newImages]);
   };
 
@@ -222,17 +226,17 @@ const ProductManagement: React.FC<any> = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>, images: File[]) => {
     event.preventDefault();
-  
-    try {      
+
+    try {
       const { uploadedImages } = await upload(images);
       const validImages = uploadedImages.filter((link): link is string => link !== null);
       const selectedBrandData = brands.find(brand => brand.name === selectedBrand);
       const selectedCategoryData = categories.find(category => category.name === selectedCategory);
-    
+
       if (!selectedBrandData || !selectedCategoryData) {
         return;
       }
-    
+
       const formData = new FormData();
       formData.append('id', id);
       formData.append('name', name);
@@ -253,7 +257,7 @@ const ProductManagement: React.FC<any> = () => {
           'Content-Type': 'application/json',
         },
       };
-    
+
       await axiosClient.post('product/create', formData, config);
       await MySwal.fire({
         title: 'Thêm thành công!',
@@ -281,168 +285,183 @@ const ProductManagement: React.FC<any> = () => {
     <div className={cx('wrapper')}>
       <div className={cx('header')}>
         <div className={cx('left')}>
-          <p style={{width: 'fit-content', fontWeight: 700}}>QUẢN LÝ SẢN PHẨM</p>
+          <p style={{ width: 'fit-content', fontWeight: 700 }}>QUẢN LÝ SẢN PHẨM</p>
         </div>
         <div className={cx('right')}>
           <div className={cx('current-position')}>
-            <FontAwesomeIcon 
-                icon={faHouseIcon}
-                style={{paddingRight: '1rem'}} 
+            <FontAwesomeIcon
+              icon={faHouseIcon}
+              style={{ paddingRight: '1rem' }}
             />
-            <FontAwesomeIcon 
-                icon={faArrowRightIcon}
-                style={{width: '1rem', height: '1rem', paddingRight: '0.5rem'}} 
+            <FontAwesomeIcon
+              icon={faArrowRightIcon}
+              style={{ width: '1rem', height: '1rem', paddingRight: '0.5rem' }}
             />
             <p>Sản phẩm</p>
-            <FontAwesomeIcon 
-                icon={faArrowRightIcon}
-                style={{width: '1rem', height: '1rem', paddingRight: '0.5rem'}} 
+            <FontAwesomeIcon
+              icon={faArrowRightIcon}
+              style={{ width: '1rem', height: '1rem', paddingRight: '0.5rem', paddingLeft: '0.5rem' }}
             />
             <p>Quản lý sản phẩm</p>
-          </div>
-          <div className={cx('add-btn')}>
-            <Button primary small onClick={handleOpenAddForm}>Thêm sản phẩm</Button>
-              <Backdrop
-                sx={{ color: '#fff', zIndex: 9 }}
-                open={open}
-              >
-                <div className={cx('add-form')}>
-                  <form action="/upload" method="post" className={cx('form')} onSubmit={(event) => handleSubmit(event, images)}>                    
-                    <div className={cx('title')}>
-                      <p style={{fontSize: '1.5rem', fontWeight: '500'}}>THÊM SẢN PHẨM</p>
-                      <button type='button' className={cx('close-btn')} onClick={handleCloseAddForm}>×</button>
-                    </div>
-                    <div className={cx('inputs')}>
-                      <label htmlFor="id">Điền mã sản phẩm:</label>
-                      <input 
-                        id="id"
-                        type='text' 
-                        placeholder='Mã sản phẩm' 
-                        className={cx('input-name')}
-                        onChange={handleIdChange}
-                      />
-                      <label htmlFor="name">Điền tên sản phẩm:</label>
-                      <input 
-                        id="name"
-                        type='text' 
-                        placeholder='Tên sản phẩm' 
-                        className={cx('input-name')}
-                        onChange={handleNameChange}
-                      />
-                      <label htmlFor="description">Mô tả sản phẩm:</label>
-                      <textarea
-                        id="description"
-                        name="description"
-                        value={description}
-                        onChange={handleDescriptionChange}
-                        rows={3} 
-                      />
-                      <label htmlFor="price">Giá tiền sản phẩm:</label>
-                      <input 
-                        id="price"
-                        type='number' 
-                        placeholder='Giá tiền sản phẩm' 
-                        className={cx('input-name')}
-                        onChange={handlePriceChange}
-                      />
-                      <label htmlFor="brand">Chọn hãng sản xuất:</label>
-                      <select
-                        id="brand"
-                        name="brand"
-                        value={selectedBrand}
-                        className={cx('selector')}
-                        onChange={handleSelectBrandChange}
-                      >
-                        <option className={cx('option-first')} value="" disabled>
-                          Hãng sản xuất
-                        </option>
-                        {brands.map((brand) => (
-                          <option className={cx('option')} key={brand.id} value={brand.name}>
-                            {brand.name}
-                          </option>
-                        ))}
-                      </select>
-                      <label htmlFor="category">Chọn danh mục sản phẩm:</label>
-                      <select
-                        name="category"
-                        value={selectedCategory}
-                        className={cx('selector')}
-                        onChange={handleSelectCategoryChange}
-                      >
-                        <option className={cx('option-first')} value="" disabled>
-                          Danh mục sản phẩm
-                        </option>
-                        {categories.map((category) => (
-                          <option className={cx('option')} key={category.id} value={category.name}>
-                            {category.name}
-                          </option>
-                        ))}
-                      </select>
-                      <label htmlFor="image">Chọn hình ảnh:</label>
-                      <input 
-                        id="image"  
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        name="image"
-                        onChange={handleImageUpload}
-                      />
-                      {/* <div className={cx('show-image')}>
-                        {filteredProductsResult.imageProducts.map((img) => (
-                          <Image src={img.image}/>
-                        ))}
-                      </div> */}
-                      <br />
-                      <label htmlFor="specification">Thêm thông số cho sản phẩm:</label>
-                      <textarea
-                        id="specification"
-                        name="specification"
-                        value={specification}
-                        onChange={handleSpecChange}
-                        rows={3} 
-                      />
-                    </div>
-                    <Button primary small>Xác nhận</Button>
-                  </form>     
-                </div>
-              </Backdrop>
           </div>
         </div>
       </div>
       <div className={cx('main-container')}>
-        {/* <div className={cx('products')}>
-          {category0 === true ? (
+        <div className={cx('all-products-info')}>
+          <b>Sản phẩm:</b>
+          {statusProduct === 'all' ? (
             <>
-              {categories.map((dataa) => (
-                <div className={cx('machine')}>
-                  <div className={cx('title-wrapper')}>
-                    <div className={cx('title')}>{dataa.name}</div>
-                  </div>
-                  <div className={cx('product')}>
-                    {filteredProductsResult.filter((data) => data.category.name === dataa.name).map((data) => (
-                        <ProductAdminComponent key={data.id} data={data} />
-                    ))}
-                  </div>
-                </div>
-              ))}
+              <p style={{ marginLeft: '1rem', color: '#018ec3', fontWeight: 700, cursor: 'pointer' }} onClick={handleStatusAllProduct}>Tất cả sản phẩm ({filteredProductsResult.length}) | </p>
+              <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusPublishedProduct}>Sản phẩm đang được bày bán ({filteredProductsResult.filter((data) => data.status === true).length}) | </p>
+              <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusHidedProduct}>Sản phẩm đang được ẩn đi ({filteredProductsResult.filter((data) => data.status === false).length})</p>
             </>
           ) : (
             <>
-              {selectedCategoryIds.map((dataa) => (
-                <div className={cx('machine')}>
-                  <div className={cx('title-wrapper')}>
-                    <div className={cx('title')}>{dataa}</div>
-                  </div>
-                  <div className={cx('product')}>
-                    {filteredProductsResult.filter((data) => data.category.name === dataa).map((data) => (
-                        <ProductAdminComponent key={data.id} data={data} />
-                    ))}
-                  </div>
-                </div>
-              ))}
+              {statusProduct === 'published' ? (
+                <>
+                  <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusAllProduct}>Tất cả sản phẩm ({filteredProductsResult.length}) | </p>
+                  <p style={{ marginLeft: '1rem', color: '#018ec3', fontWeight: 700, cursor: 'pointer' }} onClick={handleStatusPublishedProduct}>Sản phẩm đang được bày bán ({filteredProductsResult.filter((data) => data.status === true).length}) | </p>
+                  <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusHidedProduct}>Sản phẩm đang được ẩn đi ({filteredProductsResult.filter((data) => data.status === false).length})</p>
+                </>
+              ) : (
+                <>
+                  <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusAllProduct}>Tất cả sản phẩm ({filteredProductsResult.length}) | </p>
+                  <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusPublishedProduct}>Sản phẩm đang được bày bán ({filteredProductsResult.filter((data) => data.status === true).length}) | </p>
+                  <p style={{ marginLeft: '1rem', color: '#018ec3', fontWeight: 700, cursor: 'pointer' }} onClick={handleStatusHidedProduct}>Sản phẩm đang được ẩn đi ({filteredProductsResult.filter((data) => data.status === false).length})</p>
+                </>
+              )}
             </>
           )}
-        </div> */}
+        </div>
+        <br />
+        <div className={cx('add-btn')}>
+          <Button primary small onClick={handleOpenAddForm}>Thêm sản phẩm</Button>
+          <Backdrop
+            sx={{ color: '#fff', zIndex: 9 }}
+            open={open}
+          >
+            <div className={cx('add-form')}>
+              <form action="/upload" method="post" className={cx('form')} onSubmit={(event) => handleSubmit(event, images)}>
+                <div className={cx('title')}>
+                  <p style={{ fontSize: '1.5rem', fontWeight: '500' }}>THÊM SẢN PHẨM</p>
+                  <button type='button' className={cx('close-btn')} onClick={handleCloseAddForm}>×</button>
+                </div>
+                <div className={cx('inputs')}>
+                  <label htmlFor="id">Điền mã sản phẩm:</label>
+                  <input
+                    id="id"
+                    type='text'
+                    placeholder='Mã sản phẩm'
+                    className={cx('input-name')}
+                    onChange={handleIdChange}
+                  />
+                  <label htmlFor="name">Điền tên sản phẩm:</label>
+                  <input
+                    id="name"
+                    type='text'
+                    placeholder='Tên sản phẩm'
+                    className={cx('input-name')}
+                    onChange={handleNameChange}
+                  />
+                  <label htmlFor="description">Mô tả sản phẩm:</label>
+                  <textarea
+                    id="description"
+                    name="description"
+                    value={description}
+                    onChange={handleDescriptionChange}
+                    rows={3}
+                  />
+                  <label htmlFor="price">Giá tiền sản phẩm:</label>
+                  <input
+                    id="price"
+                    type='number'
+                    placeholder='Giá tiền sản phẩm'
+                    className={cx('input-name')}
+                    onChange={handlePriceChange}
+                  />
+                  <label htmlFor="brand">Chọn hãng sản xuất:</label>
+                  <select
+                    id="brand"
+                    name="brand"
+                    value={selectedBrand}
+                    className={cx('selector')}
+                    onChange={handleSelectBrandChange}
+                  >
+                    <option className={cx('option-first')} value="" disabled>
+                      Hãng sản xuất
+                    </option>
+                    {brands.map((brand) => (
+                      <option className={cx('option')} key={brand.id} value={brand.name}>
+                        {brand.name}
+                      </option>
+                    ))}
+                  </select>
+                  <label htmlFor="category">Chọn danh mục sản phẩm:</label>
+                  <select
+                    name="category"
+                    value={selectedCategory}
+                    className={cx('selector')}
+                    onChange={handleSelectCategoryChange}
+                  >
+                    <option className={cx('option-first')} value="" disabled>
+                      Danh mục sản phẩm
+                    </option>
+                    {categories.map((category) => (
+                      <option className={cx('option')} key={category.id} value={category.name}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                  <label htmlFor="image">Chọn hình ảnh:</label>
+                  <input
+                    id="image"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    name="image"
+                    onChange={handleImageUpload}
+                  />
+                  {/* <div className={cx('show-image')}>
+                        {filteredProductsResult.imageProducts.map((img) => (
+                          <Image src={img.image}/>
+                        ))}
+                      </div> */}
+                  <br />
+                  <label htmlFor="specification">Thêm thông số cho sản phẩm:</label>
+                  <textarea
+                    id="specification"
+                    name="specification"
+                    value={specification}
+                    onChange={handleSpecChange}
+                    rows={3}
+                  />
+                </div>
+                <Button primary small>Xác nhận</Button>
+              </form>
+            </div>
+          </Backdrop>
+        </div>
+        <br />
+        <div className={cx('table')}>
+          <div className={cx("titles")}>
+            <div className={cx("image")}>Hình ảnh</div>
+            <div className={cx("name")}>Tên sản phẩm</div>
+            <div className={cx("id")}>Mã sản phẩm</div>
+            <div className={cx("category")}>Danh mục</div>
+            <div className={cx("brand")}>Hãng sản xuất</div>
+            <div className={cx("price")}>Giá tiền</div>
+            <div className={cx("stock")}>Hàng hóa</div>
+            <div className={cx("status")}>Trạng thái</div>
+            <div className={cx("date")}>Chỉnh sửa gần nhất</div>
+            <div className={cx("edit")}>Chỉnh sửa</div>
+          </div>
+          <br />
+          <div className={cx("information")}>
+            {filteredProductsResult.map((product) => (
+              <ProductManagementRow key={product.id} data={product} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

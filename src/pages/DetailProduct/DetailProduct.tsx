@@ -35,23 +35,22 @@ const DetailProduct: React.FC = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
 
-  const [seenProducts, setSeenProducts] = useState<
-    {
-      id: string;
-      name: string;
-      description: string;
-      specification: { id: number; specification: string }[];
-      imageProducts: { id: number; image: string }[];
-      price: number;
-      brand: { id: number; name: string; image: string };
-      event: null;
-      status: boolean;
-      category: { id: number; name: string; image: string; status: boolean };
-      idBrand: number;
-      idCategory: number;
-      idEvent: number;
-    }[]
-  >([]);  
+  const [seenProducts, setSeenProducts] = useState<{
+    id: string;
+    name: string;
+    description: string;
+    specification: { id: number; specification: string }[];
+    imageProducts: { id: number; image: string }[];
+    price: number;
+    brand: { id: number; name: string; image: string };
+    event: null;
+    status: boolean;
+    category: { id: number; name: string; image: string; status: boolean };
+    idBrand: number;
+    idCategory: number;
+    idEvent: number;
+  }[]
+  >([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const seenProductsLocal = JSON.parse(localStorage.getItem('seen') || '[]');
 
@@ -66,7 +65,7 @@ const DetailProduct: React.FC = () => {
     setCount(count + 1);
   };
 
-  let product: { 
+  let product: {
     id: string;
     name: string;
     description: string;
@@ -79,49 +78,46 @@ const DetailProduct: React.FC = () => {
     category: { id: number; name: string; image: string; status: boolean };
     idBrand: number;
     idCategory: number;
-    idEvent: number; 
+    idEvent: number;
   } | undefined;
 
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
     product ? product.imageProducts[0]?.image : undefined
   );
-  const [products, setProducts] = useState<
-    {
-      id: string;
-      name: string;
-      description: string;
-      specification: { id: number; specification: string }[];
-      imageProducts: { id: number; image: string }[];
-      price: number;
-      brand: { id: number; name: string; image: string };
-      event: null;
-      status: boolean;
-      category: { id: number; name: string; image: string; status: boolean };
-      idBrand: number;
-      idCategory: number;
-      idEvent: number;
-    }[]
+  const [products, setProducts] = useState<{
+    id: string;
+    name: string;
+    description: string;
+    specification: { id: number; specification: string }[];
+    imageProducts: { id: number; image: string }[];
+    price: number;
+    brand: { id: number; name: string; image: string };
+    event: null;
+    status: boolean;
+    category: { id: number; name: string; image: string; status: boolean };
+    idBrand: number;
+    idCategory: number;
+    idEvent: number;
+  }[]
   >([]);
-  
+
   const fetchAPIProducts = async () => {
     try {
       const res = await ProductService.GetAllProduct();
       return res.data;
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    }
+    } catch (error) { }
   };
-  
+
   const { data: productsData, refetch: refetchProducts } = useQuery(
     ['productImages'],
     fetchAPIProducts,
     {}
   );
-  
+
   useEffect(() => {
     refetchProducts();
   }, [refetchProducts]);
-  
+
   useEffect(() => {
     if (productsData) {
       setProducts(productsData);
@@ -142,7 +138,7 @@ const DetailProduct: React.FC = () => {
         return null;
       }
     };
-  
+
     const fetchAllProductDetails = async () => {
       const productDetails = await Promise.all(
         seenProductsLocal.map(async (productId: string) => {
@@ -155,16 +151,16 @@ const DetailProduct: React.FC = () => {
           return null;
         })
       );
-  
+
       setSeenProducts(productDetails.filter((seenProduct) => seenProduct !== null));
       setIsLoadingProducts(false);
     };
-  
+
     if (isLoadingProducts) {
       fetchAllProductDetails();
     }
   }, [isLoadingProducts, seenProductsLocal]);
-  
+
   if (products.length > 0) {
     product = products.find((product) => product.id === id);
   }
@@ -183,13 +179,13 @@ const DetailProduct: React.FC = () => {
     const existingCart: { [productId: string]: number } = JSON.parse(
       localStorage.getItem('cart') || '{}'
     );
-  
+
     if (!existingCart[productId]) {
       existingCart[productId] = quantity;
       localStorage.setItem('cart', JSON.stringify(existingCart));
-  
+
       addToCart(productId, count);
-  
+
       MySwal.fire({
         title: 'Đã thêm vào giỏ hàng!',
         icon: 'success',
@@ -201,7 +197,7 @@ const DetailProduct: React.FC = () => {
     } else {
       existingCart[productId] += quantity;
       localStorage.setItem('cart', JSON.stringify(existingCart));
-      
+
       addToCart(productId, count);
 
       MySwal.fire({
@@ -245,16 +241,16 @@ const DetailProduct: React.FC = () => {
               <>
                 <Image src={product.imageProducts[0]?.image} />
               </>
-            )}            
+            )}
           </div>
           <div className={cx('thumbnail-images')}>
             {product.imageProducts.map((imageData: { image: string | undefined; }, index: number) => (
               <img
-                  key={String(index)} 
-                  src={imageData.image}
-                  alt={`Thumbnail ${index + 1}`}
-                  className={cx('thumbnail', { 'active': selectedImage === imageData.image })}
-                  onClick={() => handleThumbnailClick(imageData.image)}
+                key={String(index)}
+                src={imageData.image}
+                alt={`Thumbnail ${index + 1}`}
+                className={cx('thumbnail', { 'active': selectedImage === imageData.image })}
+                onClick={() => handleThumbnailClick(imageData.image)}
               />
             ))}
           </div>
@@ -316,64 +312,64 @@ const DetailProduct: React.FC = () => {
         </p>
       ))}
       <div className={cx('seen-related')}>
-          {screenWidth >= 400 ? (
-              <>
-                  <h3>SẢN PHẨM ĐÃ XEM</h3>
-              </>
-          ): (
-              <>
-                  <h5>SẢN PHẨM ĐÃ XEM</h5>
-              </>
-          )}
-          <br />
-          {screenWidth <= 899 && screenWidth >= 600 ? (
-              <>
-                  <div className={cx('product')}>
-                      {seenProducts.map((data) => (
-                          <ProductComponent key={data.id} data={data} />
-                      ))}
-                  </div>
-              </>
-              ) : (
-              <>
-                  <div className={cx('product')}>
-                      {seenProducts.map((data) => (
-                          <ProductComponent key={data.id} data={data} />
-                      ))}
-                  </div>
-              </>
-              )
-          }
+        {screenWidth >= 400 ? (
+          <>
+            <h3>SẢN PHẨM ĐÃ XEM</h3>
+          </>
+        ) : (
+          <>
+            <h5>SẢN PHẨM ĐÃ XEM</h5>
+          </>
+        )}
+        <br />
+        {screenWidth <= 899 && screenWidth >= 600 ? (
+          <>
+            <div className={cx('product')}>
+              {seenProducts.map((data) => (
+                <ProductComponent key={data.id} data={data} />
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className={cx('product')}>
+              {seenProducts.map((data) => (
+                <ProductComponent key={data.id} data={data} />
+              ))}
+            </div>
+          </>
+        )
+        }
       </div>
       <div className={cx('seen-related')}>
-          {screenWidth >= 400 ? (
-              <>
-                  <h3>SẢN PHẨM LIÊN QUAN</h3>
-              </>
-          ): (
-              <>
-                  <h5>SẢN PHẨM LIÊN QUAN</h5>
-              </>
-          )}
-          <br />
-          {screenWidth <= 899 && screenWidth >= 600 ? (
-              <>
-                  <div className={cx('product')}>
-                      {relatedProducts.map((data) => (
-                          <ProductComponent key={data.id} data={data} />
-                      ))}
-                  </div>
-              </>
-              ) : (
-              <>
-                  <div className={cx('product')}>
-                      {relatedProducts.map((data) => (
-                          <ProductComponent key={data.id} data={data} />
-                      ))}
-                  </div>
-              </>
-              )
-          }
+        {screenWidth >= 400 ? (
+          <>
+            <h3>SẢN PHẨM LIÊN QUAN</h3>
+          </>
+        ) : (
+          <>
+            <h5>SẢN PHẨM LIÊN QUAN</h5>
+          </>
+        )}
+        <br />
+        {screenWidth <= 899 && screenWidth >= 600 ? (
+          <>
+            <div className={cx('product')}>
+              {relatedProducts.map((data) => (
+                <ProductComponent key={data.id} data={data} />
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className={cx('product')}>
+              {relatedProducts.map((data) => (
+                <ProductComponent key={data.id} data={data} />
+              ))}
+            </div>
+          </>
+        )
+        }
       </div>
       <CartButton />
     </div>

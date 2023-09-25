@@ -47,7 +47,7 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
 
     const [brands, setBrands] = useState<{ id: number; name: string; status: boolean }[]>([]);
     const [categories, setCategories] = useState<{ id: number; name: string; status: boolean }[]>([]);
-    const [imgs, setImgs] = useState<{ id: number; idProduct: string; image: string; name: null }[]>([]);
+    // const [imgs, setImgs] = useState<{ id: number; idProduct: string; image: string; name: null }[]>([]);
 
     const fetchAPIBrands = async () => {
         try {

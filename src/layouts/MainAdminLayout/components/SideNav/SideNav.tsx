@@ -12,7 +12,9 @@ const cx = classNames.bind(styles)
 
 const SideNav: React.FC = () => {
     const [status, setStatus] = useState(false);
-
+    const currentURL = window.location.href; 
+    const pathArray = currentURL.split('/'); 
+    const lastPathSegment = pathArray[pathArray.length - 1];
     const handleStatus = () => {
         setStatus(!status);
     }
@@ -21,7 +23,7 @@ const SideNav: React.FC = () => {
         <div className={cx('wrapper')}>
             <Titles>
                 <TitleItem title='Bảng thống kê' to={config.routes.admin} icon={faChartLine}  />
-                {status !== true ? (
+                {status !== true && lastPathSegment !== 'management' && lastPathSegment !== 'product' ? (
                     <div className={cx('father')} onClick={handleStatus}>
                         <div className={cx('title')}>
                             <FontAwesomeIcon 

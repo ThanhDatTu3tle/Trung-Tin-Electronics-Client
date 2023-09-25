@@ -244,24 +244,25 @@ const Cart: React.FC<any> = () => {
                     'Content-Type': 'application/json', 
                 },
             });
-            MySwal.fire({
+            await MySwal.fire({
                 title: 'Đặt hàng thành công!',
                 icon: 'success',
                 didOpen: () => {
                   MySwal.showLoading();
                 },
-                timer: 1500,
+                timer: 2000,
             });
             console.log('Response from server:', response);
+            localStorage.removeItem('cart');
             window.location.href = "/";
         } catch (error) {
-            MySwal.fire({
+            await MySwal.fire({
                 title: 'Đã có lỗi xảy ra!',
                 icon: 'error',
                 didOpen: () => {
                   MySwal.showLoading();
                 },
-                timer: 1500,
+                timer: 2000,
             });
             console.error('Error:', error);
         }
