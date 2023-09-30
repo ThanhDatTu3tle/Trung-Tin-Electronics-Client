@@ -1,10 +1,111 @@
 .wrapper {
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    height: 100%;
-    padding: 1rem;
-    background-color: #FFF;
+    height: fit-content;
+    padding-left: 1rem;
+
+    .header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.2rem;
+        background-color: #FFF;
+
+        .left {
+            display: flex;
+            width: 40%;
+        }
+
+        .right {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            width: 60%;
+
+            .current-position {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-end;
+                width: 100%;
+            }
+
+            .add-btn {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                width: fit-content;
+                cursor: pointer;
+            }
+        }
+    }
 
     .main-container {
-    
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        padding-top: 1rem;
+
+        .content-left {
+            display: flex;
+            flex-direction: column;
+            width: 60%;
+            height: 22rem;
+
+            .synthetic {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+                height: fit-content;
+                padding: 1rem;
+                background-color: #FFF;
+
+                .logo {
+                    width: fit-content;
+                    height: fit-content;
+                }
+
+                .info {
+                    display: flex;
+                    flex-direction: column;
+                    width: max-content;
+                    height: 100%;
+                    padding-left: 1rem;
+
+                    .revenue {
+
+                    }
+                }
+            }
+
+            .chart {
+                background-color: #FFF;
+            }
+        }
+
+        .content-right {
+            display: flex;
+            flex-direction: column;            
+            width: 40%;
+
+            .total-balance {
+                display: flex;
+                flex-direction: row;
+                background-color: #FFF;
+            }
+
+            .total-report {
+                display: flex;
+                flex-direction: column;
+                background-color: #FFF;
+            }
+        }
     }
 }

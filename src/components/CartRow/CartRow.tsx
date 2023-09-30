@@ -39,7 +39,7 @@ const CartRow: React.FC<any> = ({ data, onDeleteProduct }) => {
                 </div>
             </div>
 
-        <div className={cx('line')}></div>
+            <div className={cx('line')}></div>
         </div>
     );
   };

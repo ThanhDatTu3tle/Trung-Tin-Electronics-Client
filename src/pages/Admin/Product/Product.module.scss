@@ -3,8 +3,7 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
-    padding: 1rem;
-    background-color: #FFF;
+    padding-left: 1rem;
 
     .header {
         display: flex;
@@ -12,7 +11,9 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
+        padding: 1rem;
         font-size: 1.2rem;
+        background-color: #FFF;
 
         .left {
             display: flex;

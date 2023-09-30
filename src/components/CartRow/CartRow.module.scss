@@ -1,5 +1,6 @@
 .wrapper {
     display: flex;
+    flex-direction: column;
     width: 100%;
     height: fit-content;
 
@@ -44,11 +45,17 @@
             height: auto;
         }
     }
+
+    .line {
+        width: 96%;
+        border: 0.1px solid #018ec3;
+    }
 }
 
 @media screen and (max-width: 1099px) and (min-width: 900px) {
     .wrapper {
         display: flex;
+        flex-direction: column;
         width: 100%;
         height: fit-content;
     
@@ -94,11 +101,17 @@
             }
         }
     }
+
+    .line {
+        width: 96%;
+        border: 0.1px solid #018ec3;
+    }
 }
 
 @media screen and (max-width: 899px) and (min-width: 600px) {
     .wrapper {
         display: flex;
+        flex-direction: column;
         width: 100%;
         height: fit-content;
     
@@ -144,11 +157,17 @@
             }
         }
     }
+
+    .line {
+        width: 96%;
+        border: 0.1px solid #018ec3;
+    }
 }
 
 @media screen and (max-width: 599px) and (min-width: 281px) {
     .wrapper {
         display: flex;
+        flex-direction: column;
         width: 100%;
         height: fit-content;
     
@@ -194,11 +213,17 @@
             }
         }
     }
+
+    .line {
+        width: 96%;
+        border: 0.1px solid #018ec3;
+    }
 }
 
 @media screen and (max-width: 280px) and (min-width: 200px) {
     .wrapper {
         display: flex;
+        flex-direction: column;
         width: 100%;
         height: fit-content;
     
@@ -242,5 +267,11 @@
                 height: auto;
             }
         }
+    }
+
+    
+    .line {
+        width: 96%;
+        border: 0.1px solid #018ec3;
     }
 }
