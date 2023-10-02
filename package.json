@@ -21,10 +21,13 @@
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "axios": "^1.4.0",
+    "chart.js": "^4.4.0",
     "classnames": "^2.3.2",
+    "faker": "^6.6.6",
     "normalize.css": "^8.0.1",
     "query-string": "^8.1.0",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.2",
     "react-query": "^3.39.3",
@@ -66,6 +69,7 @@
     ]
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.1.0",
     "@types/node-sass": "^4.11.3",
     "@types/react-slick": "^0.23.10",
     "dotenv-webpack": "^8.0.1",

@@ -2,7 +2,7 @@ import axios from 'axios';
 import queryString from 'query-string';
 
 // const baseUrl = `${process.env.REACT_APP_SERVER_SPRINGBOOT_URL}`;
-const baseUrl = `https://bf73-27-3-241-181.ngrok-free.app/api/v1/`;
+const baseUrl = `https://7f12-27-3-241-181.ngrok-free.app/api/v1/`;
 const getToken = () => localStorage.getItem('token');
 
 const axiosClient = axios.create({
