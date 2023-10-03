@@ -67,6 +67,7 @@ const ProductManagement: React.FC<any> = () => {
     idBrand: number;
     idCategory: number;
     idEvent: number;
+    quantity: number;
   }[]>([]);
 
   const fetchAPIBrands = async () => {
@@ -258,8 +259,8 @@ const ProductManagement: React.FC<any> = () => {
         },
       };
 
-      await axiosClient.post('product/create', formData, config);
-      await MySwal.fire({
+      axiosClient.post('product/create', formData, config);
+      MySwal.fire({
         title: 'Thêm thành công!',
         icon: 'success',
         didOpen: () => {
@@ -270,7 +271,7 @@ const ProductManagement: React.FC<any> = () => {
       setOpen(false);
       window.location.reload();
     } catch (error) {
-      await MySwal.fire({
+      MySwal.fire({
         title: 'Đã có lỗi xảy ra!',
         icon: 'error',
         didOpen: () => {

@@ -12,6 +12,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker';
+
 import classNames from "classnames/bind";
 import logo from '../../../assets/logo.png'
 
@@ -48,29 +49,36 @@ export const options = {
 };
 
 const labels = [
-  'January', 
-  'February', 
-  'March', 
-  'April', 
-  'May', 
-  'June', 
-  'July', 
-  'August', 
-  'September', 
-  'October', 
-  'November', 
-  'December'
+  'Tháng 1', 
+  'Tháng 2', 
+  'Tháng 3', 
+  'Tháng 4', 
+  'Tháng 5', 
+  'Tháng 6', 
+  'Tháng 7', 
+  'Tháng 8', 
+  'Tháng 9', 
+  'Tháng 10', 
+  'Tháng 11', 
+  'Tháng 12'
 ];
 
 export const data = {
   labels,
   datasets: [
     {
-      fill: true,
+      fill: false,
       label: 'Doanh Thu',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+      borderColor: 'rgb(0, 186, 157)',
+      backgroundColor: 'rgba(0, 186, 157, 0.5)',
+    },
+    {
+      fill: false,
+      label: 'Chi Phí',
+      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+      borderColor: 'rgb(255, 84, 112)',
+      backgroundColor: 'rgba(255, 84, 112, 0.5)',
     },
   ],
 };

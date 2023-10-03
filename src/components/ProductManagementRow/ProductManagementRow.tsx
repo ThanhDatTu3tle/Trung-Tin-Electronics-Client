@@ -8,7 +8,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import Backdrop from '@mui/material/Backdrop';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faEllipsisVertical, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faEllipsisVertical, faEyeSlash, faEye, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './ProductManagementRow.module.scss';
 import Image from '../Image';
@@ -25,7 +25,9 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
     const MySwal = withReactContent(Swal);
     const [state, setState] = useState(data.status);
     const [open, setOpen] = useState(false);
+    const [openQuantity, setOpenQuantity] = useState(false);
     const handleCloseAddForm = () => setOpen(false);
+    const handleCloseEditQuantityForm = () => setOpenQuantity(false);
 
     const dateObj = new Date(data.updatedAt);
     const day = dateObj.getDate();
@@ -110,6 +112,7 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
     const [images, setImages] = useState<File[]>([]);
     const [imageProducts, setImageProducts] = useState<File[]>(data.imageProducts.image);
     // const [specification, setSpecification] = useState<string[]>(data.specification.specification);
+    const [quantity, setQuantity] = useState<number>(data.quantity);
 
     const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setId(event.target.value);
@@ -126,60 +129,60 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
         setPrice(priceValue);
     };
 
-    const upload = async (files: File[]) => {
-        try {
-          const uploadedImages = await Promise.all(
-            files.map(file => {
-              if (!file || !file.type.match(/image.*/)) return null;
-              return new Promise<string | null>((resolve, reject) => {
-                MySwal.fire({
-                  title: 'Đang tải lên...',
-                  allowOutsideClick: false,
-                  didOpen: () => {
-                    const popup = MySwal.getPopup();
-                    if (popup) {
-                      popup.style.zIndex = "9999"; 
-                    }
-                    MySwal.showLoading();
-                  },
-                  timer: 2000,
-                });
-                const fd = new FormData();
-                fd.append('image', file);
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'https://api.imgur.com/3/image.json');
-                xhr.onload = function () {
-                  const link = JSON.parse(xhr.responseText).data.link;
-                  resolve(link);
-                  MySwal.close();
-                };
-                xhr.onerror = function () {
-                  reject(new Error('Failed to upload image'));
-                };
-                xhr.setRequestHeader('Authorization', 'Client-ID 983c8532c49a20e');
-                xhr.send(fd);
-              });
-            })
-          );
-          return {
-            uploadedImages,
-          };
-        } catch (error) {
-          return {
-            uploadedImages: [],
-          };
-        }
-    };
+    // const upload = async (files: File[]) => {
+    //     try {
+    //         const uploadedImages = await Promise.all(
+    //             files.map(file => {
+    //                 if (!file || !file.type.match(/image.*/)) return null;
+    //                 return new Promise<string | null>((resolve, reject) => {
+    //                     MySwal.fire({
+    //                         title: 'Đang tải lên...',
+    //                         allowOutsideClick: false,
+    //                         didOpen: () => {
+    //                             const popup = MySwal.getPopup();
+    //                             if (popup) {
+    //                                 popup.style.zIndex = "9999";
+    //                             }
+    //                             MySwal.showLoading();
+    //                         },
+    //                         timer: 2000,
+    //                     });
+    //                     const fd = new FormData();
+    //                     fd.append('image', file);
+    //                     const xhr = new XMLHttpRequest();
+    //                     xhr.open('POST', 'https://api.imgur.com/3/image.json');
+    //                     xhr.onload = function () {
+    //                         const link = JSON.parse(xhr.responseText).data.link;
+    //                         resolve(link);
+    //                         MySwal.close();
+    //                     };
+    //                     xhr.onerror = function () {
+    //                         reject(new Error('Failed to upload image'));
+    //                     };
+    //                     xhr.setRequestHeader('Authorization', 'Client-ID 983c8532c49a20e');
+    //                     xhr.send(fd);
+    //                 });
+    //             })
+    //         );
+    //         return {
+    //             uploadedImages,
+    //         };
+    //     } catch (error) {
+    //         return {
+    //             uploadedImages: [],
+    //         };
+    //     }
+    // };
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files) return;
-      
+
         const newImages: File[] = [];
-      
+
         for (let i = 0; i < event.target.files.length; i++) {
-          newImages.push(event.target.files[i]);
+            newImages.push(event.target.files[i]);
         }
-      
+
         setImages([...images, ...newImages]);
     };
 
@@ -193,8 +196,8 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
         event.preventDefault();
 
         try {
-            const { uploadedImages } = await upload(images);
-            const validImages = uploadedImages.filter((link): link is string => link !== null);
+            // const { uploadedImages } = await upload(images);
+            // const validImages = uploadedImages.filter((link): link is string => link !== null);
             // setImgs(
             //     {
             //         id: 5,  
@@ -202,7 +205,7 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
             //         image: validImages
             //     }
             // )
-            
+
             const selectedBrandData = brands.find(brand => brand.name === selectedBrand);
             const selectedCategoryData = categories.find(category => category.name === selectedCategory);
 
@@ -218,19 +221,18 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
             formData.append('idBrand', selectedBrandData.id.toString());
             formData.append('idCategory', selectedCategoryData.id.toString());
 
-            console.log('validImages: ', validImages);
-            console.log('data.imageProducts: ', data.imageProducts);
-            const imgProducts = data.imageProducts.map((item: { image: string; }) => item.image)
-            console.log('imgProducts: ', imgProducts)
-            const finalImgItem = [...validImages, ...imgProducts]
-            console.log('finalImgItem: ', finalImgItem);
-            finalImgItem.forEach((imgItem: any, index: any) => {
-                formData.append(`imageProducts[${index}].image`, imgItem.image);
-            });
-
-            data.specification.forEach((specItem: any, index: any) => {
-                formData.append(`specification[${index}]`, specItem.specification);
-            });
+            // console.log('validImages: ', validImages);
+            // console.log('data.imageProducts: ', data.imageProducts);
+            // const imgProducts = data.imageProducts.map((item: { image: string; }) => item.image)
+            // console.log('imgProducts: ', imgProducts)
+            // const finalImgItem = [...validImages, ...imgProducts]
+            // console.log('finalImgItem: ', finalImgItem);
+            // finalImgItem.forEach((imgItem: any, index: any) => {
+            //     formData.append(`imageProducts[${index}].image`, imgItem.image);
+            // });
+            // data.specification.forEach((specItem: any, index: any) => {
+            //     formData.append(`specification[${index}]`, specItem.specification);
+            // });
 
             const config = {
                 headers: {
@@ -238,8 +240,8 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                 },
             };
 
-            await axiosClient.put('product/update', formData, config);
-            await MySwal.fire({
+            axiosClient.put('product/update', formData, config);
+            MySwal.fire({
                 title: 'Chỉnh sửa thành công!',
                 icon: 'success',
                 didOpen: () => {
@@ -248,9 +250,9 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                 timer: 2000,
             });
             setOpen(false);
-            // window.location.reload();
+            window.location.reload();
         } catch (error) {
-            await MySwal.fire({
+            MySwal.fire({
                 title: 'Đã có lỗi xảy ra!',
                 icon: 'error',
                 didOpen: () => {
@@ -264,8 +266,8 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
     const updateProductStatus = async () => {
         try {
             if (data.status === true) {
-                await ProductService.UpdateProductStatus(data.id, 0);
-                await MySwal.fire({
+                ProductService.UpdateProductStatus(data.id, 0);
+                MySwal.fire({
                     title: 'Ẩn sản phẩm thành công!',
                     icon: 'success',
                     didOpen: () => {
@@ -273,10 +275,11 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                     },
                     timer: 2000,
                 });
+                window.location.reload();
                 setState(!state);
             } else {
-                await ProductService.UpdateProductStatus(data.id, 1);
-                await MySwal.fire({
+                ProductService.UpdateProductStatus(data.id, 1);
+                MySwal.fire({
                     title: 'Hiện sản phẩm thành công!',
                     icon: 'success',
                     didOpen: () => {
@@ -284,11 +287,11 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                     },
                     timer: 2000,
                 });
-                await window.location.reload();
-                await setState(!state);
+                window.location.reload();
+                setState(!state);
             }
         } catch (error) {
-            await MySwal.fire({
+            MySwal.fire({
                 title: 'Đã có lỗi xảy ra!',
                 icon: 'error',
                 didOpen: () => {
@@ -297,6 +300,44 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                 timer: 2000,
             });
         }
+    };
+
+    const handleEditProductQuantity = () => {
+        const swalContainer = document.querySelector('.swal2-container') as HTMLElement;
+        if (swalContainer) {
+            swalContainer.style.zIndex = '99999';
+        }
+        setOpenQuantity(true);
+    }
+
+    const updateProductQuantity = () => {
+        try {           
+            ProductService.UpdateProductQuantity(data.id, quantity);
+            MySwal.fire({
+                title: 'Cập nhật hàng tồn kho thành công!',
+                icon: 'success',
+                didOpen: () => {
+                    MySwal.showLoading();
+                },
+                timer: 2000,
+            });
+            window.location.reload();
+            setState(!state);        
+        } catch (error) {
+            MySwal.fire({
+                title: 'Đã có lỗi xảy ra!',
+                icon: 'error',
+                didOpen: () => {
+                    MySwal.showLoading();
+                },
+                timer: 2000,
+            });
+        }
+    }
+
+    const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const quantityValue = Number(event.target.value);
+        setQuantity(quantityValue);
     };
 
     return (
@@ -312,15 +353,49 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                 <div className={cx('price')}>
                     {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
                 </div>
-                {data.status === true ? (
-                    <div className={cx('stock')} style={{ color: 'green', fontWeight: 700 }}>Còn hàng</div>
+                {data.quantity !== 0 && data.quantity !== null ? (
+                    <div className={cx('wrapper-stock')}>
+                        <div className={cx('stock')} style={{ color: 'green', fontWeight: 700 }}>Còn hàng ({data.quantity})</div>
+                        <FontAwesomeIcon
+                            icon={faCirclePlus}
+                            style={{ fontSize: '1rem', color: '#fec806', cursor: 'pointer' }}
+                            onClick={handleEditProductQuantity}
+                        />
+                        <Backdrop
+                            sx={{ color: '#fff', zIndex: 9 }}
+                            open={openQuantity}
+                        >
+                            <div className={cx('edit-quantity-form')}>
+                                <div className={cx('form')}>
+                                    <div className={cx('title')}>
+                                        <p style={{ fontSize: '1.5rem', fontWeight: '500' }}>CHỈNH SỬA SỐ LƯỢNG HÀNG TỒN SẢN PHẨM</p>
+                                        <button type='button' className={cx('close-btn')} onClick={handleCloseEditQuantityForm}>×</button>
+                                    </div>
+                                    <div className={cx('inputs')}>
+                                        <br />
+                                        <p>Số lượng tồn kho hiện tại: {data.quantity}</p>
+                                        <label htmlFor="quantity">Chỉnh sửa số lượng tồn kho sản phẩm:</label>
+                                        <input
+                                            id="quantity"
+                                            type='number'
+                                            placeholder='Số lượng hàng nhập kho'
+                                            className={cx('input-name')}
+                                            onChange={handleQuantityChange}
+                                        />
+                                    </div>
+
+                                    <Button primary small onClick={updateProductQuantity}>Chỉnh sửa</Button>
+                                </div>
+                            </div>
+                        </Backdrop>
+                    </div>
                 ) : (
                     <div className={cx('stock')} style={{ color: 'red', fontWeight: 700 }}>Hết hàng</div>
                 )}
                 {data.status === true ? (
                     <div className={cx('status')} style={{ color: 'green', fontWeight: 700 }}>Đang bày bán</div>
                 ) : (
-                    <div className={cx('status')} style={{ color: '#fec806', fontWeight: 700 }}>Đã ẩn đi</div>
+                    <div className={cx('status')} style={{ color: 'red', fontWeight: 700 }}>Đã ẩn đi</div>
                 )}
                 <div className={cx('date')}>{`${day}/${month}/${year} ${hours}:${minutes}:${seconds}`}</div>
                 <div className={cx('edit')}>

@@ -95,7 +95,7 @@ const BrandComponent: React.FC<any> = ({ data }) => {
     formData.append('image', imageUrl);
   
     try {
-      await axiosClient.put(`brand/edit/${idBrand}`, formData, {
+      axiosClient.put(`brand/edit/${idBrand}`, formData, {
         headers: {
           'Content-Type': 'application/json',
         },

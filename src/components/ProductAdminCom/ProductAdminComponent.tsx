@@ -98,8 +98,8 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
     const updateProductStatus = async () => {
         try {
             if (data.status === true) {
-                await ProductService.UpdateProductStatus(data.id, 0);
-                await MySwal.fire({
+                ProductService.UpdateProductStatus(data.id, 0);
+                MySwal.fire({
                     title: 'Ẩn sản phẩm thành công!',
                     icon: 'success',
                     didOpen: () => {
@@ -109,8 +109,8 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
                 });
                 setState(!state);
             } else {
-                await ProductService.UpdateProductStatus(data.id, 1);
-                await MySwal.fire({
+                ProductService.UpdateProductStatus(data.id, 1);
+                MySwal.fire({
                     title: 'Hiện sản phẩm thành công!',
                     icon: 'success',
                     didOpen: () => {
@@ -121,7 +121,7 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
                 setState(!state);
             }
         } catch (error) {
-            await MySwal.fire({
+            MySwal.fire({
                 title: 'Đã có lỗi xảy ra!',
                 icon: 'error',
                 didOpen: () => {
@@ -165,50 +165,50 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
         setPrice(priceValue);
     };
 
-    const upload = async (files: File[]) => {
-        try {
-          const uploadedImages = await Promise.all(
-            files.map(file => {
-              if (!file || !file.type.match(/image.*/)) return null;
-              return new Promise<string | null>((resolve, reject) => {
-                MySwal.fire({
-                  title: 'Đang tải lên...',
-                  allowOutsideClick: false,
-                  didOpen: () => {
-                    const popup = MySwal.getPopup();
-                    if (popup) {
-                      popup.style.zIndex = "9999"; 
-                    }
-                    MySwal.showLoading();
-                  },
-                  timer: 2000,
-                });
-                const fd = new FormData();
-                fd.append('image', file);
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'https://api.imgur.com/3/image.json');
-                xhr.onload = function () {
-                  const link = JSON.parse(xhr.responseText).data.link;
-                  resolve(link);
-                  MySwal.close();
-                };
-                xhr.onerror = function () {
-                  reject(new Error('Failed to upload image'));
-                };
-                xhr.setRequestHeader('Authorization', 'Client-ID 983c8532c49a20e');
-                xhr.send(fd);
-              });
-            })
-          );
-          return {
-            uploadedImages,
-          };
-        } catch (error) {
-          return {
-            uploadedImages: [],
-          };
-        }
-    };
+    // const upload = async (files: File[]) => {
+    //     try {
+    //       const uploadedImages = await Promise.all(
+    //         files.map(file => {
+    //           if (!file || !file.type.match(/image.*/)) return null;
+    //           return new Promise<string | null>((resolve, reject) => {
+    //             MySwal.fire({
+    //               title: 'Đang tải lên...',
+    //               allowOutsideClick: false,
+    //               didOpen: () => {
+    //                 const popup = MySwal.getPopup();
+    //                 if (popup) {
+    //                   popup.style.zIndex = "9999"; 
+    //                 }
+    //                 MySwal.showLoading();
+    //               },
+    //               timer: 2000,
+    //             });
+    //             const fd = new FormData();
+    //             fd.append('image', file);
+    //             const xhr = new XMLHttpRequest();
+    //             xhr.open('POST', 'https://api.imgur.com/3/image.json');
+    //             xhr.onload = function () {
+    //               const link = JSON.parse(xhr.responseText).data.link;
+    //               resolve(link);
+    //               MySwal.close();
+    //             };
+    //             xhr.onerror = function () {
+    //               reject(new Error('Failed to upload image'));
+    //             };
+    //             xhr.setRequestHeader('Authorization', 'Client-ID 983c8532c49a20e');
+    //             xhr.send(fd);
+    //           });
+    //         })
+    //       );
+    //       return {
+    //         uploadedImages,
+    //       };
+    //     } catch (error) {
+    //       return {
+    //         uploadedImages: [],
+    //       };
+    //     }
+    // };
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files) return;
@@ -232,8 +232,8 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
         event.preventDefault();
 
         try {
-            const { uploadedImages } = await upload(images);
-            const validImages = uploadedImages.filter((link): link is string => link !== null);
+            // const { uploadedImages } = await upload(images);
+            // const validImages = uploadedImages.filter((link): link is string => link !== null);
             // setImgs(
             //     {
             //         id: 5,  
@@ -257,19 +257,18 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
             formData.append('idBrand', selectedBrandData.id.toString());
             formData.append('idCategory', selectedCategoryData.id.toString());
 
-            console.log('validImages: ', validImages);
-            console.log('data.imageProducts: ', data.imageProducts);
-            const imgProducts = data.imageProducts.map((item: { image: string; }) => item.image)
-            console.log('imgProducts: ', imgProducts)
-            const finalImgItem = [...validImages, ...imgProducts]
-            console.log('finalImgItem: ', finalImgItem);
-            finalImgItem.forEach((imgItem: any, index: any) => {
-                formData.append(`imageProducts[${index}].image`, imgItem.image);
-            });
-
-            data.specification.forEach((specItem: any, index: any) => {
-                formData.append(`specification[${index}]`, specItem.specification);
-            });
+            // console.log('validImages: ', validImages);
+            // console.log('data.imageProducts: ', data.imageProducts);
+            // const imgProducts = data.imageProducts.map((item: { image: string; }) => item.image)
+            // console.log('imgProducts: ', imgProducts)
+            // const finalImgItem = [...validImages, ...imgProducts]
+            // console.log('finalImgItem: ', finalImgItem);
+            // finalImgItem.forEach((imgItem: any, index: any) => {
+            //     formData.append(`imageProducts[${index}].image`, imgItem.image);
+            // });
+            // data.specification.forEach((specItem: any, index: any) => {
+            //     formData.append(`specification[${index}]`, specItem.specification);
+            // });
 
             const config = {
                 headers: {
@@ -277,8 +276,8 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
                 },
             };
 
-            await axiosClient.put('product/update', formData, config);
-            await MySwal.fire({
+            axiosClient.put('product/update', formData, config);
+            MySwal.fire({
                 title: 'Chỉnh sửa thành công!',
                 icon: 'success',
                 didOpen: () => {
@@ -287,9 +286,9 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
                 timer: 2000,
             });
             setOpen(false);
-            // window.location.reload();
+            window.location.reload();
         } catch (error) {
-            await MySwal.fire({
+            MySwal.fire({
                 title: 'Đã có lỗi xảy ra!',
                 icon: 'error',
                 didOpen: () => {
