@@ -390,7 +390,7 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                         </Backdrop>
                     </div>
                 ) : (
-                    <div className={cx('stock')} style={{ color: 'red', fontWeight: 700 }}>Hết hàng</div>
+                    <div className={cx('stock')} style={{ color: 'red', fontWeight: 700 }}>Hết hàng (0)</div>
                 )}
                 {data.status === true ? (
                     <div className={cx('status')} style={{ color: 'green', fontWeight: 700 }}>Đang bày bán</div>
@@ -468,6 +468,7 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                                         </select>
                                         <label htmlFor="category">Chỉnh sửa danh mục sản phẩm:</label>
                                         <select
+                                            id="category"
                                             name="category"
                                             value={selectedCategory}
                                             className={cx('selector')}

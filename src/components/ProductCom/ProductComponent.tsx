@@ -63,10 +63,10 @@ const ProductComponent: React.FC<any> = ({ data }) => {
                         </>
                     )}
                     <br />  
-                    <Button primary>
+                    <Button primary className={cx('btn')}>
                         <FontAwesomeIcon
                             icon={faCartShoppingIcon}
-                            style={{ color: '#fff', marginRight: '1rem' }}
+                            style={{ color: '#fff', marginRight: '1rem', fontSize: '1rem' }}
                         />
                         Đặt hàng
                     </Button>

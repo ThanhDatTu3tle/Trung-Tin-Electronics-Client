@@ -5,7 +5,7 @@
     height: 3rem;
     color: beige;
     background-color: black;
-    z-index: 999;
+    z-index: 998;
 
     .bar {
         display: flex;
@@ -87,14 +87,33 @@
             background-color: #fff;
         }
 
-        .search-bar {
-            margin-left: 2rem;
-            margin-right: 2rem;
-            width: fit-content;
-            padding: 0;
-            border: 1px solid #434343;
-            border-radius: 0.6rem;
-            background-color: #fff;
+        .search-barr {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 30%;
+            padding-right: 1rem;
+            margin: 0;
+
+            .search-bar {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                width: 100%;
+                height: 3rem;
+
+                .input-name {
+                    width: 100%;
+                    height: 100%;
+                    border: 2px solid rgb(199, 192, 192);
+                    border-radius: 0.4rem;
+                    padding: 1rem;
+
+                    &:hover {
+                        border: 2px solid black;
+                    }
+                }
+            }
         }
 
         .categories {
@@ -155,7 +174,7 @@
         height: 3rem;
         color: beige;
         background-color: black;
-    
+
         .bar {
             display: flex;
             flex-direction: row;
@@ -163,7 +182,7 @@
             justify-content: space-between;
             text-align: center;
             width: 100%;
-    
+
             .address-info {
                 display: flex;
                 flex-direction: row;
@@ -172,7 +191,7 @@
                 text-align: center;
                 width: 70%;
             }
-    
+
             .logos {
                 display: flex;
                 flex-direction: row;
@@ -189,7 +208,7 @@
                     border-radius: 50%;
                     margin-right: 1rem;
                 }
-    
+
                 .logo-yt {
                     color: #e50914;
                     background-color: #fff;
@@ -199,7 +218,7 @@
                     border-radius: 50%;
                     margin-right: 1rem;
                 }
-    
+
                 .logo-zalo {
                     background-color: #fff;
                     width: 2rem;
@@ -218,12 +237,12 @@
         align-items: center;
         width: 100%;
         background-color: #fff;
-    
+
         .logo-wrapper {
             display: flex;
             flex-direction: row;
             align-items: center;
-    
+
             .logo {
                 width: 8rem;
                 height: 7rem;
@@ -234,16 +253,37 @@
                 background-color: #fff;
             }
 
-            .search-bar {
-                margin-left: 2rem;
-                margin-right: 2rem;
-                width: fit-content;
+            .search-barr {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 30%;
                 padding: 0;
-                border: 1px solid #434343;
-                border-radius: 0.6rem;
-                background-color: #fff;
-            }
+                margin: 0;
     
+                .search-bar {
+                    position: relative;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    width: 100%;
+                    height: 3rem;
+    
+    
+                    .input-name {
+                        width: 100%;
+                        height: 100%;
+                        border: 2px solid rgb(199, 192, 192);
+                        border-radius: 0.4rem;
+                        padding: 1rem;
+    
+                        &:hover {
+                            border: 2px solid black;
+                        }
+                    }
+                }
+            }
+
             .categories {
                 display: flex;
                 flex-direction: row;
@@ -263,7 +303,7 @@
         height: 3rem;
         background-color: #018ec3;
         box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
-    
+
         .menu {
             display: flex;
             flex-direction: row;
@@ -271,7 +311,7 @@
             justify-content: space-between;
             height: 100%;
         }
-    
+
         .menu-hamburger {
             display: flex;
             align-items: center;
@@ -284,7 +324,7 @@
             background-color: #434343;
             cursor: pointer;
         }
-    
+
         .menu-titles {
             display: flex;
             align-items: center;
@@ -306,12 +346,12 @@
         align-items: center;
         width: 100%;
         background-color: #fff;
-    
+
         .logo-wrapper {
             display: flex;
             flex-direction: row;
             align-items: center;
-    
+
             .logo {
                 width: 8rem;
                 height: 7rem;
@@ -322,11 +362,37 @@
                 background-color: #fff;
             }
 
-            .search-bar {
-                display: none;
-                border: none;
-            }
+            .search-barr {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 30%;
+                padding: 0;
+                margin: 0;
     
+                .search-bar {
+                    position: relative;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    width: 100%;
+                    height: 3rem;
+    
+    
+                    .input-name {
+                        width: 100%;
+                        height: 100%;
+                        border: 2px solid rgb(199, 192, 192);
+                        border-radius: 0.4rem;
+                        padding: 1rem;
+    
+                        &:hover {
+                            border: 2px solid black;
+                        }
+                    }
+                }
+            }
+
             .categories {
                 display: flex;
                 flex-direction: row;
@@ -346,7 +412,7 @@
         height: 3rem;
         background-color: #018ec3;
         box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
-    
+
         .menu {
             display: flex;
             flex-direction: row;
@@ -354,7 +420,7 @@
             justify-content: space-between;
             height: 100%;
         }
-    
+
         .menu-hamburger {
             display: flex;
             align-items: center;
@@ -366,7 +432,7 @@
             color: #ffffff;
             background-color: #434343;
         }
-    
+
         .menu-titles {
             display: flex;
             align-items: center;
@@ -388,12 +454,12 @@
         align-items: center;
         width: 100%;
         background-color: #fff;
-    
+
         .logo-wrapper {
             display: flex;
             flex-direction: row;
             align-items: center;
-    
+
             .logo {
                 width: 5rem;
                 height: 4rem;
@@ -403,11 +469,38 @@
                 margin-right: 0;
                 background-color: #fff;
             }
-            .search-bar {
-                display: none;
-                border: none;
-            }
+
+            .search-barr {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 30%;
+                padding: 0;
+                margin: 0;
     
+                .search-bar {
+                    position: relative;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    width: 100%;
+                    height: 3rem;
+    
+    
+                    .input-name {
+                        width: 100%;
+                        height: 100%;
+                        border: 2px solid rgb(199, 192, 192);
+                        border-radius: 0.4rem;
+                        padding: 1rem;
+    
+                        &:hover {
+                            border: 2px solid black;
+                        }
+                    }
+                }
+            }
+
             .categories {
                 display: flex;
                 flex-direction: row;
@@ -427,7 +520,7 @@
         height: 1.5rem;
         background-color: #018ec3;
         box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
-    
+
         .menu {
             display: flex;
             flex-direction: row;
@@ -435,7 +528,7 @@
             justify-content: space-between;
             height: 100%;
         }
-    
+
         .menu-hamburger {
             display: flex;
             align-items: center;
@@ -448,7 +541,7 @@
             background-color: #434343;
             cursor: pointer;
         }
-    
+
         .menu-titles {
             display: flex;
             align-items: center;
@@ -470,12 +563,12 @@
         align-items: center;
         width: 100%;
         background-color: #fff;
-    
+
         .logo-wrapper {
             display: flex;
             flex-direction: row;
             align-items: center;
-    
+
             .logo {
                 width: 5rem;
                 height: 4rem;
@@ -485,11 +578,38 @@
                 margin-right: 0;
                 background-color: #fff;
             }
-            .search-bar {
-                display: none;
-                border: none;
-            }
+
+            .search-barr {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 30%;
+                padding: 0;
+                margin: 0;
     
+                .search-bar {
+                    position: relative;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    width: 100%;
+                    height: 3rem;
+    
+    
+                    .input-name {
+                        width: 100%;
+                        height: 100%;
+                        border: 2px solid rgb(199, 192, 192);
+                        border-radius: 0.4rem;
+                        padding: 1rem;
+    
+                        &:hover {
+                            border: 2px solid black;
+                        }
+                    }
+                }
+            }
+
             .categories {
                 display: flex;
                 flex-direction: row;
@@ -509,7 +629,7 @@
         height: 1.2rem;
         background-color: #018ec3;
         box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
-    
+
         .menu {
             display: flex;
             flex-direction: row;
@@ -517,7 +637,7 @@
             justify-content: space-between;
             height: 100%;
         }
-    
+
         .hamburger {
             display: flex;
             align-items: center;
@@ -530,7 +650,7 @@
             background-color: #434343;
             cursor: pointer;
         }
-    
+
         .menu-titles {
             display: flex;
             align-items: center;
@@ -557,12 +677,12 @@
         align-items: center;
         width: 100%;
         background-color: #fff;
-    
+
         .logo-wrapper {
             display: flex;
             flex-direction: row;
             align-items: center;
-    
+
             .logo {
                 width: 5rem;
                 height: 4rem;
@@ -572,11 +692,38 @@
                 margin-right: 0;
                 background-color: #fff;
             }
-            .search-bar {
-                display: none;
-                border: none;
-            }
+
+            .search-barr {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 30%;
+                padding: 0;
+                margin: 0;
     
+                .search-bar {
+                    position: relative;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    width: 100%;
+                    height: 3rem;
+    
+    
+                    .input-name {
+                        width: 100%;
+                        height: 100%;
+                        border: 2px solid rgb(199, 192, 192);
+                        border-radius: 0.4rem;
+                        padding: 1rem;
+    
+                        &:hover {
+                            border: 2px solid black;
+                        }
+                    }
+                }
+            }
+
             .categories {
                 display: flex;
                 flex-direction: row;
@@ -596,7 +743,7 @@
         height: 1.2rem;
         background-color: #018ec3;
         box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
-    
+
         .menu {
             display: flex;
             flex-direction: row;
@@ -604,7 +751,7 @@
             justify-content: space-between;
             height: 100%;
         }
-    
+
         .hamburger {
             display: flex;
             align-items: center;
@@ -617,7 +764,7 @@
             background-color: #434343;
             cursor: pointer;
         }
-    
+
         .menu-titles {
             display: flex;
             align-items: center;
@@ -644,12 +791,12 @@
         align-items: center;
         width: 100%;
         background-color: #fff;
-    
+
         .logo-wrapper {
             display: flex;
             flex-direction: row;
             align-items: center;
-    
+
             .logo {
                 width: 5rem;
                 height: 4rem;
@@ -659,11 +806,38 @@
                 margin-right: 0;
                 background-color: #fff;
             }
-            .search-bar {
-                display: none;
-                border: none;
-            }
+
+            .search-barr {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 30%;
+                padding: 0;
+                margin: 0;
     
+                .search-bar {
+                    position: relative;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    width: 100%;
+                    height: 3rem;
+    
+    
+                    .input-name {
+                        width: 100%;
+                        height: 100%;
+                        border: 2px solid rgb(199, 192, 192);
+                        border-radius: 0.4rem;
+                        padding: 1rem;
+    
+                        &:hover {
+                            border: 2px solid black;
+                        }
+                    }
+                }
+            }
+
             .categories {
                 display: flex;
                 flex-direction: row;
@@ -683,7 +857,7 @@
         height: 1.2rem;
         background-color: #018ec3;
         box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
-    
+
         .menu {
             display: flex;
             flex-direction: row;
@@ -691,7 +865,7 @@
             justify-content: space-between;
             height: 100%;
         }
-    
+
         .hamburger {
             display: flex;
             align-items: center;

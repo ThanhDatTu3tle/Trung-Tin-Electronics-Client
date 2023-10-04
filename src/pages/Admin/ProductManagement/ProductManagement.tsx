@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
+import { debounce } from "lodash";
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -8,27 +9,41 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import Backdrop from '@mui/material/Backdrop';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faHouse } from '@fortawesome/free-solid-svg-icons';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faArrowRight, faChevronRight, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './ProductManagement.module.scss';
 import Button from '../../../components/Button';
+import ProductManagementRow from '../../../components/ProductManagementRow';
 
 import { axiosClient } from '../../../axios';
 import BrandService from '../../../service/BrandService';
 import CategoryService from '../../../service/CategoryService';
 import ProductService from '../../../service/ProductService';
-import ProductManagementRow from '../../../components/ProductManagementRow';
-
-const faHouseIcon = faHouse as IconProp;
-const faArrowRightIcon = faArrowRight as IconProp;
 
 const cx = classNames.bind(styles);
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 const ProductManagement: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
+  const [searchKeyword, setSearchKeyword] = useState('');
+
+  // Thêm state cho bộ lọc
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [brandFilter, setBrandFilter] = useState('');
+
+  // Xử lý sự kiện khi người dùng thay đổi giá trị của selector
+  const handleStatusFilterChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    setStatusFilter(event.target.value);
+  };
+
+  const handleCategoryFilterChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    setCategoryFilter(event.target.value);
+  };
+
+  const handleBrandFilterChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    setBrandFilter(event.target.value);
+  };
 
   const [open, setOpen] = useState(false);
   const handleCloseAddForm = () => setOpen(false);
@@ -53,7 +68,40 @@ const ProductManagement: React.FC<any> = () => {
 
   const [brands, setBrands] = useState<{ id: number; name: string; status: boolean }[]>([]);
   const [categories, setCategories] = useState<{ id: number; name: string; status: boolean }[]>([]);
+  const [products, setProducts] = useState<{
+    id: string;
+    name: string;
+    description: string;
+    specification: { id: number; specification: string }[];
+    imageProducts: { id: number; image: string }[];
+    price: number;
+    brand: { id: number; name: string; image: string };
+    event: null;
+    status: boolean;
+    category: { id: number; name: string; image: string; status: boolean };
+    idBrand: number;
+    idCategory: number;
+    idEvent: number;
+    quantity: number;
+  }[]>([]);
   const [filteredProductsResult, setFilteredProductsResult] = useState<{
+    id: string;
+    name: string;
+    description: string;
+    specification: { id: number; specification: string }[];
+    imageProducts: { id: number; image: string }[];
+    price: number;
+    brand: { id: number; name: string; image: string };
+    event: null;
+    status: boolean;
+    category: { id: number; name: string; image: string; status: boolean };
+    idBrand: number;
+    idCategory: number;
+    idEvent: number;
+    quantity: number;
+  }[]>([]);
+  // Danh sách sản phẩm ban đầu
+  const [initialProducts, setInitialProducts] = useState<{
     id: string;
     name: string;
     description: string;
@@ -124,12 +172,84 @@ const ProductManagement: React.FC<any> = () => {
       setBrands(brandsData);
       setCategories(categoriesData);
       setFilteredProductsResult(productsData);
+      setProducts(productsData);
     }
   }, [
     brandsData,
     categoriesData,
     productsData
   ]);
+
+  const debouncedSearch = debounce((keyword: string) => {
+    // Thực hiện tìm kiếm và cập nhật danh sách sản phẩm hiển thị ở đây
+    const filteredProducts = initialProducts.filter((product) =>
+      product.name.includes(keyword) || product.id.includes(keyword)
+    );
+    setFilteredProductsResult(filteredProducts);
+  }, 300); // 300 milliseconds là khoảng thời gian debounce
+
+  // Khi searchKeyword thay đổi, gọi hàm tìm kiếm debounced
+  useEffect(() => {
+    debouncedSearch(searchKeyword);
+  }, [searchKeyword, debouncedSearch]);
+
+  // Hàm áp dụng bộ lọc
+  const applyFilters = () => {
+    // Bắt đầu từ danh sách sản phẩm ban đầu
+    let filteredProducts = [...initialProducts];
+
+    // Áp dụng bộ lọc trạng thái sản phẩm
+    if (statusFilter !== 'all') {
+      filteredProducts = filteredProducts.filter(product => product.status === (statusFilter === 'published'));
+    }
+
+    // Áp dụng bộ lọc danh mục sản phẩm
+    if (categoryFilter !== '') {
+      filteredProducts = filteredProducts.filter(product => product.category.name === categoryFilter);
+    }
+
+    // Áp dụng bộ lọc hãng sản xuất
+    if (brandFilter !== '') {
+      filteredProducts = filteredProducts.filter(product => product.brand.name === brandFilter);
+    }
+
+    // Cập nhật danh sách sản phẩm hiển thị
+    setFilteredProductsResult(filteredProducts);
+  };
+
+  // ...
+
+  // Lấy danh sách sản phẩm ban đầu và lưu vào initialProducts
+  useEffect(() => {
+    // Fetch danh sách sản phẩm ban đầu từ API
+    const fetchInitialProducts = async () => {
+      try {
+        const res = await ProductService.GetAllProduct();
+        const initialProductData = res.data;
+
+        // Lưu danh sách sản phẩm ban đầu
+        setInitialProducts(initialProductData);
+
+        // Mặc định, hiển thị toàn bộ sản phẩm ban đầu
+        setFilteredProductsResult(initialProductData);
+      } catch (error) {
+        // Xử lý lỗi nếu cần
+      }
+    };
+
+    fetchInitialProducts();
+  }, []);
+
+  // Hàm gỡ bỏ tất cả bộ lọc
+  const clearFilters = () => {
+    // Đặt lại giá trị của các bộ lọc về mặc định
+    setStatusFilter('all');
+    setCategoryFilter('');
+    setBrandFilter('');
+
+    // Hiển thị danh sách sản phẩm ban đầu
+    setFilteredProductsResult(initialProducts);
+  };
 
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -291,16 +411,16 @@ const ProductManagement: React.FC<any> = () => {
         <div className={cx('right')}>
           <div className={cx('current-position')}>
             <FontAwesomeIcon
-              icon={faHouseIcon}
+              icon={faHouse}
               style={{ paddingRight: '1rem' }}
             />
             <FontAwesomeIcon
-              icon={faArrowRightIcon}
+              icon={faArrowRight}
               style={{ width: '1rem', height: '1rem', paddingRight: '0.5rem' }}
             />
             <p>Sản phẩm</p>
             <FontAwesomeIcon
-              icon={faArrowRightIcon}
+              icon={faArrowRight}
               style={{ width: '1rem', height: '1rem', paddingRight: '0.5rem', paddingLeft: '0.5rem' }}
             />
             <p>Quản lý sản phẩm</p>
@@ -312,23 +432,23 @@ const ProductManagement: React.FC<any> = () => {
           <b>Sản phẩm:</b>
           {statusProduct === 'all' ? (
             <>
-              <p style={{ marginLeft: '1rem', color: '#018ec3', fontWeight: 700, cursor: 'pointer' }} onClick={handleStatusAllProduct}>Tất cả sản phẩm ({filteredProductsResult.length}) | </p>
-              <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusPublishedProduct}>Sản phẩm đang được bày bán ({filteredProductsResult.filter((data) => data.status === true).length}) | </p>
-              <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusHidedProduct}>Sản phẩm đang được ẩn đi ({filteredProductsResult.filter((data) => data.status === false).length})</p>
+              <p style={{ marginLeft: '1rem', color: '#018ec3', fontWeight: 700, cursor: 'pointer' }} onClick={handleStatusAllProduct}>Tất cả sản phẩm ({products.length}) | </p>
+              <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusPublishedProduct}>Sản phẩm đang được bày bán ({products.filter((data) => data.status === true).length}) | </p>
+              <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusHidedProduct}>Sản phẩm đang được ẩn đi ({products.filter((data) => data.status === false).length})</p>
             </>
           ) : (
             <>
               {statusProduct === 'published' ? (
                 <>
-                  <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusAllProduct}>Tất cả sản phẩm ({filteredProductsResult.length}) | </p>
-                  <p style={{ marginLeft: '1rem', color: '#018ec3', fontWeight: 700, cursor: 'pointer' }} onClick={handleStatusPublishedProduct}>Sản phẩm đang được bày bán ({filteredProductsResult.filter((data) => data.status === true).length}) | </p>
-                  <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusHidedProduct}>Sản phẩm đang được ẩn đi ({filteredProductsResult.filter((data) => data.status === false).length})</p>
+                  <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusAllProduct}>Tất cả sản phẩm ({products.length}) | </p>
+                  <p style={{ marginLeft: '1rem', color: '#018ec3', fontWeight: 700, cursor: 'pointer' }} onClick={handleStatusPublishedProduct}>Sản phẩm đang được bày bán ({products.filter((data) => data.status === true).length}) | </p>
+                  <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusHidedProduct}>Sản phẩm đang được ẩn đi ({products.filter((data) => data.status === false).length})</p>
                 </>
               ) : (
                 <>
-                  <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusAllProduct}>Tất cả sản phẩm ({filteredProductsResult.length}) | </p>
-                  <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusPublishedProduct}>Sản phẩm đang được bày bán ({filteredProductsResult.filter((data) => data.status === true).length}) | </p>
-                  <p style={{ marginLeft: '1rem', color: '#018ec3', fontWeight: 700, cursor: 'pointer' }} onClick={handleStatusHidedProduct}>Sản phẩm đang được ẩn đi ({filteredProductsResult.filter((data) => data.status === false).length})</p>
+                  <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusAllProduct}>Tất cả sản phẩm ({products.length}) | </p>
+                  <p style={{ marginLeft: '1rem', color: '#000', cursor: 'pointer' }} onClick={handleStatusPublishedProduct}>Sản phẩm đang được bày bán ({products.filter((data) => data.status === true).length}) | </p>
+                  <p style={{ marginLeft: '1rem', color: '#018ec3', fontWeight: 700, cursor: 'pointer' }} onClick={handleStatusHidedProduct}>Sản phẩm đang được ẩn đi ({products.filter((data) => data.status === false).length})</p>
                 </>
               )}
             </>
@@ -441,8 +561,81 @@ const ProductManagement: React.FC<any> = () => {
               </form>
             </div>
           </Backdrop>
+          <div className={cx('search-bar')}>
+            <input
+              id="search"
+              type='text'
+              placeholder='Tìm kiếm sản phẩm'
+              className={cx('input-name')}
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+            />
+            <FontAwesomeIcon
+              icon={faMagnifyingGlass}
+              style={{ position: 'absolute', left: '580px', pointerEvents: 'none', color: '#888' }}
+            />
+          </div>
         </div>
-        <br />
+        <div className={cx('filters')}>
+          <select
+            id="stock"
+            name="stock"
+            className={cx('selector')}
+            value={statusFilter}
+            onChange={handleStatusFilterChange}
+          >
+            <option className={cx('option-first')} value="all" disabled>
+              Trạng thái hàng tồn
+            </option>
+            <option value="published">Còn hàng</option>
+            <option value="hided">Hết hàng</option>
+          </select>
+
+          <select
+            id="category"
+            name="category"
+            value={categoryFilter}
+            className={cx('selector')}
+            onChange={handleCategoryFilterChange}
+          >
+            <option className={cx('option-first')} value="" disabled>
+              Danh mục sản phẩm
+            </option>
+            {categories.map((category) => (
+              <option className={cx('option')} key={category.id} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+
+          <select
+            id="brand"
+            name="brand"
+            value={brandFilter}
+            className={cx('selector')}
+            onChange={handleBrandFilterChange}
+          >
+            <option className={cx('option-first')} value="" disabled>
+              Hãng sản xuất
+            </option>
+            {brands.map((brand) => (
+              <option className={cx('option')} key={brand.id} value={brand.name}>
+                {brand.name}
+              </option>
+            ))}
+          </select>
+
+          <div className={cx('btns-filters')}>
+            <Button primary small onClick={applyFilters}>
+              Áp dụng
+              <FontAwesomeIcon
+                icon={faChevronRight}
+                style={{ width: '1rem', height: '1rem', paddingLeft: '0.5rem' }}
+              />
+            </Button>
+            <Button outline small onClick={clearFilters}>Gỡ bỏ</Button>
+          </div>
+        </div>
         <div className={cx('table')}>
           <div className={cx("titles")}>
             <div className={cx("image")}>Hình ảnh</div>
