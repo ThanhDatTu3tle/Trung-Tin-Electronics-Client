@@ -29,11 +29,29 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
         if (!localStorage.getItem('seen')) {
             localStorage.setItem('seen', JSON.stringify([]));
         }
-
+    
         const seenProducts = JSON.parse(localStorage.getItem('seen') || '[]');
+        const productId = data.id;
+    
+        const productTimestampKey = `product_${productId}`;
+        const lastViewedTime = localStorage.getItem(productTimestampKey);
+    
+        const now = Date.now();
+        const expirationTime = 5000; 
+    
         if (!seenProducts.includes(data.id)) {
             seenProducts.push(data.id);
             localStorage.setItem('seen', JSON.stringify(seenProducts));
+    
+            localStorage.setItem(productTimestampKey, now.toString());
+        }
+    
+        if (lastViewedTime) {
+            const timeElapsed = now - parseInt(lastViewedTime, 10);
+            if (timeElapsed > expirationTime) {
+                const updatedSeenProducts = seenProducts.filter((id: any) => id !== productId);
+                localStorage.setItem('seen', JSON.stringify(updatedSeenProducts));
+            }
         }
     }
 
@@ -212,13 +230,13 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files) return;
-      
+
         const newImages: File[] = [];
-      
+
         for (let i = 0; i < event.target.files.length; i++) {
-          newImages.push(event.target.files[i]);
+            newImages.push(event.target.files[i]);
         }
-      
+
         setImages([...images, ...newImages]);
     };
 
@@ -241,7 +259,7 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
             //         image: validImages
             //     }
             // )
-            
+
             const selectedBrandData = brands.find(brand => brand.name === selectedBrand);
             const selectedCategoryData = categories.find(category => category.name === selectedCategory);
 

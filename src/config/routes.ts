@@ -22,8 +22,8 @@ const routes = {
         productManagement: "/management",
     category: "/category",
     brand: "/brand",
-    orders: "/orders",
-    customers: "/customers"
+    invoice: "/invoice",
+    user: "/user"
 };
   
 export default routes;

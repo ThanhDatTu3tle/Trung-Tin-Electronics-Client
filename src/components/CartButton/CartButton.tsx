@@ -28,6 +28,8 @@ const CartButton: React.FC = () => {
     const location = useLocation();
 
     const shouldHideCartUI = location.pathname.includes('/admin') ||
+        location.pathname.includes('/invoice') ||
+        location.pathname.includes('/user') ||
         location.pathname.includes('/brand') ||
         location.pathname.includes('/category') ||
         location.pathname.includes('/product') ||

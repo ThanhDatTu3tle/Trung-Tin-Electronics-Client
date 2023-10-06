@@ -6,7 +6,18 @@ import styles from './SideNav.module.scss';
 import Titles, { TitleItem } from '../SideNav/Menu';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartLine, faCodeBranch, faKaaba, faListUl, faCaretRight, faSortDown, faListCheck, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { 
+    faChartLine, 
+    faCodeBranch, 
+    faKaaba, 
+    faListUl, 
+    faCaretRight, 
+    faSortDown, 
+    faListCheck, 
+    faFilter,
+    faFileInvoiceDollar,
+    faUser 
+} from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles)
 
@@ -64,6 +75,8 @@ const SideNav: React.FC = () => {
                 )}
                 <TitleItem title='Danh mục sản phẩm' to={config.routes.category} icon={faListUl}  />
                 <TitleItem title='Hãng sản xuất' to={config.routes.brand} icon={faCodeBranch}  />
+                <TitleItem title='Đơn hàng' to={config.routes.invoice} icon={faFileInvoiceDollar}  />
+                <TitleItem title='Khách hàng' to={config.routes.user} icon={faUser}  />
             </Titles>
         </div>
     )

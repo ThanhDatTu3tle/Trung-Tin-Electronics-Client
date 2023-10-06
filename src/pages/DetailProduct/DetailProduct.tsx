@@ -125,8 +125,9 @@ const DetailProduct: React.FC = () => {
   }, [productsData]);
 
   const chosenProduct = products.find((product) => product.id === id);
-  const filteredProducts = products.filter((product) => product.category === chosenProduct?.category);
+  const filteredProducts = products.filter((product) => product.category.name === chosenProduct?.category.name);
   const relatedProducts = filteredProducts.filter((item) => item.id !== id)
+  console.log(filteredProducts);
 
   useEffect(() => {
     const fetchProductDetails = async (productId: string) => {
