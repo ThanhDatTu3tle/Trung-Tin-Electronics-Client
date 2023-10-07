@@ -1,6 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
+import { useState } from 'react';
 import classNames from 'classnames/bind';
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
