@@ -171,7 +171,8 @@ const ProductManagement: React.FC<any> = () => {
     if (brandsData && categoriesData && productsData) {
       setBrands(brandsData);
       setCategories(categoriesData);
-      setFilteredProductsResult(productsData);
+      setInitialProducts(productsData);
+      // setFilteredProductsResult(productsData);
       setProducts(productsData);
     }
   }, [
@@ -180,44 +181,26 @@ const ProductManagement: React.FC<any> = () => {
     productsData
   ]);
 
-  const debouncedSearch = debounce((keyword: string) => {
-    // Thực hiện tìm kiếm và cập nhật danh sách sản phẩm hiển thị ở đây
+  // const debouncedSearch = debounce((keyword: string) => {
+  //   // Thực hiện tìm kiếm và cập nhật danh sách sản phẩm hiển thị ở đây
+  //   const filteredProducts = initialProducts.filter((product) =>
+  //     product.name.includes(keyword) || product.id.includes(keyword)
+  //   );
+  //   setFilteredProductsResult(filteredProducts);
+  // }, 300); // 300 milliseconds là khoảng thời gian debounce
+
+  // // Khi searchKeyword thay đổi, gọi hàm tìm kiếm debounced
+  // useEffect(() => {
+  //   debouncedSearch(searchKeyword);
+  // }, [searchKeyword, debouncedSearch]);
+
+  useEffect(() => {
+    // Thực hiện tìm kiếm và cập nhật danh sách sản phẩm hiển thị ngay lập tức
     const filteredProducts = initialProducts.filter((product) =>
-      product.name.includes(keyword) || product.id.includes(keyword)
+      product.name.includes(searchKeyword) || product.id.includes(searchKeyword)
     );
     setFilteredProductsResult(filteredProducts);
-  }, 300); // 300 milliseconds là khoảng thời gian debounce
-
-  // Khi searchKeyword thay đổi, gọi hàm tìm kiếm debounced
-  useEffect(() => {
-    debouncedSearch(searchKeyword);
-  }, [searchKeyword, debouncedSearch]);
-
-  // Hàm áp dụng bộ lọc
-  const applyFilters = () => {
-    // Bắt đầu từ danh sách sản phẩm ban đầu
-    let filteredProducts = [...initialProducts];
-
-    // Áp dụng bộ lọc trạng thái sản phẩm
-    if (statusFilter !== 'all') {
-      filteredProducts = filteredProducts.filter(product => product.status === (statusFilter === 'published'));
-    }
-
-    // Áp dụng bộ lọc danh mục sản phẩm
-    if (categoryFilter !== '') {
-      filteredProducts = filteredProducts.filter(product => product.category.name === categoryFilter);
-    }
-
-    // Áp dụng bộ lọc hãng sản xuất
-    if (brandFilter !== '') {
-      filteredProducts = filteredProducts.filter(product => product.brand.name === brandFilter);
-    }
-
-    // Cập nhật danh sách sản phẩm hiển thị
-    setFilteredProductsResult(filteredProducts);
-  };
-
-  // ...
+  }, [searchKeyword]);
 
   // Lấy danh sách sản phẩm ban đầu và lưu vào initialProducts
   useEffect(() => {
@@ -226,19 +209,44 @@ const ProductManagement: React.FC<any> = () => {
       try {
         const res = await ProductService.GetAllProduct();
         const initialProductData = res.data;
-
+  
         // Lưu danh sách sản phẩm ban đầu
         setInitialProducts(initialProductData);
-
+  
         // Mặc định, hiển thị toàn bộ sản phẩm ban đầu
         setFilteredProductsResult(initialProductData);
       } catch (error) {
         // Xử lý lỗi nếu cần
       }
     };
-
+  
     fetchInitialProducts();
   }, []);
+
+  // Hàm áp dụng bộ lọc
+  const applyFilters = () => {
+    // Bắt đầu từ danh sách sản phẩm ban đầu
+    console.log(filteredProductsResult);
+    let filteredProducts = [...initialProducts];
+  
+    // Áp dụng bộ lọc trạng thái sản phẩm
+    if (statusFilter !== 'all') {
+      filteredProducts = filteredProducts.filter(product => product.status === (statusFilter === 'published'));
+    }
+  
+    // Áp dụng bộ lọc danh mục sản phẩm
+    if (categoryFilter !== '') {
+      filteredProducts = filteredProducts.filter(product => product.category.name === categoryFilter);
+    }
+  
+    // Áp dụng bộ lọc hãng sản xuất
+    if (brandFilter !== '') {
+      filteredProducts = filteredProducts.filter(product => product.brand.name === brandFilter);
+    }
+  
+    // Cập nhật danh sách sản phẩm hiển thị
+    setFilteredProductsResult(filteredProducts);
+  };
 
   // Hàm gỡ bỏ tất cả bộ lọc
   const clearFilters = () => {
@@ -651,8 +659,8 @@ const ProductManagement: React.FC<any> = () => {
           </div>
           <br />
           <div className={cx("information")}>
-            {filteredProductsResult.map((product) => (
-              <ProductManagementRow key={product.id} data={product} />
+            {filteredProductsResult.map((filteredProductResult) => (
+              <ProductManagementRow key={filteredProductResult.id} data={filteredProductResult} />
             ))}
           </div>
         </div>
