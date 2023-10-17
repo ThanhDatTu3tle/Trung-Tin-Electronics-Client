@@ -6,6 +6,7 @@ import withReactContent from "sweetalert2-react-content";
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Backdrop from '@mui/material/Backdrop';
 
+import dayjs from 'dayjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCircleInfo,
@@ -87,8 +88,11 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
     }
 
     const totalForProducts = data.invoiceDetail.map((item: { idProduct: any; number: number; }) => {
-        const product = products.find((product: { id: any; }) => product.id === item.idProduct);
-        return product.price * item.number;
+        const product = products.find((product: { id: string }) => product.id === item.idProduct);
+        if (product && product.price) {
+            return product.price * item.number;
+        }
+        return 0; 
     });
 
     const total = totalForProducts.reduce((a: any, b: any) => a + b, 0);
@@ -128,7 +132,8 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                 ) : (
                     <div className={cx('status')} style={{ color: 'green', fontWeight: 700 }}>Đã giao hàng</div>
                 )}
-                <div className={cx('content')}>{data.content}</div>
+                <div className={cx('content')}>{dayjs(data.createdAt).format('DD/MM/YYYY')}</div>
+                <div className={cx('time')}>{`${day}/${month}/${year} ${hours}:${minutes}:${seconds}`}</div>
                 <div className={cx('edit')}>
                     {data.status === false ? (
                         <FontAwesomeIcon
@@ -223,25 +228,24 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                                 <div className={cx('products')}>
                                     {data.invoiceDetail.map((item: {
                                         number: number;
-                                        idProduct: string;
+                                        id: string;
                                         invoiceDetail: { idProduct: string; };
                                     }) => (
-                                        <div className={cx('information')}>
+                                        <div className={cx('information')} key={item.id}>
                                             <div className={cx('image')}>
-                                                <Image src={products.find((product: { id: string; }) => product.id === item.idProduct).imageProducts[0].image} />
-
+                                                <Image src={products.find((product: { id: string; }) => product.id === item.id) && products.find((product: { id: string; }) => product.id === item.id).imageProducts[0].image} />
                                             </div>
                                             <div className={cx('name')}>
-                                                {products.find((product: { id: string; }) => product.id === item.idProduct).name}
+                                                {products.find((product: { id: string; }) => product.id === item.id) && products.find((product: { id: string; }) => product.id === item.id).name}
                                                 -
-                                                {products.find((product: { id: string; }) => product.id === item.idProduct).id}
+                                                {products.find((product: { id: string; }) => product.id === item.id) && products.find((product: { id: string; }) => product.id === item.id).id}
                                             </div>
                                             <div className={cx("quantity")}>{item.number}</div>
                                             <div className={cx("price")}>
-                                                {products.find((product: { id: string; }) => product.id === item.idProduct).price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+                                                {products.find((product: { id: string; }) => product.id === item.id) && products.find((product: { id: string; }) => product.id === item.id).price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
                                             </div>
                                             <div className={cx("total")}>
-                                                {(products.find((product: { id: string; }) => product.id === item.idProduct).price * item.number).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+                                                {products.find((product: { id: string; }) => product.id === item.id) && (products.find((product: { id: string; }) => product.id === item.id).price * item.number).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
                                             </div>
                                         </div>
                                     ))}

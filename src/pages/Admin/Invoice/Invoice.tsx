@@ -7,7 +7,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimeField } from '@mui/x-date-pickers/DateTimeField';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import styles from './Invoice.module.scss';
 
@@ -23,8 +23,7 @@ import Button from '../../../components/Button';
 const cx = classNames.bind(styles);
 
 const Invoice: React.FC<any> = () => {
-    const [value, setValue] = React.useState<Dayjs | null>(dayjs('2022-04-17T15:30'));
-
+    const [dayFilter, setDayFilter] = React.useState<Dayjs | any>(dayjs());
     const [statusFilter, setStatusFilter] = useState('all');
     const [paymentFilter, setPaymentFilter] = useState('all');
 
@@ -62,8 +61,9 @@ const Invoice: React.FC<any> = () => {
         total: number;
         payment: string;
         invoiceDetail: { id: number; idInvoice: number; idProduct: string; number: number };
+        createdAt: any;
     }[]>([]);
-    const [filteredInvoices, setFilteredInvoices] = useState<{
+    const [filteredInvoicesResult, setFilteredInvoicesResult] = useState<{
         id: number;
         customerName: string;
         phone: string;
@@ -74,6 +74,7 @@ const Invoice: React.FC<any> = () => {
         total: number;
         payment: string;
         invoiceDetail: { id: number; idInvoice: number; idProduct: string; number: number };
+        createdAt: any;
     }[]>([]);
     const [initialInvoices, setInitialInvoices] = useState<{
         id: number;
@@ -86,6 +87,7 @@ const Invoice: React.FC<any> = () => {
         total: number;
         payment: string;
         invoiceDetail: { id: number; idInvoice: number; idProduct: string; number: number };
+        createdAt: any;
     }[]>([]);
 
     const fetchAPIProducts = async () => {
@@ -133,6 +135,30 @@ const Invoice: React.FC<any> = () => {
         invoicesData
     ]);
 
+    useEffect(() => {
+        const fetchInitialInvoices = async () => {
+            try {
+                const res = await InvoiceService.GetAllInvoice();
+                const initialInvoiceData = res.data;
+
+                setInitialInvoices(initialInvoiceData);
+
+                setFilteredInvoicesResult(initialInvoiceData);
+            } catch (error) { }
+        };
+
+        fetchInitialInvoices();
+    }, []);
+
+    const handleChangeDayFilter = (newValue: any) => {
+        setDayFilter(newValue);
+    };
+
+    // useEffect(() => {
+    //     // Áp dụng bộ lọc ở đây
+    //     applyFilters();
+    // }, [dayFilter]);
+
     const applyFilters = () => {
         // Bắt đầu từ danh sách sản phẩm ban đầu
         let filteredInvoices = [...initialInvoices];
@@ -142,34 +168,27 @@ const Invoice: React.FC<any> = () => {
             filteredInvoices = filteredInvoices.filter(invoice => invoice.status === (statusFilter === 'published'));
         }
 
-        // Cập nhật danh sách hóa đơn hiển thị
-        setFilteredInvoices(filteredInvoices);
+        if (paymentFilter !== 'all' && paymentFilter !== 'transfer') {
+            filteredInvoices = filteredInvoices.filter(invoice => invoice.payment === 'cash');
+        } else {
+            filteredInvoices = filteredInvoices.filter(invoice => invoice.payment === 'transfer');
+        }
+        
+        if (dayFilter?.toString().charAt(0) === '0') {
+            filteredInvoices = filteredInvoices.filter(invoice => dayjs(invoice.createdAt).format('DD/MM/YYYY') === dayjs(dayFilter.toString()).format("DD/MM/YYYY").slice(1));
+            
+        } else {
+            filteredInvoices = filteredInvoices.filter(invoice => dayjs(invoice.createdAt).format('DD/MM/YYYY') === dayjs(dayFilter.toString()).format("DD/MM/YYYY"));
+            console.log(dayjs(dayFilter.toString()).format("DD/MM/YYYY"))
+        }
+
+        setFilteredInvoicesResult(filteredInvoices);
     };
 
-    useEffect(() => {
-        // Fetch danh sách sản phẩm ban đầu từ API
-        const fetchInitialProducts = async () => {
-            try {
-                const res = await InvoiceService.GetAllInvoice();
-                const initialInvoiceData = res.data;
-
-                setInitialInvoices(initialInvoiceData);
-
-                setFilteredInvoices(initialInvoiceData);
-            } catch (error) {
-                // Xử lý lỗi nếu cần
-            }
-        };
-
-        fetchInitialProducts();
-    }, []);
-
     const clearFilters = () => {
-        // Đặt lại giá trị của các bộ lọc về mặc định
         setStatusFilter('all');
-    
-        // Hiển thị danh sách sản phẩm ban đầu
-        setFilteredInvoices(initialInvoices);
+
+        setFilteredInvoicesResult(initialInvoices);
     };
 
     return (
@@ -195,13 +214,14 @@ const Invoice: React.FC<any> = () => {
             <div className={cx('main-container')}>
                 <div className={cx('filter')}>
                     <div className={cx('period')}>
-                        Giai đoạn bán hàng
                         <div className={cx('calender')}>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DemoContainer components={['DateTimeField', 'DateTimeField']}>
-                                    <DateTimeField
-                                        value={value}
-                                        onChange={(newValue) => setValue(newValue)}
+                                <DemoContainer components={['DatePicker']}>
+                                    <DatePicker
+                                        label="Lọc theo thời gian"
+                                        value={dayFilter}
+                                        onChange={handleChangeDayFilter }
+                                        format='DD/MM/YYYY'
                                     />
                                 </DemoContainer>
                             </LocalizationProvider>
@@ -232,8 +252,8 @@ const Invoice: React.FC<any> = () => {
                             <option className={cx('option-first')} value="all" disabled>
                                 Phương thức thanh toán
                             </option>
-                            <option value="published">Tiền mặt</option>
-                            <option value="hided">Chuyển khoản</option>
+                            <option value="cash">Tiền mặt</option>
+                            <option value="transfer">Chuyển khoản</option>
                         </select>
 
                         <div className={cx('btns-filters')}>
@@ -250,7 +270,7 @@ const Invoice: React.FC<any> = () => {
                 </div>
                 <div className={cx('table')}>
                     <div className={cx("titles")}>
-                        <div className={cx("id")}># Đơn hàng</div>
+                        <div className={cx("id")}># Mã</div>
                         <div className={cx("customer-name")}>Tên khách hàng</div>
                         <div className={cx("phone")}>Số điện thoại</div>
                         <div className={cx("address")}>Địa chỉ</div>
@@ -259,11 +279,12 @@ const Invoice: React.FC<any> = () => {
                         <div className={cx("payment")}>Cách thức thanh toán</div>
                         <div className={cx("status")}>Trạng thái đơn hàng</div>
                         <div className={cx("content")}>Ghi chú của khách hàng</div>
+                        <div className={cx("time")}>Thời gian</div>
                         <div className={cx("edit")}>Chỉnh sửa</div>
                     </div>
                     <br />
                     <div className={cx("information")}>
-                        {invoices.map((invoice) => (
+                        {filteredInvoicesResult.map((invoice) => (
                             <InvoiceManagementRow key={invoice.id} data={invoice} products={products} />
                         ))}
                     </div>

@@ -1,16 +1,16 @@
-import * as React from 'react';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import * as React from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import 'sweetalert2/dist/sweetalert2.min.css';
-import Backdrop from '@mui/material/Backdrop';
+import "sweetalert2/dist/sweetalert2.min.css";
+import Backdrop from "@mui/material/Backdrop";
 
-import styles from './CategoryComponent.module.scss';
+import styles from "./CategoryComponent.module.scss";
 import Image from "../Image";
-import Button from '../Button';
-import { axiosClient } from '../../axios';
+import Button from "../Button";
+import { axiosClient } from "../../axios";
 
 const cx = classNames.bind(styles);
 
@@ -23,18 +23,20 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
   const [open, setOpen] = useState(false);
   const handleCloseAddForm = () => setOpen(false);
   const handleOpenAddForm = () => {
-    const swalContainer = document.querySelector('.swal2-container') as HTMLElement;
+    const swalContainer = document.querySelector(
+      ".swal2-container"
+    ) as HTMLElement;
     if (swalContainer) {
-      swalContainer.style.zIndex = '99999';
+      swalContainer.style.zIndex = "99999";
     }
-
     setOpen(true);
   };
+
   const handleDeleteForm = async () => {
     try {
-      const response = await axiosClient.delete(`category/delete/${idCategory}`, {
+      axiosClient.delete(`category/delete/${idCategory}`, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
       MySwal.fire({
@@ -45,8 +47,9 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
         },
         timer: 2000,
       });
-      window.location.reload();
-      console.log('Response from server:', response);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (error) {
       MySwal.fire({
         title: "Đã có lỗi xảy ra!",
@@ -56,12 +59,11 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
         },
         timer: 2000,
       });
-      console.error('Error:', error);
     }
-  }
+  };
 
-  const [name, setName] = React.useState('');
-  const [imageUrl, setImageUrl] = React.useState('');
+  const [name, setName] = React.useState("");
+  const [imageUrl, setImageUrl] = React.useState("");
 
   const linkRef = React.useRef<HTMLAnchorElement>(null);
 
@@ -69,7 +71,7 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
     if (!file || !file.type.match(/image.*/)) return;
 
     MySwal.fire({
-      title: 'Đang tải ảnh lên...',
+      title: "Đang tải ảnh lên...",
       allowOutsideClick: false,
       didOpen: () => {
         const popup = MySwal.getPopup();
@@ -82,21 +84,20 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
     });
 
     const fd = new FormData();
-    fd.append('image', file);
+    fd.append("image", file);
 
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://api.imgur.com/3/image.json');
+    xhr.open("POST", "https://api.imgur.com/3/image.json");
     xhr.onload = function () {
       const link = JSON.parse(xhr.responseText).data.link;
       if (linkRef.current) {
         linkRef.current.href = link;
         linkRef.current.innerHTML = link;
       }
-
       MySwal.close();
       setImageUrl(link);
     };
-    xhr.setRequestHeader('Authorization', 'Client-ID 983c8532c49a20e');
+    xhr.setRequestHeader("Authorization", "Client-ID 983c8532c49a20e");
     xhr.send(fd);
   };
 
@@ -115,16 +116,20 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append('id', idCategory);
-    formData.append('name', name);
-    formData.append('image', imageUrl);
+    formData.append("id", idCategory);
+    formData.append("name", name);
+    formData.append("image", imageUrl);
 
     try {
-      const response = await axiosClient.put(`category/edit/${idCategory}`, formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await axiosClient.put(
+        `category/edit/${idCategory}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       MySwal.fire({
         title: "Chỉnh sửa thành công!",
         icon: "success",
@@ -135,7 +140,7 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
       });
       setOpen(false);
       window.location.reload();
-      console.log('Response from server:', response);
+      console.log("Response from server:", response);
     } catch (error) {
       MySwal.fire({
         title: "Đã có lỗi xảy ra!",
@@ -145,52 +150,71 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
         },
         timer: 2000,
       });
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
   return (
-    <div className={cx('wrapper')}>
-      <div className={cx('inner')}>
-        {currentPath === '/category' ? (
+    <div className={cx("wrapper")}>
+      <div className={cx("inner")}>
+        {currentPath === "/category" ? (
           <>
-            <div className={cx('img')}>
+            <div className={cx("img")}>
               <Image src={data.image} />
             </div>
             <h3>{data.name}</h3>
-            <div className={cx('btns')}>
-              <Button outline onClick={handleOpenAddForm} style={{ marginBottom: '0.5rem' }}>Chỉnh sửa thông tin</Button>
-              <Button primary onClick={handleDeleteForm}>Xóa danh mục</Button>
+            <div className={cx("btns")}>
+              <Button
+                outline
+                onClick={handleOpenAddForm}
+                style={{ marginBottom: "0.5rem" }}
+              >
+                Chỉnh sửa thông tin
+              </Button>
+              <Button primary onClick={handleDeleteForm}>
+                Xóa danh mục
+              </Button>
             </div>
-            <Backdrop
-              sx={{ color: '#fff', zIndex: 9 }}
-              open={open}
-            >
-              <div className={cx('add-form')}>
-                <form action="/upload" method="post" className={cx('form')} onSubmit={handleSubmit} encType="multipart/form-data">
-                  <div className={cx('title')}>
-                    <p style={{ fontSize: '1.5rem', fontWeight: '500' }}>CHỈNH SỬA THÔNG TIN HÃNG SẢN XUẤT</p>
-                    <button type='button' className={cx('close-btn')} onClick={handleCloseAddForm}>×</button>
+            <Backdrop sx={{ color: "#fff", zIndex: 9 }} open={open}>
+              <div className={cx("add-form")}>
+                <form
+                  action="/upload"
+                  method="post"
+                  className={cx("form")}
+                  onSubmit={handleSubmit}
+                  encType="multipart/form-data"
+                >
+                  <div className={cx("title")}>
+                    <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>
+                      CHỈNH SỬA THÔNG TIN HÃNG SẢN XUẤT
+                    </p>
+                    <button
+                      type="button"
+                      className={cx("close-btn")}
+                      onClick={handleCloseAddForm}
+                    >
+                      ×
+                    </button>
                   </div>
                   <br />
-                  <div className={cx('inputs')}>
+                  <div className={cx("inputs")}>
                     <label>ID hãng sản xuất:</label>
                     <input
                       id="id"
-                      type='number'
+                      type="number"
                       name="id"
-                      placeholder='ID hãng sản xuất'
-                      className={cx('input-name')}
+                      placeholder="ID hãng sản xuất"
+                      className={cx("input-name")}
                       value={idCategory}
                     />
                     <br />
                     <label>Chỉnh sửa tên hãng sản xuất:</label>
                     <input
                       id="name"
-                      type='text'
+                      type="text"
                       name="name"
-                      placeholder='Tên hãng sản xuất'
-                      className={cx('input-name')}
+                      placeholder="Tên hãng sản xuất"
+                      className={cx("input-name")}
                       value={name}
                       onChange={handleNameChange}
                     />
@@ -204,10 +228,12 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
                       onChange={handleImageUpload}
                     />
                   </div>
-                  <div className={cx('show-image')}>
+                  <div className={cx("show-image")}>
                     <Image src={imageUrl} />
                   </div>
-                  <Button small primary>Xác nhận</Button>
+                  <Button small primary>
+                    Xác nhận
+                  </Button>
                 </form>
               </div>
             </Backdrop>
@@ -215,18 +241,18 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
         ) : (
           <>
             <Link to={`/detailCategory/${data.name}`}>
-              <div className={cx('user-ui')}>
-                <div className={cx('image')}>
+              <div className={cx("user-ui")}>
+                <div className={cx("image")}>
                   <Image src={data.image} />
                 </div>
-                <b>{data.name}</b>
+                <h4>{data.name}</h4>
               </div>
             </Link>
           </>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default CategoryComponent;
