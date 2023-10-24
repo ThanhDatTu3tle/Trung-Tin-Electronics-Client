@@ -271,6 +271,7 @@ const Header: React.FC = () => {
                                                                     onClick={(event) => {
                                                                         handleMenuItemClick(event, index);
                                                                         history(`/detailCategory/${category.name}`);
+                                                                        window.location.reload();
                                                                         setOpen(true);
                                                                     }}
                                                                     sx={{ fontSize: '1.2rem', backgroundColor: '#434343', color: '#fff' }}

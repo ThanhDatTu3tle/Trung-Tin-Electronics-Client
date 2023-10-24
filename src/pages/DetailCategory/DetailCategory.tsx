@@ -61,8 +61,6 @@ const DetailCategory: React.FC = () => {
     fetchData();
   }, [category, filteredProducts]);
 
-  console.log(filteredProducts)
-
   if (!category) {
     return <div>Danh mục không tồn tại</div>;
   }

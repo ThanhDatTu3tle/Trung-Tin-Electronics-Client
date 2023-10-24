@@ -40,6 +40,13 @@
                 justify-content: center;
                 width: 35%;
             }
+
+            .count {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 10%;
+            }
         
             .small-title {
                 display: flex;
@@ -147,6 +154,16 @@
                         border: 1px solid black;
                     }
                 }
+
+                .error {
+                    font-size: 1rem;
+                    color: red;
+                }
+            }
+
+            .error {
+                font-size: 1rem;
+                color: red;
             }
         }
 
@@ -212,6 +229,13 @@
                     align-items: center;
                     justify-content: center;
                     width: 40%;
+                }
+
+                .count {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 10%;
                 }
             
                 .small-title {
@@ -387,6 +411,13 @@
                     justify-content: center;
                     width: 34%;
                 }
+
+                .count {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 12%;
+                }
             
                 .small-title {
                     display: flex;
@@ -560,6 +591,13 @@
                     align-items: center;
                     justify-content: center;
                     width: 30%;
+                }
+
+                .count {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 14%;
                 }
             
                 .small-title {
@@ -739,6 +777,13 @@
                     align-items: center;
                     justify-content: center;
                     width: 24%;
+                }
+
+                .count {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 19%;
                 }
             
                 .small-title {

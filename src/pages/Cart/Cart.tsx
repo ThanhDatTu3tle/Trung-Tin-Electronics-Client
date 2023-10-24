@@ -11,6 +11,7 @@ import CartRow from "../../components/CartRow";
 import ProductService from "../../service/ProductService";
 import Button from "../../components/Button";
 import { axiosClient } from "../../axios";
+import { useCart } from "../../Context/CartContext";
 
 const cx = classNames.bind(styles);
 
@@ -24,15 +25,55 @@ window.addEventListener("resize", updateScreenSize);
 const Cart: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
   const history = useNavigate();
+  const { cartItems } = useCart();
+  const status = false;
+  const emptyData: {
+    fullName?: string;
+    phoneNumber?: string;
+    email?: string;
+    selectedProvince?: string;
+    selectedDistrict?: string;
+    selectedWard?: string;
+    address?: string;
+    selectedOption?: string;
+  } = {};
+  const [errors, setErrors] = useState(emptyData);
+  const [errorsVisibleFullName, setErrorsVisibleFullName] = useState(true);
+  const [errorsVisiblePhoneNumber, setErrorsVisiblePhoneNumber] = useState(true);
+  const [errorsVisibleEmail, setErrorsVisibleEmail] = useState(true);
+  const [errorsVisibleProvinces, setErrorsVisibleProvinces] = useState(true);
+  const [errorsVisibleDistricts, setErrorsVisibleDistricts] = useState(true);
+  const [errorsVisibleWards, setErrorsVisibleWards] = useState(true);
+  const [errorsVisibleAddress, setErrorsVisibleAddress] = useState(true);
+  const [errorsVisibleMethodPayment, setErrorsVisibleMethodPayment] = useState(true);
 
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<
+    {
+      quantityIsSet: number;
+      id: string;
+      name: string;
+      description: string;
+      specification: { id: number; specification: string }[];
+      imageProducts: { id: number; image: string }[];
+      price: number;
+      quantity: number;
+      brand: { id: number; name: string; image: string };
+      event: null;
+      status: boolean;
+      category: { id: number; name: string; image: string; status: boolean };
+      idBrand: number;
+      idCategory: number;
+      idEvent: number;
+    }[]
+  >([]);
+
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const cartData = JSON.parse(localStorage.getItem("cart") || "[]");
 
-  const [fullName, setFullName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
+  const [fullName, setFullName] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [provinces, setProvinces] = useState<
     {
       name: string;
@@ -60,23 +101,30 @@ const Cart: React.FC<any> = () => {
       district_code: number;
     }[]
   >([]);
-  const [address, setAddress] = useState("");
-  const [content, setContent] = useState("");
-  const status = false;
-
-  const [selectedWard, setSelectedWard] = useState("");
-  const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [selectedProvince, setSelectedProvince] = useState("");
-  const [selectedOption, setSelectedOption] = useState("");
+  const [address, setAddress] = useState<string>("");
+  const [content, setContent] = useState<string>("");
+  const [selectedWard, setSelectedWard] = useState<string>("");
+  const [selectedDistrict, setSelectedDistrict] = useState<string>("");
+  const [selectedProvince, setSelectedProvince] = useState<string>("");
+  const [selectedOption, setSelectedOption] = useState<string>("");
 
   const handleFullNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFullName(event.target.value);
+    if (errors.fullName && event.target.value.trim() !== "") {
+      setErrorsVisibleFullName(false);
+    }
   };
   const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPhoneNumber(event.target.value);
+    if (errors.phoneNumber && event.target.value.trim() !== "") {
+      setErrorsVisiblePhoneNumber(false);
+    }
   };
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
+    if (errors.email && event.target.value.trim() !== "") {
+      setErrorsVisibleEmail(false);
+    }
   };
   useEffect(() => {
     const fetchProvinces = async () => {
@@ -109,6 +157,7 @@ const Cart: React.FC<any> = () => {
 
       setDistricts(selectedDistricts);
       setSelectedProvince(event.target.value);
+      setErrorsVisibleProvinces(false);
       setSelectedDistrict("");
       setWards([]);
     } catch (error) {
@@ -147,16 +196,18 @@ const Cart: React.FC<any> = () => {
 
       setWards(selectedWards);
       setSelectedDistrict(event.target.value);
+      setErrorsVisibleDistricts(false);
     } catch (error) {
       console.error(error);
     }
   };
   const handleWardChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedWard(event.target.value);
+    setErrorsVisibleWards(false);
   };
-
   const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(event.target.value);
+    setErrorsVisibleAddress(false);
   };
   const handleContentChange = (event: {
     target: { value: React.SetStateAction<string> };
@@ -165,6 +216,7 @@ const Cart: React.FC<any> = () => {
   };
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
+    setErrorsVisibleMethodPayment(false);
   };
 
   if (cartData.length === 0) {
@@ -177,7 +229,6 @@ const Cart: React.FC<any> = () => {
         const res = await ProductService.GetProduct(productId);
         return res.data;
       } catch (error) {
-        // console.error(error);
         return null;
       }
     };
@@ -185,12 +236,12 @@ const Cart: React.FC<any> = () => {
     const fetchAllProductDetails = async () => {
       const productDetails = await Promise.all(
         cartData.map(
-          async (cartItem: { productId: string; quantity: number }) => {
+          async (cartItem: { productId: string; quantityIsSet: number }) => {
             const productDetail = await fetchProductDetails(cartItem.productId);
             if (productDetail) {
               return {
                 ...productDetail,
-                quantity: cartItem.quantity,
+                quantityIsSet: cartItem.quantityIsSet,
               };
             }
             return null;
@@ -205,7 +256,20 @@ const Cart: React.FC<any> = () => {
     if (isLoadingProducts) {
       fetchAllProductDetails();
     }
-  }, [isLoadingProducts, cartData]);
+
+  }, [cartData, isLoadingProducts]);
+
+  useEffect(() => {
+    const newTotalPrice = products.reduce((total, product) => {
+      const cartItem = cartItems.find((item) => item.productId === product.id);
+      if (cartItem) {
+        return total + product.price * cartItem.quantityIsSet;
+      }
+  
+      return total;
+    }, 0);
+    setTotalPrice(newTotalPrice);
+  }, [cartItems, products]);
 
   const handleDeleteProduct = (productId: string) => {
     const updatedProducts = products.filter(
@@ -227,86 +291,160 @@ const Cart: React.FC<any> = () => {
     }
   };
 
-  useEffect(() => {
-    const calculateTotalPrice = () => {
-      const totalPrice = products.reduce((total, product) => {
-        return total + product.price * product.quantity;
-      }, 0);
-      setTotalPrice(totalPrice);
-    };
+  const validateForm = (formData: {
+    fullName: string;
+    phoneNumber: string;
+    email: string;
+    selectedProvince: string;
+    selectedDistrict: string;
+    selectedWard: string;
+    address: string;
+    selectedOption: string;
+  }) => {
+    const newErrors: { [key: string]: string } = {};
+    const phoneNumberRegex = /^[0-9]+$/;
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
-    calculateTotalPrice();
-  }, [products]);
+    if (!formData.fullName) {
+      newErrors.fullName = "Vui lòng cung cấp họ và tên";
+    } else {
+      newErrors.fullName = "";
+    }
+
+    if (!formData.phoneNumber) {
+      newErrors.phoneNumber = "Vui lòng cung cấp số điện thoại";
+    } else if (!phoneNumberRegex.test(formData.phoneNumber)) {
+      newErrors.phoneNumber = "Số điện thoại phải là một dãy số";
+    } else {
+      newErrors.phoneNumber = "";
+    }
+
+    if (!formData.email) {
+      newErrors.email = "Vui lòng cung cấp email";
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Email không hợp lệ";
+    } else {
+      newErrors.email = "";
+    }
+
+    if (!formData.selectedProvince) {
+      newErrors.selectedProvince = "Vui lòng chọn tỉnh/thành phố";
+    } else {
+      newErrors.selectedProvince = "";
+    }
+
+    if (!formData.selectedDistrict) {
+      newErrors.selectedDistrict = "Vui lòng chọn quận/huyện";
+    } else {
+      newErrors.selectedDistrict = "";
+    }
+
+    if (!formData.selectedWard) {
+      newErrors.selectedWard = "Vui lòng chọn phường/xã";
+    } else {
+      newErrors.selectedWard = "";
+    }
+
+    if (!formData.address) {
+      newErrors.address = "Địa chỉ không được để trống";
+    } else {
+      newErrors.address = "";
+    }
+
+    if (!formData.selectedOption) {
+      newErrors.selectedOption = "Vui lòng chọn hình thức thanh toán";
+    } else {
+      newErrors.selectedOption = "";
+    }
+
+    setErrors(newErrors);
+
+    return Object.values(newErrors).every(error => error === "");
+  };
 
   const handleOrder = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    const formData = new FormData();
-    const addressRaw = `
-            ${address} 
-            ${
-              wards.find((ward) => ward.code === Number(selectedWard))?.name ||
-              ""
-            } 
-            ${
-              districts.find(
-                (district) => district.code === Number(selectedDistrict)
-              )?.name || ""
-            } 
-            ${
-              provinces.find(
-                (province) => province.code === Number(selectedProvince)
-              )?.name || ""
-            }
-        `;
-    const lines = addressRaw.split("\n").filter((line) => line.trim() !== "");
-    const completeAddress = lines.map((line) => line.trim()).join(" ");
-
-    formData.append("customerName", fullName);
-    formData.append("phone", phoneNumber);
-    formData.append("email", email);
-    formData.append("address", completeAddress);
-    formData.append("content", content);
-    formData.append("status", status.toString());
-    products.forEach((product, index) => {
-      formData.append(`invoiceDetail[${index}].idProduct`, product.id);
-      formData.append(
-        `invoiceDetail[${index}].number`,
-        product.quantity.toString()
-      );
+    const isValid = validateForm({
+      fullName,
+      phoneNumber,
+      email,
+      selectedProvince,
+      selectedDistrict,
+      selectedWard,
+      address,
+      selectedOption,
     });
-    formData.append("total", totalPrice.toString());
-    formData.append("payment", selectedOption);
+    console.log(isValid);
 
-    try {
-      await axiosClient.post("invoice/create", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+    if (isValid) {
+      const formData = new FormData();
+      const addressRaw = `
+              ${address} 
+              ${
+                wards.find((ward) => ward.code === Number(selectedWard))
+                  ?.name || ""
+              } 
+              ${
+                districts.find(
+                  (district) => district.code === Number(selectedDistrict)
+                )?.name || ""
+              } 
+              ${
+                provinces.find(
+                  (province) => province.code === Number(selectedProvince)
+                )?.name || ""
+              }
+          `;
+      const lines = addressRaw.split("\n").filter((line) => line.trim() !== "");
+      const completeAddress = lines.map((line) => line.trim()).join(" ");
+      formData.append("customerName", fullName);
+      formData.append("phone", phoneNumber);
+      formData.append("email", email);
+      formData.append("address", completeAddress);
+      formData.append("content", content);
+      formData.append("status", status.toString());
+      products.forEach((product, index) => {
+        if (product.quantityIsSet <= product.quantity) {
+          formData.append(`invoiceDetail[${index}].idProduct`, product.id);
+          formData.append(
+            `invoiceDetail[${index}].number`,
+            product.quantityIsSet.toString()
+          );
+        }
       });
-      await MySwal.fire({
-        title: "Đặt hàng thành công!",
-        icon: "success",
-        didOpen: () => {
-          MySwal.showLoading();
-        },
-        timer: 2000,
-      });
+      formData.append("total", totalPrice.toString());
+      formData.append("payment", selectedOption);
 
-      await localStorage.removeItem("cart");
-      window.location.href = "/";
-    } catch (error) {
-      await MySwal.fire({
-        title: "Đặt hàng thành công!",
-        icon: "success",
-        didOpen: () => {
-          MySwal.showLoading();
-        },
-        timer: 2000,
-      });
+      try {
+        await axiosClient.post("invoice/create", formData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        await MySwal.fire({
+          title: "Đặt hàng thành công!",
+          icon: "success",
+          didOpen: () => {
+            MySwal.showLoading();
+          },
+          timer: 2000,
+        });
 
-      await localStorage.removeItem("cart");
-      window.location.href = "/";
+        await localStorage.removeItem("cart");
+        window.location.href = "/";
+      } catch (error) {
+        await MySwal.fire({
+          title: "Đặt hàng thành công!",
+          icon: "success",
+          didOpen: () => {
+            MySwal.showLoading();
+          },
+          timer: 2000,
+        });
+
+        await localStorage.removeItem("cart");
+        window.location.href = "/";
+      }
     }
   };
 
@@ -325,7 +463,7 @@ const Cart: React.FC<any> = () => {
           )}
           <div className={cx("name")}>Tên sản phẩm</div>
           <div className={cx("small-title")}>Giá tiền</div>
-          <div className={cx("small-title")}>Số lượng</div>
+          <div className={cx("count")}>Số lượng</div>
           <div className={cx("small-title")}>Tổng</div>
           <div className={cx("small-title")}>Xóa</div>
         </div>
@@ -342,7 +480,7 @@ const Cart: React.FC<any> = () => {
       </div>
       <div className={cx("result")}>
         <p className={cx("price")}>
-          Tổng giá:{" "}
+          Tổng giá trị đơn hàng:{" "}
           {totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
         </p>
       </div>
@@ -363,6 +501,9 @@ const Cart: React.FC<any> = () => {
               value={fullName}
               onChange={handleFullNameChange}
             />
+            {errors.fullName && errorsVisibleFullName && (
+              <p className={cx("error")}>{errors.fullName}</p>
+            )}
             <input
               id="phone"
               type="text"
@@ -371,6 +512,9 @@ const Cart: React.FC<any> = () => {
               value={phoneNumber}
               onChange={handlePhoneChange}
             />
+            {errors.phoneNumber && errorsVisiblePhoneNumber && (
+              <p className={cx("error")}>{errors.phoneNumber}</p>
+            )}
             <input
               id="email"
               type="text"
@@ -379,6 +523,9 @@ const Cart: React.FC<any> = () => {
               value={email}
               onChange={handleEmailChange}
             />
+            {errors.email && errorsVisibleEmail && (
+              <p className={cx("error")}>{errors.email}</p>
+            )}
             <select
               name="province"
               className={cx("input")}
@@ -391,6 +538,9 @@ const Cart: React.FC<any> = () => {
                 </option>
               ))}
             </select>
+            {errors.selectedProvince && errorsVisibleProvinces && (
+              <p className={cx("error")}>{errors.selectedProvince}</p>
+            )}
             <select
               name="district"
               className={cx("input")}
@@ -403,6 +553,9 @@ const Cart: React.FC<any> = () => {
                 </option>
               ))}
             </select>
+            {errors.selectedDistrict && errorsVisibleDistricts && (
+              <p className={cx("error")}>{errors.selectedDistrict}</p>
+            )}
             <select
               name="ward"
               className={cx("input")}
@@ -415,6 +568,9 @@ const Cart: React.FC<any> = () => {
                 </option>
               ))}
             </select>
+            {errors.selectedWard && errorsVisibleWards && (
+              <p className={cx("error")}>{errors.selectedWard}</p>
+            )}
             <input
               id="address"
               type="text"
@@ -422,7 +578,11 @@ const Cart: React.FC<any> = () => {
               className={cx("input")}
               value={address}
               onChange={handleAddressChange}
+              required
             />
+            {errors.address && errorsVisibleAddress && (
+              <p className={cx("error")}>{errors.address}</p>
+            )}
             <label htmlFor="content" className={cx("big-title")}>
               Nội dung:
             </label>
@@ -447,7 +607,7 @@ const Cart: React.FC<any> = () => {
                 onChange={handleOptionChange}
               />
               <label htmlFor="transfer" className={cx("title-transfer")}>
-                Thanh toán bằng hình thức chuyển khoản
+                Thanh toán qua chuyển khoản
               </label>
             </div>
             <div>
@@ -464,6 +624,9 @@ const Cart: React.FC<any> = () => {
               </label>
             </div>
           </div>
+          {errors.selectedOption && errorsVisibleMethodPayment && (
+            <p className={cx("error")}>Vui lòng chọn hình thức thanh toán</p>
+          )}
         </form>
         <div className={cx("buttons")}>
           <div className={cx("confirm")}>

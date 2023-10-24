@@ -59,6 +59,15 @@
   }
   
   // Button size
+  .tiny {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 40px;
+    min-height: 20px;
+    padding: 2px 10px;
+  }
+
   .small {
     display: flex;
     justify-content: center;

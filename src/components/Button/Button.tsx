@@ -9,6 +9,7 @@ const Button: React.FC<any> = ({
     href,
     primary = false,
     outline = false,
+    tiny = false, 
     small = false, 
     large = false, 
     disable = false,
@@ -44,6 +45,7 @@ const Button: React.FC<any> = ({
       const classes = cx('wrapper', {
         primary,
         outline,
+        tiny,
         small,
         large,
         disable

@@ -37,6 +37,7 @@ const Home: React.FC<any> = () => {
       specification: { id: number; specification: string }[];
       imageProducts: { id: number; image: string }[];
       price: number;
+      quantity: number;
       brand: { id: number; name: string; image: string };
       event: null;
       status: boolean;
