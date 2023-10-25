@@ -564,7 +564,7 @@
             width: 100%;
             height: fit-content;
             border-radius: 10px;
-            padding: 1rem;
+            padding: 0.5rem;
             background: rgb(255, 255, 255);
             box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
     
@@ -572,39 +572,37 @@
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-                font-size: 0.6rem;
+                font-size: 0.7rem;
                 color: #fff;
                 background-color: #018ec3;
-                padding: 0.3rem;
-                height: 50px;
-                border-radius: 10px;
+                padding: 0;
+                height: 30px;
+                border-radius: 8px;
             
                 .image {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 18%;
+                    display: none;
                 }
     
                 .name {
                     display: flex;
                     align-items: center;
-                    justify-content: center;
-                    width: 30%;
+                    justify-content: flex-start;
+                    padding-left: 0.5rem;
+                    width: 32%;
                 }
 
                 .count {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    width: 14%;
+                    width: 17%;
                 }
             
                 .small-title {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    width: 14%;
+                    width: 17%;
                 }
             }
     
@@ -653,7 +651,7 @@
                 padding: 1rem;
     
                 .big-title {
-                    font-size: 1.4rem;
+                    font-size: 1.2rem;
                     font-weight: 700;
                 }
     
@@ -716,7 +714,7 @@
     
             .buttons {
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
                 align-items: center;
                 justify-content: space-around;
                 width: 100%;
@@ -724,11 +722,12 @@
                 padding: 1rem 0;
     
                 .confirm {
-                    width: 40%;
+                    width: 100%;
+                    margin-bottom: 1rem;
                 }
     
                 .continue {
-                    width: 40%;
+                    width: 100%;
                 }
             }
         }
@@ -750,7 +749,7 @@
             width: 100%;
             height: fit-content;
             border-radius: 10px;
-            padding: 1rem;
+            padding: 0.3rem;
             background: rgb(255, 255, 255);
             box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
     
@@ -758,32 +757,30 @@
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-                font-size: 0.4rem;
+                font-size: 0.5rem;
                 color: #fff;
                 background-color: #018ec3;
-                padding: 1rem;
-                height: 50px;
-                border-radius: 10px;
+                padding: 0;
+                height: 30px;
+                border-radius: 8px;
             
                 .image {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 0;
+                    display: none;
                 }
     
                 .name {
                     display: flex;
                     align-items: center;
-                    justify-content: center;
-                    width: 24%;
+                    justify-content: flex-start;
+                    padding-left: 0.5rem;
+                    width: 28%;
                 }
 
                 .count {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    width: 19%;
+                    width: 15%;
                 }
             
                 .small-title {

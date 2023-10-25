@@ -22,6 +22,7 @@ const cx = classNames.bind(styles);
 const faFacebookIcon = faFacebookF as IconProp;
 const faYoutubeIcon = faYoutube as IconProp;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let screenWidth = window.innerWidth;
 
 function updateScreenSize() {
@@ -172,7 +173,7 @@ const Footer: React.FC<any> = () => {
                     </div>
                     <div className={cx('fanpage')}>
                         <p>FANPAGE</p>
-                        <iframe src="https://www.facebook.com/profile.php?id=100007187049398" width="300" height="200" style={{border: 'none', overflow: 'hidden'}} allow="encrypted-media"></iframe>
+                        {/* <iframe src="https://www.facebook.com/profile.php?id=100007187049398" width="300" height="200" style={{border: 'none', overflow: 'hidden'}} allow="encrypted-media"></iframe> */}
                     </div>
                 </div>
             </Container>

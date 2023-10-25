@@ -14,3 +14,22 @@
         height: 7rem;
     }
 }
+
+@media screen and (max-width: 1099px) and (min-width: 900px) {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 28%;
+        height: 100%;
+        font-size: 1rem;
+        padding: 1rem;
+        background-color: #fff;
+    
+        .img-category {
+            width: 5rem;
+            height: 5rem;
+        }
+    }
+}

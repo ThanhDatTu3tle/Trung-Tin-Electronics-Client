@@ -374,7 +374,6 @@ const Cart: React.FC<any> = () => {
       address,
       selectedOption,
     });
-    console.log(isValid);
 
     if (isValid) {
       const formData = new FormData();
@@ -454,7 +453,7 @@ const Cart: React.FC<any> = () => {
       <br />
       <div className={cx("table")}>
         <div className={cx("titles")}>
-          {screenWidth >= 279 ? (
+          {screenWidth >= 599 ? (
             <>
               <div className={cx("image")}>Hình ảnh</div>
             </>

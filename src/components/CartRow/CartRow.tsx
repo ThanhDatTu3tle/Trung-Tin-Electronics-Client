@@ -14,6 +14,13 @@ const faTrashCanIcon = faTrashCan as IconProp;
 
 const cx = classNames.bind(styles);
 
+let screenWidth = window.innerWidth;
+function updateScreenSize() {
+  screenWidth = window.innerWidth;
+}
+updateScreenSize();
+window.addEventListener("resize", updateScreenSize);
+
 const CartRow: React.FC<any> = ({ data, onDeleteProduct }) => {
   const handleDeleteProductClick = () => {
     onDeleteProduct(data.id);
@@ -48,15 +55,34 @@ const CartRow: React.FC<any> = ({ data, onDeleteProduct }) => {
           {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
         </div>
 
-        <div className={cx("count")}>
-          <Button primary tiny onClick={() => handleMinus(data.id, count)}>
-            -
-          </Button>
-          {count}
-          <Button primary tiny onClick={() => handleAdd(data.id, count)}>
-            +
-          </Button>
-        </div>
+       
+        {screenWidth >= 599 ? (
+            <>
+                <div className={cx("count")}>
+                    {count}
+                    <div className={cx('btns-change')}>
+                        <Button primary tiny onClick={() => handleAdd(data.id, count)}>
+                            +
+                        </Button>
+                        <Button primary tiny onClick={() => handleMinus(data.id, count)}>
+                            -
+                        </Button>
+                    </div>
+                </div>
+            </>
+        ) : (
+            <>
+                <div className={cx("count")}>
+                    <Button primary superTiny onClick={() => handleAdd(data.id, count)}>
+                        +
+                    </Button>
+                    {count}
+                    <Button primary superTiny onClick={() => handleMinus(data.id, count)}>
+                        -
+                    </Button>
+                </div>
+            </>
+        )}
 
         <div className={cx("small-title")}>
           {(data.price * count)

@@ -59,6 +59,16 @@
   }
   
   // Button size
+  .superTiny {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 20px;
+    min-height: 2px;
+    padding: 1px 2px;
+    font-size: 0.6rem;
+  }
+
   .tiny {
     display: flex;
     justify-content: center;

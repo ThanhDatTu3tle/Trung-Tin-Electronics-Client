@@ -4,9 +4,6 @@ import { Link } from 'react-router-dom';
 import { debounce } from "lodash";
 import classNames from "classnames/bind";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-
 import Image from '../Image';
 
 import styles from './SearchBar.module.scss';
@@ -54,11 +51,6 @@ const SearchBar: React.FC<any> = ({ placeholder, data }) => {
         handleDebouncedFilter(searchWord);
     };
 
-    const clearInput = () => {
-        setFilteredData([]);
-        setWordEntered("");
-    };
-
     return (
         <div className={cx('search')}>
             <div className={cx('searchInputs')}>
@@ -69,27 +61,12 @@ const SearchBar: React.FC<any> = ({ placeholder, data }) => {
                     onChange={handleFilter}
                     className={cx('searchInput')}
                 />
-                <div className={cx('searchIcon')}>
-                    {filteredData.length === 0 ? (
-                        <FontAwesomeIcon
-                            icon={faMagnifyingGlass}
-                            style={{ color: '#434343' }}
-                        />
-                    ) : (
-                        <FontAwesomeIcon
-                            id="clearBtn"
-                            icon={faXmark}
-                            style={{ color: '#434343', cursor: 'pointer' }}
-                            onClick={clearInput}
-                        />
-                    )}
-                </div>
             </div>
             {filteredData.length !== 0 && (
                 <div className={cx('dataResult')}>
-                    {filteredData.map((value, key) => {
+                    {filteredData.map((value) => {
                         return (
-                            <div className={cx('dataItem')}>
+                            <div className={cx('dataItem')} key={value.id}>
                                 <Link to={`/detailProduct/${value.id}`} className={cx('inner')}>
                                     <div className={cx('image')}>
                                         {value.imageProducts && value.imageProducts.length > 0 && (

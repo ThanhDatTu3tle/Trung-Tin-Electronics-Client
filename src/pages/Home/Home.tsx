@@ -100,14 +100,7 @@ const Home: React.FC<any> = () => {
         },
       },
       {
-        breakpoint: 1099,
-        settings: {
-          slidesToShow: 8,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 899,
+        breakpoint: 913,
         settings: {
           slidesToShow: 4,
           slidesToScroll: 4,
@@ -178,7 +171,7 @@ const Home: React.FC<any> = () => {
                 }
             </div> */}
       {categories.map((data) => (
-        <div className={cx("machine")}>
+        <div className={cx("machine")} key={data.id}>
           <div className={cx("title-wrapper")}>
             <div className={cx("title")}>{data.name}</div>
             <div className={cx("show-all")}>

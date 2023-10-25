@@ -35,7 +35,7 @@ const ProductComponent: React.FC<any> = ({ data }) => {
                         <Image src={data.imageProducts[0].image} />
                     )}
                     <div className={cx('name')}>
-                        <a title="" href="/category/product">{data.name} {data.id}</a>
+                        <p>{data.name} {data.id}</p>
                     </div>
                     <div className={cx('specifications')}>
                         {data.specification.map((content: any) => (

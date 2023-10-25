@@ -34,6 +34,15 @@
             justify-content: space-around;
             width: 10%;
             font-size: 1.2rem;
+
+            .btns-change {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                width: 50%;
+                height: 50%;
+            }
         }
     
         .small-title {
@@ -80,15 +89,33 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                width: 20%;
+                width: 25%;
             }
     
             .name {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                width: 40%;
+                width: 35%;
                 font-size: 1rem;
+            }
+    
+            .count {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+                width: 10%;
+                font-size: 1rem;
+    
+                .btns-change {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 50%;
+                    height: 50%;
+                }
             }
         
             .small-title {
@@ -97,10 +124,10 @@
                 justify-content: center;
                 width: 10%;
                 font-size: 1rem;
-
+    
                 .icon {
                     color: #fec806;
-                    font-size: 1.5rem;
+                    font-size: 2rem;
                 }
             }
     
@@ -189,17 +216,24 @@
             padding-bottom: 0.2rem;
     
             .image {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 18%;
+                display: none;
             }
     
             .name {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                width: 30%;
+                width: 32%;
+                font-size: 0.5rem;
+            }
+
+            .count {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-around;
+                width: 17%;
+                height: 100%;
                 font-size: 0.6rem;
             }
         
@@ -207,7 +241,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                width: 14%;
+                width: 17%;
                 font-size: 0.6rem;
 
                 .icon {
@@ -241,21 +275,29 @@
             flex-direction: row;
             width: 100%;
             height: fit-content;
-            padding: 0.3rem;
+            padding-top: 0.2rem;
+            padding-bottom: 0.2rem;
     
             .image {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 0;
+                display: none;
             }
     
             .name {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                width: 24%;
-                font-size: 0.4rem;
+                width: 28%;
+                font-size: 0.5rem;
+            }
+
+            .count {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-around;
+                width: 15%;
+                height: 100%;
+                font-size: 0.5rem;
             }
         
             .small-title {
@@ -263,11 +305,11 @@
                 align-items: center;
                 justify-content: center;
                 width: 19%;
-                font-size: 0.4rem;
+                font-size: 0.5rem;
 
                 .icon {
                     color: #fec806;
-                    font-size: 0.5rem;
+                    font-size: 1rem;
                 }
             }
     

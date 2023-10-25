@@ -172,7 +172,7 @@ const Product: React.FC<any> = () => {
           {category0 === true ? (
             <>
               {categories.map((dataa) => (
-                <div className={cx('machine')}>
+                <div className={cx('machine')} key={dataa.id}>
                   <div className={cx('title-wrapper')}>
                     <div className={cx('title')}>{dataa.name}</div>
                   </div>
@@ -187,7 +187,7 @@ const Product: React.FC<any> = () => {
           ) : (
             <>
               {selectedCategoryIds.map((dataa) => (
-                <div className={cx('machine')}>
+                <div className={cx('machine')} key={dataa}>
                   <div className={cx('title-wrapper')}>
                     <div className={cx('title')}>{dataa}</div>
                   </div>

@@ -563,8 +563,8 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                   <div className={cx("right")}>
                     <label htmlFor="image">Hình ảnh hiện tại:</label>
                     <div className={cx("show-image")}>
-                      {data.imageProducts.map((img: { image: any }) => (
-                        <Image src={img.image} />
+                      {data.imageProducts.map((img: { id:any; image: any }) => (
+                        <Image key={img.id} src={img.image} />
                       ))}
                     </div>
                     {/* <br />
