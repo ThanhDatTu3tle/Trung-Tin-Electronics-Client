@@ -8,10 +8,12 @@ input:focus {
 
 .search {
     display: flex;
+    position: relative;
     flex-direction: column;
     align-items: center;
     width: 100%;
     height: fit-content;
+    z-index: 999;
 
     .searchInputs {
         display: flex;
@@ -27,8 +29,6 @@ input:focus {
             font-size: 1rem;
             padding: 0.5rem;
             border-radius: 0.2rem;
-            border-top-right-radius: 0px;
-            border-bottom-right-radius: 0px;
             border: 1px solid rgb(255, 255, 255);
             background-color: white;
             box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
@@ -48,29 +48,40 @@ input:focus {
     }
 
     .dataResult {
-        display: flex;
-        flex-direction: column;
+        position: absolute;
         width: 100%;
-        height: 0;
+        max-height: 26rem;
+        margin-top: 3.5rem;
         background-color: white;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        z-index: 999;
-        // overflow: auto;
-        // overflow-y: auto;
-        // overflow-x: auto;
+        z-index: 1000;
+        overflow-y: auto;
+
+        
+        @media screen and (max-width: 580px) {
+            top: 100%; 
+            left: 0; 
+            width: 150%;
+            max-height: 23.5rem;
+            margin-top: 0.2rem;
+        }
 
         .dataItem {
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            padding-left: 1rem;
+            padding: 0.5rem;
             font-size: 1rem;
             width: 100%;
             height: fit-content;
             color: black;
             background-color: white;
             cursor: pointer;
+
+            @media screen and (max-width: 580px) {
+                font-size: 0.2rem;
+            }
 
             .inner {
                 display: flex;
@@ -86,98 +97,15 @@ input:focus {
                 .text {
                     width: 70%;
                     font-size: 1rem;
+
+                    @media screen and (max-width: 580px) {
+                        font-size: 0.9rem;
+                    }
                 }
             }
 
             &:hover {
                 background-color: #F2F2F2;
-            }
-        }
-    }
-}
-
-@media screen and (max-width: 580px) {
-    input:focus {
-        outline: none;
-    }
-    
-    #clearBtn {
-        cursor: pointer;
-    }
-    
-    .search {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        height: 1rem;
-        z-index: 9;
-    
-        .searchInputs {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            height: 100%;
-    
-            .searchInput {
-                width: 100%;
-                height: 100%;
-                font-size: 0.8rem;
-                padding: 0.5rem;
-                border-radius: 0.2rem;
-                border: 1px solid rgb(255, 255, 255);
-                background-color: white;
-                box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
-            }
-        
-            .searchIcon {
-                display: none;
-            }
-        }
-    
-        .dataResult {
-            margin-top: 5px;
-            width: 100%;
-            height: 0;
-            background-color: white;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-            z-index: 999;
-        
-            .dataItem {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                padding-left: 1rem;
-                font-size: 1rem;
-                width: 100%;
-                height: fit-content;
-                color: black;
-                background-color: white;
-                cursor: pointer;
-    
-                .inner {
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    justify-content: space-between;
-                    width: 100%;
-    
-                    .image {
-                        width: 25%;
-                    }
-                    
-                    .text {
-                        width: 70%;
-                        font-size: 1rem;
-                    }
-                }
-    
-                &:hover {
-                    background-color: #F2F2F2;
-                }
             }
         }
     }

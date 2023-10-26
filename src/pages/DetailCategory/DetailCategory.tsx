@@ -79,7 +79,7 @@ const DetailCategory: React.FC = () => {
             ))}
           </div>
         ) : (
-          <p>Chưa có sản phẩm thuộc danh mục này!</p>
+          <></>
         )}
       </div>
     </div>

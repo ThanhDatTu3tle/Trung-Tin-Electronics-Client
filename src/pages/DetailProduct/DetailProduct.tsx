@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import "sweetalert2/dist/sweetalert2.min.css";
 
+import Pagination from '@mui/material/Pagination';
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
@@ -31,10 +33,14 @@ function updateScreenSize() {
 updateScreenSize();
 window.addEventListener("resize", updateScreenSize);
 
+const ProductsPerPage = 10;
+
 const DetailProduct: React.FC = () => {
   const MySwal = withReactContent(Swal);
   const { id } = useParams();
   const { addToCart } = useCart();
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [seenProducts, setSeenProducts] = useState<
     {
@@ -227,6 +233,17 @@ const DetailProduct: React.FC = () => {
     }
   };
 
+  const totalProducts = seenProducts.length; // Số sản phẩm tổng cộng
+  const totalPages = Math.ceil(totalProducts / ProductsPerPage);
+  const productsOnCurrentPage = seenProducts.slice(
+    (currentPage - 1) * ProductsPerPage,
+    currentPage * ProductsPerPage
+  );
+
+  const handlePageChange = (event: any, newPage: React.SetStateAction<number>) => {
+    setCurrentPage(newPage);
+  };
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("title-detail")}>
@@ -357,6 +374,13 @@ const DetailProduct: React.FC = () => {
                 <ProductComponent key={data.id} data={data} />
               ))}
             </div>
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              variant="outlined"
+              shape="rounded"
+              onChange={handlePageChange}
+            />
           </>
         ) : (
           <>
@@ -365,6 +389,14 @@ const DetailProduct: React.FC = () => {
                 <ProductComponent key={data.id} data={data} />
               ))}
             </div>
+            <Pagination
+              count={10}
+              page={currentPage}
+              variant="outlined"
+              shape="rounded"
+              onChange={handlePageChange}
+            />
+            <br />
           </>
         )}
       </div>

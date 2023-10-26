@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -154,6 +153,18 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
     }
   };
 
+  const handleClick = async () => {
+    await MySwal.fire({
+      title: "Loading...",
+      didOpen: () => {
+        MySwal.showLoading();
+      },
+      timer: 2000,
+    });
+
+    window.location.href = `/detailCategory/${data.name}`;
+  };
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("inner")}>
@@ -239,16 +250,14 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
             </Backdrop>
           </>
         ) : (
-          <>
-            <Link to={`/detailCategory/${data.name}`}>
-              <div className={cx("user-ui")}>
-                <div className={cx("image")}>
-                  <Image src={data.image} />
-                </div>
-                <h4>{data.name}</h4>
+          <div onClick={handleClick}>
+            <div className={cx("user-ui")}>
+              <div className={cx("image")}>
+                <Image src={data.image} />
               </div>
-            </Link>
-          </>
+              <h4>{data.name}</h4>
+            </div>
+          </div>
         )}
       </div>
     </div>

@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames/bind";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import "sweetalert2/dist/sweetalert2.min.css";
 
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
@@ -56,6 +59,7 @@ updateScreenSize();
 window.addEventListener("resize", updateScreenSize);
 
 const Header: React.FC = () => {
+  const MySwal = withReactContent(Swal);
   const history = useNavigate();
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -272,8 +276,15 @@ const Header: React.FC = () => {
                             {categories.map((category, index) => (
                               <MenuItem
                                 key={index}
-                                onClick={(event) => {
+                                onClick={async (event) => {
                                   handleMenuItemClick(event, index);
+                                  await MySwal.fire({
+                                    title: "Loading...",
+                                    didOpen: () => {
+                                      MySwal.showLoading();
+                                    },
+                                    timer: 2000,
+                                  });
                                   history(`/detailCategory/${category.name}`);
                                   window.location.reload();
                                   setOpen(true);
@@ -333,8 +344,15 @@ const Header: React.FC = () => {
                             {categories.map((category, index) => (
                               <MenuItem
                                 key={index}
-                                onClick={(event) => {
+                                onClick={async (event) => {
                                   handleMenuItemClick(event, index);
+                                  await MySwal.fire({
+                                    title: "Loading...",
+                                    didOpen: () => {
+                                      MySwal.showLoading();
+                                    },
+                                    timer: 2000,
+                                  });
                                   history(`/detailCategory/${category.name}`);
                                   window.location.reload();
                                   setOpen(true);

@@ -4,6 +4,9 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import classNames from "classnames/bind";
 import Slider from "react-slick";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import "sweetalert2/dist/sweetalert2.min.css";
 
 import "../../../node_modules/slick-carousel/slick/slick.css";
 import "../../../node_modules/slick-carousel/slick/slick-theme.css";
@@ -26,6 +29,7 @@ updateScreenSize();
 window.addEventListener("resize", updateScreenSize);
 
 const Home: React.FC<any> = () => {
+  const MySwal = withReactContent(Swal);
   const [categories, setCategories] = useState<
     { id: number; name: string; status: boolean }[]
   >([]);
@@ -74,6 +78,13 @@ const Home: React.FC<any> = () => {
 
   useEffect(() => {
     const fetchAllAPIs = async () => {
+      await MySwal.fire({
+        title: "Loading...",
+        didOpen: () => {
+          MySwal.showLoading();
+        },
+        timer: 1000,
+      });
       await Promise.all([refetchCategories(), refetchProducts()]);
     };
     fetchAllAPIs();
