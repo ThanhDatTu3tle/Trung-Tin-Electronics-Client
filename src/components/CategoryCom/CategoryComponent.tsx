@@ -159,7 +159,7 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
       didOpen: () => {
         MySwal.showLoading();
       },
-      timer: 2000,
+      timer: 1000,
     });
 
     window.location.href = `/detailCategory/${data.name}`;

@@ -83,7 +83,7 @@ const SearchBar: React.FC<any> = ({ placeholder, data }) => {
                     didOpen: () => {
                       MySwal.showLoading();
                     },
-                    timer: 2000,
+                    timer: 1000,
                   });
                   history(`/detailProduct/${value.id}`);
                   setFilteredData([]);

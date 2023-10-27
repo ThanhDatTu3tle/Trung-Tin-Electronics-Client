@@ -283,7 +283,7 @@ const Header: React.FC = () => {
                                     didOpen: () => {
                                       MySwal.showLoading();
                                     },
-                                    timer: 2000,
+                                    timer: 1000,
                                   });
                                   history(`/detailCategory/${category.name}`);
                                   window.location.reload();
@@ -351,7 +351,7 @@ const Header: React.FC = () => {
                                     didOpen: () => {
                                       MySwal.showLoading();
                                     },
-                                    timer: 2000,
+                                    timer: 1000,
                                   });
                                   history(`/detailCategory/${category.name}`);
                                   window.location.reload();

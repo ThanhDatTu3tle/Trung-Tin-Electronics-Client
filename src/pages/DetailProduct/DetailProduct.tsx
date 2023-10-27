@@ -8,8 +8,6 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import "sweetalert2/dist/sweetalert2.min.css";
 
-import Pagination from '@mui/material/Pagination';
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
@@ -374,13 +372,6 @@ const DetailProduct: React.FC = () => {
                 <ProductComponent key={data.id} data={data} />
               ))}
             </div>
-            <Pagination
-              count={totalPages}
-              page={currentPage}
-              variant="outlined"
-              shape="rounded"
-              onChange={handlePageChange}
-            />
           </>
         ) : (
           <>
@@ -389,14 +380,6 @@ const DetailProduct: React.FC = () => {
                 <ProductComponent key={data.id} data={data} />
               ))}
             </div>
-            <Pagination
-              count={10}
-              page={currentPage}
-              variant="outlined"
-              shape="rounded"
-              onChange={handlePageChange}
-            />
-            <br />
           </>
         )}
       </div>

@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
-import styles from "./ProductComponent.module.scss";
+import styles from "./ProductComHome.module.scss";
 import Image from "../Image";
 import Button from "../Button";
 
@@ -16,7 +16,7 @@ const faCartShoppingIcon = faCartShopping as IconProp;
 
 const cx = classNames.bind(styles);
 
-const ProductComponent: React.FC<any> = ({ data }) => {
+const ProductComHome: React.FC<any> = ({ data }) => {
   const MySwal = withReactContent(Swal);
 
   const handleClick = async () => {
@@ -40,14 +40,6 @@ const ProductComponent: React.FC<any> = ({ data }) => {
 
     window.location.href = `/detailProduct/${data.id}`;
   };
-
-  const clearLocalStorageAfter24Hours = () => {
-    setTimeout(() => {
-      localStorage.removeItem('seen'); 
-    }, 24 * 60 * 60 * 1000); 
-  };
-  
-  clearLocalStorageAfter24Hours();
 
   return (
     <div className={cx(`wrapper`)} onClick={handleClick}>
@@ -110,4 +102,4 @@ const ProductComponent: React.FC<any> = ({ data }) => {
   );
 };
 
-export default ProductComponent;
+export default ProductComHome;

@@ -63,7 +63,7 @@ const CartButton: React.FC = () => {
       didOpen: () => {
         MySwal.showLoading();
       },
-      timer: 2000,
+      timer: 1000,
   });
 
   window.location.href = `/cart`;

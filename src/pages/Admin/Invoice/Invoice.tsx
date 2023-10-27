@@ -50,7 +50,7 @@ const Invoice: React.FC<any> = () => {
         idEvent: number;
         quantity: number;
     }[]>([]);
-    const [invoices, setInvoices] = useState<{
+    const [, setInvoices] = useState<{
         id: number;
         customerName: string;
         phone: string;

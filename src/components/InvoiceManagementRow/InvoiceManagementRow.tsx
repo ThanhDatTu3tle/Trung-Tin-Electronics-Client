@@ -97,6 +97,10 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
 
     const total = totalForProducts.reduce((a: any, b: any) => a + b, 0);
 
+    const handlePrint = () => {
+        
+    }
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
@@ -180,10 +184,10 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                             <div className={cx('customer-order-info')}>
                                 <div className={cx('customer-info')}>
                                     <h3>Thông tin khách hàng:</h3>
-                                    <b>{data.customerName}</b>
-                                    <p>(+84) {data.phone.slice(1)}</p>
-                                    <p>{data.email}</p>
-                                    <p>{data.address.replace("Phường", "P.").replace("Quận", "Q.").replace("Thành phố Hồ Chí Minh", "TP.HCM")}</p>
+                                    <p><u>Họ và tên:</u> <b>{data.customerName}</b></p>
+                                    <p><u>Số điện thoại:</u> (+84) {data.phone.slice(1)}</p>
+                                    <p><u>Email:</u> {data.email}</p>
+                                    <p><u>Địa chỉ:</u> {data.address.replace("Phường", "P.").replace("Quận", "Q.").replace("Thành phố Hồ Chí Minh", "TP.HCM")}</p>
                                 </div>
                                 <div className={cx('order-info')}>
                                     <h3>Thông tin đơn hàng:</h3>
@@ -229,23 +233,23 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                                     {data.invoiceDetail.map((item: {
                                         number: number;
                                         id: string;
-                                        invoiceDetail: { idProduct: string; };
+                                        idProduct: string;
                                     }) => (
                                         <div className={cx('information')} key={item.id}>
                                             <div className={cx('image')}>
-                                                <Image src={products.find((product: { id: string; }) => product.id === item.id) && products.find((product: { id: string; }) => product.id === item.id).imageProducts[0].image} />
+                                                <Image src={products.find((product: { id: string; }) => product.id === item.idProduct) && products.find((product: { id: string; }) => product.id === item.idProduct).imageProducts[0].image} />
                                             </div>
                                             <div className={cx('name')}>
-                                                {products.find((product: { id: string; }) => product.id === item.id) && products.find((product: { id: string; }) => product.id === item.id).name}
+                                                {products.find((product: { id: string; }) => product.id === item.idProduct) && products.find((product: { id: string; }) => product.id === item.idProduct).name}
                                                 -
-                                                {products.find((product: { id: string; }) => product.id === item.id) && products.find((product: { id: string; }) => product.id === item.id).id}
+                                                {products.find((product: { id: string; }) => product.id === item.idProduct) && products.find((product: { id: string; }) => product.id === item.idProduct).id}
                                             </div>
                                             <div className={cx("quantity")}>{item.number}</div>
                                             <div className={cx("price")}>
-                                                {products.find((product: { id: string; }) => product.id === item.id) && products.find((product: { id: string; }) => product.id === item.id).price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+                                                {products.find((product: { id: string; }) => product.id === item.idProduct) && products.find((product: { id: string; }) => product.id === item.idProduct).price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
                                             </div>
                                             <div className={cx("total")}>
-                                                {products.find((product: { id: string; }) => product.id === item.id) && (products.find((product: { id: string; }) => product.id === item.id).price * item.number).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+                                                {products.find((product: { id: string; }) => product.id === item.idProduct) && (products.find((product: { id: string; }) => product.id === item.idProduct).price * item.number).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
                                             </div>
                                         </div>
                                     ))}
@@ -272,7 +276,7 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                                 </div>
                             </div>
                             <br />
-                            <Button primary small>In</Button>
+                            <Button primary small onClick={handlePrint}>In</Button>
                         </div>
                     </Backdrop>
                 </div>
