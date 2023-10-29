@@ -1,5 +1,4 @@
 import * as React from "react";
-import { lazy, Suspense } from 'react';
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";

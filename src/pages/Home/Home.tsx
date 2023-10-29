@@ -12,9 +12,6 @@ import "../../../node_modules/slick-carousel/slick/slick.css";
 import "../../../node_modules/slick-carousel/slick/slick-theme.css";
 
 import styles from "./Home.module.scss";
-import CategoryComponent from "../../components/CategoryCom/CategoryComponent";
-import ProductComponent from "../../components/ProductCom/ProductComponent";
-import ProductComHome from "../../components/ProductComHome";
 
 import CategoryService from "../../service/CategoryService";
 import ProductService from "../../service/ProductService";
@@ -29,6 +26,9 @@ function updateScreenSize() {
 }
 updateScreenSize();
 window.addEventListener("resize", updateScreenSize);
+
+const CategoryComponent = React.lazy(() => import('../../components/CategoryCom'));
+const ProductComHome = React.lazy(() => import('../../components/ProductComHome'));
 
 const Home: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
@@ -200,7 +200,9 @@ const Home: React.FC<any> = () => {
       <div>
         <Slider {...settings}>
           {categories.map((data) => (
-            <CategoryComponent key={data.id} data={data} />
+            <React.Suspense fallback="" key={data.id}>
+              <CategoryComponent data={data} />
+            </React.Suspense>
           ))}
         </Slider>
       </div>
@@ -219,7 +221,9 @@ const Home: React.FC<any> = () => {
                   product.category.name === data.name && product.status === true
               )
               .map((data) => (
-                <ProductComHome key={data.id} data={data} />
+                <React.Suspense fallback="" key={data.id}>
+                  <ProductComHome data={data} />
+                </React.Suspense>
               ))}
           </Slider>
         </div>

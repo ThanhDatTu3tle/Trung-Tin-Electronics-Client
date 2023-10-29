@@ -1,5 +1,4 @@
 import * as React from "react";
-import { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
@@ -18,7 +17,6 @@ import Button from "../../components/Button";
 import Image from "../../components/Image";
 import ProductService from "../../service/ProductService";
 import CartButton from "../../components/CartButton";
-import ProductComponent from "../../components/ProductCom/ProductComponent";
 import { useCart } from "../../Context/CartContext";
 
 const faStarIcon = faStar as IconProp;
@@ -31,6 +29,8 @@ function updateScreenSize() {
 }
 updateScreenSize();
 window.addEventListener("resize", updateScreenSize);
+
+const ProductComponent = React.lazy(() => import('../../components/ProductCom'));
 
 const DetailProduct: React.FC = () => {
   const MySwal = withReactContent(Swal);
@@ -355,7 +355,9 @@ const DetailProduct: React.FC = () => {
           <>
             <div className={cx("product")}>
               {seenProducts.map((data) => (
-                <ProductComponent key={data.id} data={data} />
+                <React.Suspense fallback="" key={data.id}>
+                  <ProductComponent data={data} />
+                </React.Suspense>
               ))}
             </div>
           </>
@@ -363,7 +365,9 @@ const DetailProduct: React.FC = () => {
           <>
             <div className={cx("product")}>
               {seenProducts.map((data) => (
-                <ProductComponent key={data.id} data={data} />
+                <React.Suspense fallback="" key={data.id}>
+                  <ProductComponent data={data} />
+                </React.Suspense>
               ))}
             </div>
           </>
@@ -384,7 +388,9 @@ const DetailProduct: React.FC = () => {
           <>
             <div className={cx("product")}>
               {relatedProducts.map((data) => (
-                <ProductComponent key={data.id} data={data} />
+                <React.Suspense fallback="" key={data.id}>
+                  <ProductComponent data={data} />
+                </React.Suspense>
               ))}
             </div>
           </>
@@ -392,7 +398,9 @@ const DetailProduct: React.FC = () => {
           <>
             <div className={cx("product")}>
               {relatedProducts.map((data) => (
-                <ProductComponent key={data.id} data={data} />
+                <React.Suspense fallback="" key={data.id}>
+                  <ProductComponent data={data} />
+                </React.Suspense>
               ))}
             </div>
           </>

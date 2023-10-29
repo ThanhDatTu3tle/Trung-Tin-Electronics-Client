@@ -5,12 +5,13 @@ import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
 import styles from './DetailCategory.module.scss';
-import ProductComponent from '../../components/ProductCom/ProductComponent';
 
 import CategoryService from '../../service/CategoryService';
 import { axiosClient } from '../../axios';
 
 const cx = classNames.bind(styles);
+
+const ProductComponent = React.lazy(() => import('../../components/ProductCom'));
 
 const DetailCategory: React.FC = () => {
   const { name } = useParams();
@@ -75,7 +76,9 @@ const DetailCategory: React.FC = () => {
             {filteredProducts
             .filter((product) => product.status === true)
             .map((data) => (
-              <ProductComponent key={data.id} data={data} />
+              <React.Suspense fallback="" key={data.id}>
+                <ProductComponent data={data} />
+              </React.Suspense>
             ))}
           </div>
         ) : (
