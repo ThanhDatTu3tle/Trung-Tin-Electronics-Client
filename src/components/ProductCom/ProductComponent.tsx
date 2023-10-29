@@ -46,8 +46,15 @@ const ProductComponent: React.FC<any> = ({ data }) => {
       localStorage.removeItem('seen'); 
     }, 24 * 60 * 60 * 1000); 
   };
+
+  const clearLocalStorageAfter18Hours = () => {
+    setTimeout(() => {
+      localStorage.removeItem('seen'); 
+    }, 24 * 60 * 60 * 1000); 
+  };
   
   clearLocalStorageAfter24Hours();
+  clearLocalStorageAfter18Hours();
 
   return (
     <div className={cx(`wrapper`)} onClick={handleClick}>

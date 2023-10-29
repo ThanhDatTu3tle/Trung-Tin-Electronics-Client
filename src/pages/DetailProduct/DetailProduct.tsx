@@ -31,14 +31,10 @@ function updateScreenSize() {
 updateScreenSize();
 window.addEventListener("resize", updateScreenSize);
 
-const ProductsPerPage = 10;
-
 const DetailProduct: React.FC = () => {
   const MySwal = withReactContent(Swal);
   const { id } = useParams();
   const { addToCart } = useCart();
-
-  const [currentPage, setCurrentPage] = useState(1);
 
   const [seenProducts, setSeenProducts] = useState<
     {
@@ -229,17 +225,6 @@ const DetailProduct: React.FC = () => {
         timer: 1500,
       });
     }
-  };
-
-  const totalProducts = seenProducts.length; // Số sản phẩm tổng cộng
-  const totalPages = Math.ceil(totalProducts / ProductsPerPage);
-  const productsOnCurrentPage = seenProducts.slice(
-    (currentPage - 1) * ProductsPerPage,
-    currentPage * ProductsPerPage
-  );
-
-  const handlePageChange = (event: any, newPage: React.SetStateAction<number>) => {
-    setCurrentPage(newPage);
   };
 
   return (
