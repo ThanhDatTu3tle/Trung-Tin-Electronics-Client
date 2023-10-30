@@ -18,6 +18,21 @@ const App: React.FC = () => {
   const [search, setSearch] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
+  const clearLocalStorageAfter24Hours = () => {
+    setTimeout(() => {
+      localStorage.removeItem('seen'); 
+    }, 24 * 60 * 60 * 1000); 
+  };
+
+  const clearLocalStorageAfter18Hours = () => {
+    setTimeout(() => {
+      localStorage.removeItem('seen'); 
+    }, 24 * 60 * 60 * 1000); 
+  };
+  
+  clearLocalStorageAfter24Hours();
+  clearLocalStorageAfter18Hours();
+
   return (
     <AuthContext.Provider value={{ token, setToken, search, setSearch }}>
       <CategoryProvider>

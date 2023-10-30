@@ -3,13 +3,14 @@ import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import "sweetalert2/dist/sweetalert2.min.css";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./ProductComponent.module.scss";
-import Image from "../Image";
 import Button from "../Button";
 
 const faCartShoppingIcon = faCartShopping as IconProp;
@@ -31,88 +32,72 @@ const ProductComponent: React.FC<any> = ({ data }) => {
     }
 
     await MySwal.fire({
-        title: "Loading...",
-        didOpen: () => {
-          MySwal.showLoading();
-        },
-        timer: 1000,
+      title: "Loading...",
+      didOpen: () => {
+        MySwal.showLoading();
+      },
+      timer: 1000,
     });
 
     window.location.href = `/detailProduct/${data.id}`;
   };
 
-  const clearLocalStorageAfter24Hours = () => {
-    setTimeout(() => {
-      localStorage.removeItem('seen'); 
-    }, 24 * 60 * 60 * 1000); 
-  };
-
-  const clearLocalStorageAfter18Hours = () => {
-    setTimeout(() => {
-      localStorage.removeItem('seen'); 
-    }, 24 * 60 * 60 * 1000); 
-  };
-  
-  clearLocalStorageAfter24Hours();
-  clearLocalStorageAfter18Hours();
-
   return (
     <div className={cx(`wrapper`)} onClick={handleClick}>
-        <div className={cx("inner")}>
-          {data.imageProducts && data.imageProducts.length > 0 && (
-            <Image src={data.imageProducts[0].image} />
-          )}
-          <div className={cx("name")}>
-            <p>
-              {data.name} {data.id}
-            </p>
-          </div>
-          <div className={cx("specifications")}>
-            {data.specification.map((content: any) => (
-              <div key={content.id} className={cx("specification")}>
-                {content.specification}
-              </div>
-            ))}
-          </div>
-          <div className={cx("description")}>{data.description}</div>
-          <br />
-          {data.event === null ? (
-            <>
-              <div className={cx("product-price")}>
+      <div className={cx("inner")}>
+        {data.imageProducts && data.imageProducts.length > 0 && (
+          <LazyLoadImage
+            src={data.imageProducts[0].image}
+            effect="blur"
+            width="100%"
+            height="auto"
+          />
+        )}
+        <div className={cx("name")}>
+          <p>
+            {data.name} {data.id}
+          </p>
+        </div>
+        <div className={cx("specifications")}>
+          {data.specification.slice(0, 3).map((content: any) => (
+            <div key={content.id} className={cx("specification")}>
+              {content.specification}
+            </div>
+          ))}
+        </div>
+        {/* <div className={cx("description")}>{data.description}</div> */}
+        {data.event === null ? (
+          <>
+            <div className={cx("product-price")}>
+              {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+            </div>
+          </>
+        ) : (
+          <>
+            <div className={cx("product-price-sale")}>
+              <div className={cx("price-sale")}>
                 {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
               </div>
-            </>
-          ) : (
-            <>
-              <div className={cx("product-price-sale")}>
-                <div className={cx("price-sale")}>
+              <div className={cx("price-origin")}>
+                <s>
                   {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
-                </div>
-                <div className={cx("price-origin")}>
-                  <s>
-                    {data.price
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
-                    đ
-                  </s>
-                </div>
+                </s>
               </div>
-            </>
-          )}
-          <br />
-          <Button primary className={cx("btn")}>
-            <FontAwesomeIcon
-              icon={faCartShoppingIcon}
-              style={{
-                color: "#fff",
-                marginRight: "1rem",
-                fontSize: "1rem",
-              }}
-            />
-            Đặt hàng
-          </Button>
-        </div>
-      
+            </div>
+          </>
+        )}
+        <Button primary className={cx("btn")}>
+          <FontAwesomeIcon
+            icon={faCartShoppingIcon}
+            style={{
+              color: "#fff",
+              marginRight: "1rem",
+              fontSize: "1rem",
+            }}
+          />
+          Đặt hàng
+        </Button>
+      </div>
     </div>
   );
 };

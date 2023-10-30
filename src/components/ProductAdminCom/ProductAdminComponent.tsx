@@ -13,7 +13,6 @@ import Button from "../Button";
 import { axiosClient } from "../../axios";
 import { useBrand } from "../../Context/BrandContext";
 import { useCategory } from "../../Context/CategoryContext";
-import { useProduct } from "../../Context/ProductContext";
 import ProductService from "../../service/ProductService";
 
 const cx = classNames.bind(styles);

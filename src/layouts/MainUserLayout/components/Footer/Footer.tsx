@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from "classnames/bind";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 import Container from '@mui/material/Container';
 
@@ -103,7 +105,7 @@ const Footer: React.FC<any> = () => {
                         <div className={cx('details')}>
                             <p
                                 onClick={(event) => {
-                                    // history(`/chinh-sach-bao-mat`);
+                                    history(`/chinh-sach-bao-mat`);
                                 }}
                                 className={cx('detail')}
                             >
@@ -111,7 +113,7 @@ const Footer: React.FC<any> = () => {
                             </p>
                             <p
                                 onClick={(event) => {
-                                    // history(`/huong-dan-mua-hang`);
+                                    history(`/huong-dan-mua-hang`);
                                 }}
                                 className={cx('detail')}
                             >
@@ -119,7 +121,7 @@ const Footer: React.FC<any> = () => {
                             </p>
                             <p
                                 onClick={(event) => {
-                                    // history(`/chinh-sach-thanh-toan`);
+                                    history(`/chinh-sach-thanh-toan`);
                                 }}
                                 className={cx('detail')}
                             >
@@ -127,7 +129,7 @@ const Footer: React.FC<any> = () => {
                             </p>
                             <p
                                 onClick={(event) => {
-                                    // history(`/chinh-sach-van-chuyen`);
+                                    history(`/chinh-sach-van-chuyen`);
                                 }}
                                 className={cx('detail')}
                             >
@@ -135,7 +137,7 @@ const Footer: React.FC<any> = () => {
                             </p>
                             <p
                                 onClick={(event) => {
-                                    // history(`/chinh-sach-hoan-tien`);
+                                    history(`/chinh-sach-hoan-tien`);
                                 }}
                                 className={cx('detail')}
                             >
@@ -143,7 +145,7 @@ const Footer: React.FC<any> = () => {
                             </p>
                         </div>
                         <div className={cx('logo-legit')}>
-                            <Image src="https://storethietbi.com/upload/hinhanh/bct-9539_160x60.png"/>
+                            <LazyLoadImage src="https://storethietbi.com/upload/hinhanh/bct-9539_160x60.png" effect="blur" width="100%"/>
                         </div>
                     </div>
                     <div className={cx('fanpage')}>

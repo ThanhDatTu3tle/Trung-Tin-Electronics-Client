@@ -4,8 +4,8 @@
     align-items: center;
     justify-content: space-between;
     max-width: 100%;
-    height: 38rem;
-    padding: 0 1rem;
+    height: 35rem;
+    padding: 0 0.5rem;
     margin-bottom: 1rem;
     cursor: pointer;
 }
@@ -26,13 +26,14 @@
     .name {
         font-size: 1.1rem;
         font-weight: 700;
+        padding: 0.2rem 0;
     }
 
     .specifications {
         display: flex;
         flex-direction: column;
         opacity: .7;
-        margin: 20px 0px;
+        padding: 0.2rem 0;
         font-size: 14px;
         height: 40px;
         overflow-y: hidden;
@@ -42,19 +43,12 @@
         }
     }
 
-    .description {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 1rem;
-    }
-
     .product-price {
         display: flex;
         justify-content: flex-end;
         width: 100%;
+        padding: 1rem 0;
         line-height: 100%;
-        margin-top: 10px;
         font-size: 1.8rem;
         font-weight: 700;
         color: #018ec3;
@@ -66,7 +60,7 @@
         justify-content: space-around;
         width: 100%;
         line-height: 100%;
-        margin-top: 10px;
+        padding: 0.5rem 0;
 
         .price-sale {
             font-size: 1.4rem;
@@ -118,8 +112,8 @@
         align-items: center;
         justify-content: space-between;
         max-width: 100%;
-        height: 32rem;
-        padding: 0 1rem;
+        height: 31rem;
+        padding: 0 0.5rem;
         margin-bottom: 1rem;
         cursor: pointer;
     }
@@ -134,7 +128,6 @@
         width: 100%;
         height: 100%;
         padding: 0.8rem;
-        position: relative;
         background-color: #fff;
         box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
 
@@ -154,12 +147,6 @@
             .specification {
                 display: inline;
             }
-        }
-
-        .description {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .product-price {
@@ -232,8 +219,8 @@
         align-items: center;
         justify-content: space-between;
         max-width: 100%;
-        height: 32rem;
-        padding: 0 1rem;
+        height: 31rem;
+        padding: 0 0.5rem;
         margin-bottom: 1rem;
         cursor: pointer;
     }
@@ -268,12 +255,6 @@
             .specification {
                 display: inline;
             }
-        }
-
-        .description {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .product-price {
@@ -380,10 +361,6 @@
             .specification {
                 display: inline;
             }
-        }
-
-        .description {
-            display: none;
         }
 
         .product-price {
@@ -493,10 +470,6 @@
             }
         }
 
-        .description {
-            display: none;
-        }
-
         .product-price {
             display: flex;
             justify-content: flex-end;
@@ -566,7 +539,7 @@
         align-items: center;
         justify-content: space-between;
         max-width: 100%;
-        height: 35rem;
+        height: 30rem;
         padding: 0 0.2rem;
         margin-bottom: 1rem;
         cursor: pointer;
@@ -602,12 +575,6 @@
             .specification {
                 display: inline;
             }
-        }
-
-        .description {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .product-price {

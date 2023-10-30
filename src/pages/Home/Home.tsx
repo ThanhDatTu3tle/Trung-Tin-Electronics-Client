@@ -77,7 +77,7 @@ const Home: React.FC<any> = () => {
 
   const settingsPauseOnHover = {
     infinite: true,
-    slidesToShow: 5,
+    slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 4000,
