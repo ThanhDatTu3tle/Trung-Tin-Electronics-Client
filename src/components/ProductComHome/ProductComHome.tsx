@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import "sweetalert2/dist/sweetalert2.min.css";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -45,7 +46,7 @@ const ProductComHome: React.FC<any> = ({ data }) => {
     <div className={cx(`wrapper`)} onClick={handleClick}>
         <div className={cx("inner")}>
           {data.imageProducts && data.imageProducts.length > 0 && (
-            <Image src={data.imageProducts[0].image} />
+            <LazyLoadImage src={data.imageProducts[0].image} effect="blur" width="100%" />
           )}
           <div className={cx("name")}>
             <p>

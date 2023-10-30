@@ -126,7 +126,7 @@ const BrandComponent: React.FC<any> = ({ data }) => {
         <div className={cx('inner')}>
           {currentPath === '/brand' ? (
             <>
-              <ImageBrand src={data.image}/>
+              <ImageBrand src={data.image} loading={React.lazy} />
               <h3>Tên hãng: {data.name}</h3>
               <div className={cx('btns')}>
                 <Button outline onClick={handleOpenAddForm} style={{marginBottom: '0.5rem'}}>Chỉnh sửa thông tin</Button>
@@ -175,7 +175,7 @@ const BrandComponent: React.FC<any> = ({ data }) => {
                         />
                       </div>
                       <div className={cx('show-image')}>
-                        <Image src={imageUrl}/>
+                        <Image src={imageUrl} loading={React.lazy} />
                       </div>
                       <Button small primary>Xác nhận</Button>
                     </form>   
@@ -186,7 +186,7 @@ const BrandComponent: React.FC<any> = ({ data }) => {
             <>
               <Link to={`/detailBrand/${data.name}`}>
                 <div className={cx('user-ui')}>
-                  <ImageBrand src={data.image}/>
+                  <ImageBrand src={data.image} loading={React.lazy} />
                 </div>
               </Link>
             </>

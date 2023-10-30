@@ -15,8 +15,8 @@ const cx = classNames.bind(styles);
 
 const CategoryComponent: React.FC<any> = ({ data }) => {
   const currentPath = window.location.pathname;
-
   const MySwal = withReactContent(Swal);
+  
   const idCategory = data.id;
 
   const [open, setOpen] = useState(false);
