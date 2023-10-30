@@ -252,13 +252,9 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
             </Backdrop>
           </>
         ) : (
-          <div onClick={handleClick}>
-            <div className={cx("user-ui")}>
-              <div className={cx("image")}>
-                <LazyLoadImage src={data.image} effect="blur" width="100%" />
-              </div>
-              <h4>{data.name}</h4>
-            </div>
+          <div className={cx("user-ui")} onClick={handleClick}>
+            <LazyLoadImage src={data.image} effect="blur" width="100%" />
+            <h4>{data.name}</h4>
           </div>
         )}
       </div>
