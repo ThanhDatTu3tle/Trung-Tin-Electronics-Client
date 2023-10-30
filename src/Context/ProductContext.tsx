@@ -67,7 +67,7 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({
   const fetchAPIProducts = async () => {
     try {
       const res = await ProductService.GetAllProduct();
-      return res.data.slice(0, 55);
+      return res.data;
     } catch (error) {}
   };
 
