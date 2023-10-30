@@ -1,6 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
-import { useQuery } from "react-query";
+import { useState } from "react";
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -12,8 +11,9 @@ import Image from "../Image";
 import Button from "../Button";
 
 import { axiosClient } from "../../axios";
-import BrandService from "../../service/BrandService";
-import CategoryService from "../../service/CategoryService";
+import { useBrand } from "../../Context/BrandContext";
+import { useCategory } from "../../Context/CategoryContext";
+import { useProduct } from "../../Context/ProductContext";
 import ProductService from "../../service/ProductService";
 
 const cx = classNames.bind(styles);
@@ -67,50 +67,8 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
     setOpen(true);
   };
 
-  const [brands, setBrands] = useState<
-    { id: number; name: string; status: boolean }[]
-  >([]);
-  const [categories, setCategories] = useState<
-    { id: number; name: string; status: boolean }[]
-  >([]);
-  // const [imgs, setImgs] = useState<{ id: number; idProduct: string; image: string; name: null }[]>([]);
-
-  const fetchAPIBrands = async () => {
-    try {
-      const res = await BrandService.GetAllBrand();
-      return res.data;
-    } catch (error) {}
-  };
-  const fetchAPICategories = async () => {
-    try {
-      const res = await CategoryService.GetAllCategory();
-      return res.data;
-    } catch (error) {}
-  };
-
-  const { data: brandsData, refetch: refetchBrands } = useQuery(
-    ["brandImages"],
-    fetchAPIBrands,
-    {}
-  );
-  const { data: categoriesData, refetch: refetchCategories } = useQuery(
-    ["categoryImages"],
-    fetchAPICategories,
-    {}
-  );
-
-  useEffect(() => {
-    const fetchAllAPIs = async () => {
-      await Promise.all([refetchBrands(), refetchCategories()]);
-    };
-    fetchAllAPIs();
-  }, [refetchBrands, refetchCategories]);
-  useEffect(() => {
-    if (brandsData && categoriesData) {
-      setBrands(brandsData);
-      setCategories(categoriesData);
-    }
-  }, [brandsData, categoriesData]);
+  const brands = useBrand();
+  const categories = useCategory(); 
 
   const updateProductStatus = async () => {
     try {

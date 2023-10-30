@@ -7,7 +7,6 @@ const routes = {
     login: "/login",
     cart: "/cart",
 
-    detailBrand: "/detailBrand/:name",
     detailCategory: "/detailCategory/:name",
     detailProduct: "/detailProduct/:id",
 

@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { useQuery } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
@@ -35,8 +34,8 @@ import Category from "../../../../components/Category";
 import SocialMedia from "../../../../components/SocialMedia";
 import SearchBar from "../../../../components/SearchBar";
 
-import CategoryService from "../../../../service/CategoryService";
-import ProductService from "../../../../service/ProductService";
+import { useCategory } from "../../../../Context/CategoryContext";
+import { useProduct } from "../../../../Context/ProductContext";
 
 const cx = classNames.bind(styles);
 
@@ -67,62 +66,8 @@ const Header: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLDivElement>(null);
 
-  const [categories, setCategories] = useState<{ id: number; name: string }[]>(
-    []
-  );
-  const [products, setProducts] = useState<
-    {
-      id: string;
-      name: string;
-      description: string;
-      specification: { id: number; specification: string }[];
-      imageProducts: { id: number; image: string }[];
-      price: number;
-      brand: { id: number; name: string; image: string };
-      event: null;
-      status: boolean;
-      category: { id: number; name: string; image: string; status: boolean };
-      idBrand: number;
-      idCategory: number;
-      idEvent: number;
-      quantity: number;
-    }[]
-  >([]);
-
-  const fetchAPICategories = async () => {
-    try {
-      const res = await CategoryService.GetAllCategory();
-      return res.data;
-    } catch (error) {}
-  };
-  const fetchAPIProducts = async () => {
-    try {
-      const res = await ProductService.GetAllProduct();
-      return res.data;
-    } catch (error) {}
-  };
-  const { data: categoriesData, refetch: refetchCategories } = useQuery(
-    ["categoryImages"],
-    fetchAPICategories,
-    {}
-  );
-  const { data: productsData, refetch: refetchProducts } = useQuery(
-    ["productImages"],
-    fetchAPIProducts,
-    {}
-  );
-  useEffect(() => {
-    const fetchAllAPIs = async () => {
-      await Promise.all([refetchCategories(), refetchProducts()]);
-    };
-    fetchAllAPIs();
-  }, [refetchCategories, refetchProducts]);
-  useEffect(() => {
-    if (categoriesData && productsData) {
-      setCategories(categoriesData);
-      setProducts(productsData);
-    }
-  }, [categoriesData, productsData]);
+  const categories = useCategory(); 
+  const products = useProduct();
 
   const handleMenuItemClick = (
     event: React.MouseEvent<HTMLLIElement, MouseEvent>,

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import classNames from "classnames/bind";
 
@@ -11,7 +10,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
-import CategoryService from '../../../../service/CategoryService';
+import { useCategory } from '../../../../Context/CategoryContext';
 
 import styles from './Footer.module.scss';
 import zaloLogo from '../../../../assets/zalo-icon.png';
@@ -49,31 +48,7 @@ const Footer: React.FC<any> = () => {
         };
     }, []);
 
-    const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
-    const fetchAPICategories = async () => {
-        try {
-            const res = await CategoryService.GetAllCategory();
-            return res.data; 
-        } catch (error) {}
-    };
-    const { data: categoriesData, refetch: refetchCategories } = useQuery(
-        ["categoryImages"],
-        fetchAPICategories,
-        {}
-    );
-    useEffect(() => {
-        const fetchAllAPIs = async () => {
-            await Promise.all([
-                refetchCategories(),
-            ]);
-        };
-        fetchAllAPIs();
-      }, [refetchCategories]);
-    useEffect(() => {
-    if (categoriesData) {
-        setCategories(categoriesData);
-    }
-    }, [categoriesData]);
+    const categories = useCategory(); 
 
     return (
         <div className={cx('wrapper')}>

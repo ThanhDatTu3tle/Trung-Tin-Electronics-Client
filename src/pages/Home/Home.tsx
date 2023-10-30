@@ -1,20 +1,15 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
-import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import classNames from "classnames/bind";
 import Slider from "react-slick";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import "sweetalert2/dist/sweetalert2.min.css";
 
 import "../../../node_modules/slick-carousel/slick/slick.css";
 import "../../../node_modules/slick-carousel/slick/slick-theme.css";
 
 import styles from "./Home.module.scss";
 
-import CategoryService from "../../service/CategoryService";
-import ProductService from "../../service/ProductService";
+import { useCategory } from "../../Context/CategoryContext";
+import { useProduct } from "../../Context/ProductContext";
 import CartButton from "../../components/CartButton";
 
 const cx = classNames.bind(styles);
@@ -35,72 +30,9 @@ const ProductComHome = React.lazy(
 );
 
 const Home: React.FC<any> = () => {
-  const MySwal = withReactContent(Swal);
-  const [categories, setCategories] = useState<
-    { id: number; name: string; status: boolean }[]
-  >([]);
-  const [products, setProducts] = useState<
-    {
-      id: string;
-      name: string;
-      description: string;
-      specification: { id: number; specification: string }[];
-      imageProducts: { id: number; image: string }[];
-      price: number;
-      quantity: number;
-      brand: { id: number; name: string; image: string };
-      event: null;
-      status: boolean;
-      category: { id: number; name: string; image: string; status: boolean };
-      idBrand: number;
-      idCategory: number;
-      idEvent: number;
-    }[]
-  >([]);
-
-  const fetchAPICategories = async () => {
-    try {
-      const res = await CategoryService.GetAllCategory();
-      return res.data;
-    } catch (error) {}
-  };
-  const fetchAPIProducts = async () => {
-    try {
-      const res = await ProductService.GetAllProduct();
-      return res.data;
-    } catch (error) {}
-  };
-
-  const { data: categoriesData, refetch: refetchCategories } = useQuery(
-    ["categoryImages"],
-    fetchAPICategories,
-    {}
-  );
-  const { data: productsData, refetch: refetchProducts } = useQuery(
-    ["productImages"],
-    fetchAPIProducts,
-    {}
-  );
-
-  useEffect(() => {
-    const fetchAllAPIs = async () => {
-      await MySwal.fire({
-        title: "Loading...",
-        didOpen: () => {
-          MySwal.showLoading();
-        },
-        timer: 1000,
-      });
-      await Promise.all([refetchCategories(), refetchProducts()]);
-    };
-    fetchAllAPIs();
-  }, [refetchCategories, refetchProducts]);
-  useEffect(() => {
-    if (categoriesData && productsData) {
-      setCategories(categoriesData);
-      setProducts(productsData);
-    }
-  }, [categoriesData, productsData]);
+  // const MySwal = withReactContent(Swal);
+  const categories = useCategory(); 
+  const products = useProduct();
 
   const settings = {
     infinite: false,

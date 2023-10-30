@@ -12,7 +12,6 @@ import Discount from "../pages/Discount";
 import News from "../pages/News";
 import Contact from "../pages/Contact";
 
-import DetailBrand from "../pages/DetailBrand";
 import DetailCategory from "../pages/DetailCategory";
 import DetailProduct from "../pages/DetailProduct";
 import Cart from "../pages/Cart";
@@ -34,7 +33,6 @@ const publicRoutes = [
   { path: config.routes.news, component: News, layout: MainUserLayout },
   { path: config.routes.contact, component: Contact, layout: MainUserLayout },
 
-  { path: config.routes.detailBrand, component: DetailBrand, layout: MainUserLayout },
   { path: config.routes.detailCategory, component: DetailCategory, layout: MainUserLayout },
   { path: config.routes.detailProduct, component: DetailProduct, layout: MainUserLayout },
   { path: config.routes.cart, component: Cart, layout: MainUserLayout },

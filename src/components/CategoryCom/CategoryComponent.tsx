@@ -5,6 +5,8 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import "sweetalert2/dist/sweetalert2.min.css";
 import Backdrop from "@mui/material/Backdrop";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 import styles from "./CategoryComponent.module.scss";
 import Image from "../Image";
@@ -171,7 +173,7 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
         {currentPath === "/category" ? (
           <>
             <div className={cx("img")}>
-              <Image src={data.image} />
+              <LazyLoadImage src={data.image} effect="blur" width="100%" />
             </div>
             <h3>{data.name}</h3>
             <div className={cx("btns")}>
@@ -253,7 +255,7 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
           <div onClick={handleClick}>
             <div className={cx("user-ui")}>
               <div className={cx("image")}>
-                <Image src={data.image} />
+                <LazyLoadImage src={data.image} effect="blur" width="100%" />
               </div>
               <h4>{data.name}</h4>
             </div>
