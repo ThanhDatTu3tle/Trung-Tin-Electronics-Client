@@ -27,8 +27,13 @@ function updateScreenSize() {
 updateScreenSize();
 window.addEventListener("resize", updateScreenSize);
 
-const CategoryComponent = React.lazy(() => import('../../components/CategoryCom'));
-const ProductComHome = React.lazy(() => import('../../components/ProductComHome'));
+const CategoryComponent = React.lazy(
+  () => import("../../components/CategoryCom")
+);
+const ProductComHome = React.lazy(
+  () => import("../../components/ProductComHome")
+);
+const ProductCom = React.lazy(() => import("../../components/ProductCom"));
 
 const Home: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
@@ -206,7 +211,7 @@ const Home: React.FC<any> = () => {
           ))}
         </Slider>
       </div>
-      {categories.map((data) => (
+      {/* {categories.map((data) => (
         <div key={data.id}>
           <div className={cx("title-wrapper")}>
             <div className={cx("title")}>{data.name}</div>
@@ -226,6 +231,52 @@ const Home: React.FC<any> = () => {
                 </React.Suspense>
               ))}
           </Slider>
+        </div>
+      ))} */}
+
+{categories.map((data) => (
+        <div className={cx("machine")} key={data.id}>
+          <div className={cx("title-wrapper")}>
+            <div className={cx("title")}>{data.name}</div>
+            <div className={cx("show-all")}>
+              <Link to={`/detailCategory/${data.name}`}>Xem tất cả</Link>
+            </div>
+          </div>
+          {screenWidth <= 899 && screenWidth >= 600 ? (
+            <>
+              <div className={cx("product")}>
+                {products
+                  .filter(
+                    (product) =>
+                      product.category.name === data.name &&
+                      product.status === true
+                  )
+                  .slice(0, 3)
+                  .map((data) => (
+                    <React.Suspense fallback="" key={data.id}>
+                      <ProductCom data={data} />
+                    </React.Suspense>
+                  ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={cx("product")}>
+                {products
+                  .filter(
+                    (product) =>
+                      product.category.name === data.name &&
+                      product.status === true
+                  )
+                  .slice(0, 4)
+                  .map((data) => (
+                    <React.Suspense fallback="" key={data.id}>
+                      <ProductCom data={data} />
+                    </React.Suspense>
+                  ))}
+              </div>
+            </>
+          )}
         </div>
       ))}
       <CartButton />
