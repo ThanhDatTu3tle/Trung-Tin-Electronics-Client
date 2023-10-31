@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
 import styles from './DetailCategory.module.scss';
 
-import CategoryService from '../../service/CategoryService';
+import { useCategory } from "../../Context/CategoryContext";
 import { axiosClient } from '../../axios';
 
 const cx = classNames.bind(styles);
@@ -16,34 +15,8 @@ const ProductComponent = React.lazy(() => import('../../components/ProductCom'))
 const DetailCategory: React.FC = () => {
   const { name } = useParams();
 
-  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+  const categories = useCategory(); 
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
-
-  const fetchAPICategories = async () => {
-    try {
-      const res = await CategoryService.GetAllCategory();
-      return res.data;
-    } catch (error) {}
-  };
-
-  const { data: categoriesData, refetch: refetchCategories } = useQuery(
-    ['categoryImages'],
-    fetchAPICategories,
-    {}
-  );
-
-  useEffect(() => {
-    const fetchAllAPIs = async () => {
-      await Promise.all([refetchCategories()]);
-    };
-    fetchAllAPIs();
-  }, [refetchCategories]);
-
-  useEffect(() => {
-    if (categoriesData) {
-      setCategories(categoriesData);
-    }
-  }, [categoriesData]);
 
   const category = categories.find((category) => category.name === name);
 

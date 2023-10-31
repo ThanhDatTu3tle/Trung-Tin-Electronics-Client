@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from "react";
-import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
@@ -16,6 +15,7 @@ import styles from "./DetailProduct.module.scss";
 import Button from "../../components/Button";
 import Image from "../../components/Image";
 import ProductService from "../../service/ProductService";
+import { useProduct } from "../../Context/ProductContext";
 import CartButton from "../../components/CartButton";
 import { useCart } from "../../Context/CartContext";
 
@@ -94,47 +94,7 @@ const DetailProduct: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
     product ? product.imageProducts[0]?.image : undefined
   );
-  const [products, setProducts] = useState<
-    {
-      id: string;
-      name: string;
-      description: string;
-      specification: { id: number; specification: string }[];
-      imageProducts: { id: number; image: string }[];
-      price: number;
-      quantity: number;
-      brand: { id: number; name: string; image: string };
-      event: null;
-      status: boolean;
-      category: { id: number; name: string; image: string; status: boolean };
-      idBrand: number;
-      idCategory: number;
-      idEvent: number;
-    }[]
-  >([]);
-
-  const fetchAPIProducts = async () => {
-    try {
-      const res = await ProductService.GetAllProduct();
-      return res.data;
-    } catch (error) {}
-  };
-
-  const { data: productsData, refetch: refetchProducts } = useQuery(
-    ["productImages"],
-    fetchAPIProducts,
-    {}
-  );
-
-  useEffect(() => {
-    refetchProducts();
-  }, [refetchProducts]);
-
-  useEffect(() => {
-    if (productsData) {
-      setProducts(productsData);
-    }
-  }, [productsData]);
+  const products = useProduct();
 
   const chosenProduct = products.find((product) => product.id === id);
   const filteredProducts = products.filter(

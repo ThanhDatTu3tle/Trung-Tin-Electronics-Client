@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect  } from 'react';
-import { useQuery } from 'react-query';
+import { useState  } from 'react';
 import classNames from "classnames/bind";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,9 +11,9 @@ import styles from './Product.module.scss';
 import Button from '../../../components/Button';
 import ProductAdminComponent from '../../../components/ProductAdminCom/ProductAdminComponent';
 
-import BrandService from '../../../service/BrandService';
-import CategoryService from '../../../service/CategoryService';
-import ProductService from '../../../service/ProductService';
+import { useBrand } from '../../../Context/BrandContext';
+import { useCategory } from "../../../Context/CategoryContext";
+import { useProduct } from "../../../Context/ProductContext";
 
 const faHouseIcon = faHouse as IconProp;
 const faArrowRightIcon = faArrowRight as IconProp;
@@ -23,6 +22,10 @@ const cx = classNames.bind(styles);
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 const Product: React.FC<any> = () => {
+  const categories = useCategory(); 
+  const filteredProductsResult = useProduct();
+  const brands = useBrand();
+  
   const [selectedBrandButton, setSelectedBrandButton] = useState<number | null>(null);
 
   const [brand0, setBrand0] = useState(true);
@@ -39,96 +42,14 @@ const Product: React.FC<any> = () => {
   const handleClickCategory0 = () => {
     setCategory0(!category0);
     setCategoryChanged(false);
-  }
-
-  const [brands, setBrands] = useState<{ id: number; name: string; status: boolean }[]>([]);
-  const [categories, setCategories] = useState<{ id: number; name: string; status: boolean }[]>([]);
-  const [filteredProductsResult, setFilteredProductsResult] = useState<{
-    id: string;
-    name: string;
-    description: string;
-    specification: { id: number; specification: string }[];
-    imageProducts: { id: number; image: string }[];
-    price: number;
-    brand: { id: number; name: string; image: string };
-    event: null;
-    status: boolean;
-    category: { id: number; name: string; image: string; status: boolean };
-    idBrand: number;
-    idCategory: number;
-    idEvent: number;
-  }[]>([]);
-
-  const fetchAPIBrands = async () => {
-    try {
-        const res = await BrandService.GetAllBrand();
-        return res.data; 
-    } catch (error) {}
   };
-  const fetchAPICategories = async () => {
-      try {
-          const res = await CategoryService.GetAllCategory();
-          return res.data; 
-      } catch (error) {}
-  };
-  const fetchAPIProducts = async () => {
-    try {
-        const res = await ProductService.GetAllProduct();
-        return res.data; 
-    } catch (error) {}
-  };
-
-  const { data: brandsData, refetch: refetchBrands } = useQuery(
-      ["brandImages"],
-      fetchAPIBrands,
-      {}
-  );
-  const { data: categoriesData, refetch: refetchCategories } = useQuery(
-      ["categoryImages"],
-      fetchAPICategories,
-      {}
-  );
-  const { data: productsData, refetch: refetchProducts } = useQuery(
-    ["productImages"],
-    fetchAPIProducts,
-    {}
-  );
-
-  useEffect(() => {
-    const fetchAllAPIs = async () => {
-        await Promise.all([
-            refetchBrands(), 
-            refetchCategories(),
-            refetchProducts()
-        ]);
-    };
-    fetchAllAPIs();
-  }, [
-      refetchBrands, 
-      refetchCategories,
-      refetchProducts
-  ]);
-  useEffect(() => {
-    if (brandsData && categoriesData && productsData) {
-        setBrands(brandsData); 
-        setCategories(categoriesData);
-        setFilteredProductsResult(productsData);
-    }
-  }, [
-      brandsData, 
-      categoriesData,
-      productsData
-  ]);
 
   const handleClickBrandAll = (brandId: number) => {
-    // Toggle trạng thái nút
     setSelectedBrandButton(brandId === selectedBrandButton ? null : brandId);
-    // Lọc danh sách hãng tương ứng
     let updatedFilteredBrand: React.SetStateAction<{ id: number; name: string; status: boolean; }[]> = [];
     if (brandId !== selectedBrandButton) {
       updatedFilteredBrand = brands.filter((brand) => brand.id === brandId);
     } 
-    // Sử dụng updatedFilteredBrand trong hàm setState
     setFilteredBrands(updatedFilteredBrand);
     setCategory0(false);
   };

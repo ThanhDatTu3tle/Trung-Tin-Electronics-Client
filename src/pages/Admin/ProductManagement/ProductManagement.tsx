@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { useQuery } from "react-query";
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -20,15 +19,20 @@ import Button from "../../../components/Button";
 import ProductManagementRow from "../../../components/ProductManagementRow";
 
 import { axiosClient } from "../../../axios";
-import BrandService from "../../../service/BrandService";
-import CategoryService from "../../../service/CategoryService";
 import ProductService from "../../../service/ProductService";
+import { useBrand } from '../../../Context/BrandContext';
+import { useCategory } from "../../../Context/CategoryContext";
+import { useProduct } from "../../../Context/ProductContext";
 
 const cx = classNames.bind(styles);
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 const ProductManagement: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
+  const categories = useCategory(); 
+  const products = useProduct();
+  const brands = useBrand();
+
   const [searchKeyword, setSearchKeyword] = useState("");
 
   // Thêm state cho bộ lọc
@@ -77,30 +81,6 @@ const ProductManagement: React.FC<any> = () => {
     setStatusProduct("hided");
   };
 
-  const [brands, setBrands] = useState<
-    { id: number; name: string; status: boolean }[]
-  >([]);
-  const [categories, setCategories] = useState<
-    { id: number; name: string; status: boolean }[]
-  >([]);
-  const [products, setProducts] = useState<
-    {
-      id: string;
-      name: string;
-      description: string;
-      specification: { id: number; specification: string }[];
-      imageProducts: { id: number; image: string }[];
-      price: number;
-      brand: { id: number; name: string; image: string };
-      event: null;
-      status: boolean;
-      category: { id: number; name: string; image: string; status: boolean };
-      idBrand: number;
-      idCategory: number;
-      idEvent: number;
-      quantity: number;
-    }[]
-  >([]);
   const [filteredProductsResult, setFilteredProductsResult] = useState<
     {
       id: string;
@@ -137,59 +117,6 @@ const ProductManagement: React.FC<any> = () => {
       quantity: number;
     }[]
   >([]);
-
-  const fetchAPIBrands = async () => {
-    try {
-      const res = await BrandService.GetAllBrand();
-      return res.data;
-    } catch (error) {}
-  };
-  const fetchAPICategories = async () => {
-    try {
-      const res = await CategoryService.GetAllCategory();
-      return res.data;
-    } catch (error) {}
-  };
-  const fetchAPIProducts = async () => {
-    try {
-      const res = await ProductService.GetAllProduct();
-      return res.data;
-    } catch (error) {}
-  };
-
-  const { data: brandsData, refetch: refetchBrands } = useQuery(
-    ["brandImages"],
-    fetchAPIBrands,
-    {}
-  );
-  const { data: categoriesData, refetch: refetchCategories } = useQuery(
-    ["categoryImages"],
-    fetchAPICategories,
-    {}
-  );
-  const { data: productsData, refetch: refetchProducts } = useQuery(
-    ["productImages"],
-    fetchAPIProducts,
-    {}
-  );
-
-  useEffect(() => {
-    const fetchAllAPIs = async () => {
-      await Promise.all([
-        refetchBrands(),
-        refetchCategories(),
-        refetchProducts(),
-      ]);
-    };
-    fetchAllAPIs();
-  }, [refetchBrands, refetchCategories, refetchProducts]);
-  useEffect(() => {
-    if (brandsData && categoriesData && productsData) {
-      setBrands(brandsData);
-      setCategories(categoriesData);
-      setProducts(productsData);
-    }
-  }, [brandsData, categoriesData, productsData]);
 
   useEffect(() => {
     // Thực hiện tìm kiếm và cập nhật danh sách sản phẩm hiển thị ngay lập tức

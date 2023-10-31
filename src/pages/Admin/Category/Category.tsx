@@ -1,6 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
-import { useQuery } from "react-query";
+import { useState } from "react";
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -16,7 +15,7 @@ import styles from "./Category.module.scss";
 import Image from "../../../components/Image";
 import Button from "../../../components/Button";
 import { axiosClient } from "../../../axios";
-import CategoryService from "../../../service/CategoryService";
+import { useCategory } from "../../../Context/CategoryContext";
 import CategoryComponent from "../../../components/CategoryCom/CategoryComponent";
 
 const faHouseIcon = faHouse as IconProp;
@@ -33,6 +32,7 @@ interface Category {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 const Category: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
+  const categories = useCategory(); 
 
   const [open, setOpen] = useState(false);
   const handleCloseAddForm = () => setOpen(false);
@@ -130,30 +130,6 @@ const Category: React.FC<any> = () => {
       });
     }
   };
-
-  const [categories, setCategories] = useState<Category[]>([]);
-  const fetchAPICategories = async () => {
-    try {
-      const res = await CategoryService.GetAllCategory();
-      return res.data;
-    } catch (error) {}
-  };
-
-  const { data, refetch } = useQuery(
-    ["categoryImages"],
-    fetchAPICategories,
-    {}
-  );
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      refetch();
-    }, 1000);
-    setCategories(data);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [data, refetch]);
 
   return (
     <div className={cx("wrapper")}>

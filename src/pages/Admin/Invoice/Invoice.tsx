@@ -14,7 +14,7 @@ import styles from './Invoice.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faArrowRight, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
-import ProductService from '../../../service/ProductService';
+import { useProduct } from "../../../Context/ProductContext";
 import InvoiceService from '../../../service/InvoiceService';
 
 import InvoiceManagementRow from '../../../components/InvoiceManagementRow';
@@ -34,22 +34,8 @@ const Invoice: React.FC<any> = () => {
         setPaymentFilter(event.target.value);
     };
 
-    const [products, setProducts] = useState<{
-        id: string;
-        name: string;
-        description: string;
-        specification: { id: number; specification: string }[];
-        imageProducts: { id: number; image: string }[];
-        price: number;
-        brand: { id: number; name: string; image: string };
-        event: null;
-        status: boolean;
-        category: { id: number; name: string; image: string; status: boolean };
-        idBrand: number;
-        idCategory: number;
-        idEvent: number;
-        quantity: number;
-    }[]>([]);
+    const products = useProduct();
+
     const [, setInvoices] = useState<{
         id: number;
         customerName: string;
@@ -90,23 +76,12 @@ const Invoice: React.FC<any> = () => {
         createdAt: any;
     }[]>([]);
 
-    const fetchAPIProducts = async () => {
-        try {
-            const res = await ProductService.GetAllProduct();
-            return res.data;
-        } catch (error) { }
-    };
     const fetchAPIInvoices = async () => {
         try {
             const res = await InvoiceService.GetAllInvoice();
             return res.data;
         } catch (error) { }
     };
-    const { data: productsData, refetch: refetchProducts } = useQuery(
-        ["productImages"],
-        fetchAPIProducts,
-        {}
-    );
     const { data: invoicesData, refetch: refetchInvoices } = useQuery(
         ["invoicesImages"],
         fetchAPIInvoices,
@@ -116,22 +91,18 @@ const Invoice: React.FC<any> = () => {
     useEffect(() => {
         const fetchAllAPIs = async () => {
             await Promise.all([
-                refetchProducts(),
                 refetchInvoices()
             ]);
         };
         fetchAllAPIs();
     }, [
-        refetchProducts,
         refetchInvoices
     ]);
     useEffect(() => {
-        if (productsData && invoicesData) {
-            setProducts(productsData);
+        if (invoicesData) {
             setInvoices(invoicesData);
         }
     }, [
-        productsData,
         invoicesData
     ]);
 

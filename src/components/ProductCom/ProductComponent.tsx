@@ -65,7 +65,6 @@ const ProductComponent: React.FC<any> = ({ data }) => {
             </div>
           ))}
         </div>
-        {/* <div className={cx("description")}>{data.description}</div> */}
         {data.event === null ? (
           <>
             <div className={cx("product-price")}>

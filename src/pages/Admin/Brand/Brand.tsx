@@ -1,6 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
-import { useQuery } from "react-query";
+import { useState } from "react";
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -16,7 +15,7 @@ import styles from "./Brand.module.scss";
 import Button from "../../../components/Button";
 import Image from "../../../components/Image";
 import { axiosClient } from "../../../axios";
-import BrandService from "../../../service/BrandService";
+import { useBrand } from "../../../Context/BrandContext";
 import BrandComponent from "../../../components/BrandCom/BrandComponent";
 
 const faHouseIcon = faHouse as IconProp;
@@ -33,6 +32,7 @@ interface Brand {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 const Brand: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
+  const brands = useBrand();
 
   const [open, setOpen] = useState(false);
   const handleCloseAddForm = () => setOpen(false);
@@ -126,26 +126,6 @@ const Brand: React.FC<any> = () => {
       });
     }
   };
-
-  const [brands, setBrands] = useState<Brand[]>([]);
-  const fetchAPIBrands = async () => {
-    try {
-      const res = await BrandService.GetAllBrand();
-      return res.data;
-    } catch (error) {}
-  };
-
-  const { data, refetch } = useQuery(["brandImages"], fetchAPIBrands, {});
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      refetch();
-    }, 1000);
-    setBrands(data);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [data, refetch]);
 
   return (
     <div className={cx("wrapper")}>
