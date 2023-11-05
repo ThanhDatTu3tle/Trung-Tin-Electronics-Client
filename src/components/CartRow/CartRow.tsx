@@ -36,10 +36,8 @@ const CartRow: React.FC<any> = ({ data, onDeleteProduct }) => {
   };
 
   const handleAdd = (productId: string, currentCount: number) => {
-    if (currentCount < data.quantity) {
-      setCount(currentCount + 1);
-      updateCartItemQuantity(productId, currentCount + 1);
-    } 
+    setCount(currentCount + 1);
+    updateCartItemQuantity(productId, currentCount + 1);
   };
 
   return (

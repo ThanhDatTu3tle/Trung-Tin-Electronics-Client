@@ -66,9 +66,9 @@ const DetailProduct: React.FC = () => {
     setCount(count - 1);
   };
   const handleAdd = (quantityProduct: number) => {
-    if (count >= quantityProduct) {
-      return;
-    }
+    // if (count >= quantityProduct) {
+    //   return;
+    // }
     setCount(count + 1);
   };
 
@@ -259,7 +259,7 @@ const DetailProduct: React.FC = () => {
           <p className={cx("text")}>Mã sản phẩm: {product.id}</p>
           {product.status === true ? (
             <>
-              <p className={cx("text")}>Tình trạng: Còn hàng ({product.quantity})</p>
+              <p className={cx("text")}>Tình trạng: Còn hàng</p>
             </>
           ) : (
             <>

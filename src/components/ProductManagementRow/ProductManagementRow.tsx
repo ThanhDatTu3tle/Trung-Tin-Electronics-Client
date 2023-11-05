@@ -30,7 +30,7 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
   const MySwal = withReactContent(Swal);
 
   const brands = useBrand();
-  const categories = useCategory(); 
+  const categories = useCategory();
 
   const [state, setState] = useState(data.status);
   const [open, setOpen] = useState(false);
@@ -373,7 +373,6 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                       onChange={handleQuantityChange}
                     />
                   </div>
-
                   <Button primary small onClick={updateProductQuantity}>
                     Chỉnh sửa
                   </Button>
@@ -382,11 +381,57 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
             </Backdrop>
           </div>
         ) : (
-          <div
-            className={cx("stock")}
-            style={{ color: "red", fontWeight: 700 }}
-          >
-            Hết hàng (0)
+          <div className={cx("wrapper-stock")}>
+            <div
+              className={cx("stock")}
+              style={{ color: "red", fontWeight: 700 }}
+            >
+              Hết hàng (0)
+            </div>
+            <FontAwesomeIcon
+              icon={faCirclePlus}
+              style={{
+                fontSize: "1rem",
+                color: "#fec806",
+                cursor: "pointer",
+              }}
+              onClick={handleEditProductQuantity}
+            />
+            <Backdrop sx={{ color: "#fff", zIndex: 9 }} open={openQuantity}>
+              <div className={cx("edit-quantity-form")}>
+                <div className={cx("form")}>
+                  <div className={cx("title")}>
+                    <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>
+                      CHỈNH SỬA SỐ LƯỢNG HÀNG TỒN SẢN PHẨM
+                    </p>
+                    <button
+                      type="button"
+                      className={cx("close-btn")}
+                      onClick={handleCloseEditQuantityForm}
+                    >
+                      ×
+                    </button>
+                  </div>
+                  <div className={cx("inputs")}>
+                    <br />
+                    <p>Số lượng tồn kho hiện tại: {data.quantity}</p>
+                    <label htmlFor="quantity">
+                      Chỉnh sửa số lượng tồn kho sản phẩm:
+                    </label>
+                    <input
+                      id="quantity"
+                      type="number"
+                      placeholder="Số lượng hàng nhập kho"
+                      className={cx("input-name")}
+                      onChange={handleQuantityChange}
+                    />
+                  </div>
+                  <Button primary small onClick={updateProductQuantity}>
+                    Chỉnh sửa
+                  </Button>
+                </div>
+              </div>
+            </Backdrop>
           </div>
         )}
         {data.status === true ? (
@@ -519,9 +564,11 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                   <div className={cx("right")}>
                     <label htmlFor="image">Hình ảnh hiện tại:</label>
                     <div className={cx("show-image")}>
-                      {data.imageProducts.map((img: { id:any; image: any }) => (
-                        <Image key={img.id} src={img.image} />
-                      ))}
+                      {data.imageProducts.map(
+                        (img: { id: any; image: any }) => (
+                          <Image key={img.id} src={img.image} />
+                        )
+                      )}
                     </div>
                     {/* <br />
                                         <label htmlFor="image">Thêm hình ảnh mới:</label>

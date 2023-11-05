@@ -6,7 +6,6 @@ import withReactContent from "sweetalert2-react-content";
 import "sweetalert2/dist/sweetalert2.min.css";
 import Backdrop from "@mui/material/Backdrop";
 
-import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleInfo,
@@ -14,16 +13,16 @@ import {
   faMoneyBillWave,
 } from "@fortawesome/free-solid-svg-icons";
 
-import styles from "./InvoiceManagementRow.module.scss";
+import styles from "./BillManagementRow.module.scss";
 
 import InvoiceService from "../../service/InvoiceService";
+import ProductService from "../../service/ProductService";
 import Image from "../Image";
 import logo from "../../assets/logo.png";
-import Button from "../Button";
 
 const cx = classNames.bind(styles);
 
-const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
+const BillManagementRow: React.FC<any> = ({ data, products }) => {
   const MySwal = withReactContent(Swal);
   const [state, setState] = useState(data.status);
   const [open, setOpen] = useState(false);
@@ -66,7 +65,7 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
       if (data.status === false) {
         await InvoiceService.UpdateInvoiceStatus(data.id, 1);
         MySwal.fire({
-          title: "Xác nhận đơn hàng!",
+          title: "Hoàn tất quá trình giao hàng!",
           icon: "success",
           didOpen: () => {
             MySwal.showLoading();
@@ -76,10 +75,10 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
         window.location.reload();
         setState(!state);
       } else {
-        await InvoiceService.UpdateInvoiceStatus(data.id, 0);
+        await ProductService.UpdateProductStatus(data.id, 0);
         MySwal.fire({
-          title: "Chưa hoàn tất xác nhận đơn hàng!",
-          icon: "warning",
+          title: "Chưa hoàn tất quá trình giao hàng!",
+          icon: "success",
           didOpen: () => {
             MySwal.showLoading();
           },
@@ -100,44 +99,9 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
     }
   };
 
-  const handleConfirm = async () => {
-    try {
-      if (data.confirm === false) {
-        await InvoiceService.UpdateInvoiceConfirm(data.id, 1);
-        MySwal.fire({
-          title: "Hoàn tất quá trình giao hàng!",
-          icon: "success",
-          didOpen: () => {
-            MySwal.showLoading();
-          },
-          timer: 2000,
-        });
-        window.location.reload();
-        setState(!state);
-      } else {
-        await InvoiceService.UpdateInvoiceConfirm(data.id, 0);
-        MySwal.fire({
-          title: "Chưa hoàn tất quá trình giao hàng!",
-          icon: "warning",
-          didOpen: () => {
-            MySwal.showLoading();
-          },
-          timer: 2000,
-        });
-        window.location.reload();
-        setState(!state);
-      }
-    } catch (error) {
-      MySwal.fire({
-        title: "Đã có lỗi xảy ra!",
-        icon: "error",
-        didOpen: () => {
-          MySwal.showLoading();
-        },
-        timer: 2000,
-      });
-    }
-  };
+  const handleConfirm = () => {
+    
+  }
 
   return (
     <div className={cx("wrapper")}>
@@ -192,13 +156,13 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
         ) : (
           <div
             className={cx("status")}
-            style={{ color: "#fec806", fontWeight: 700 }}
+            style={{ color: "green", fontWeight: 700 }}
           >
-            Đang giao hàng
+            Đã giao hàng
           </div>
         )}
         <div className={cx("content")}>
-            {data.content}
+          {data.content}
         </div>
         <div
           className={cx("time")}
@@ -218,7 +182,7 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
             <div className={cx("detail-wrapper")}>
               <div className={cx("title")}>
                 <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>
-                  THÔNG TIN CHI TIẾT ĐƠN HÀNG
+                  THÔNG TIN CHI TIẾT HÓA ĐƠN 
                 </p>
                 <button
                   type="button"
@@ -269,11 +233,7 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                   </p>
                   <div style={{ display: "flex" }}>
                     <p style={{ marginRight: "0.5rem" }}>Trạng thái: </p>
-                    {data.status === false ? (
-                      <div style={{ color: "#FF5470" }}>Chưa giao hàng</div>
-                    ) : (
-                      <div style={{ color: "#fec806" }}>Đang giao hàng</div>
-                    )}
+                    <div style={{color: 'green'}}>Đã hoàn tất giao hàng</div>
                   </div>
 
                   <div style={{ display: "flex" }}>
@@ -408,20 +368,6 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                   </p>
                 </div>
               </div>
-              <br />
-              {data.status === false ? (
-                <>
-                  <Button primary small onClick={handlePrint}>
-                    In hóa đơn
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button outline small onClick={handleConfirm}>
-                    Xác nhận hoàn tất giao hàng
-                  </Button>
-                </>
-              )}
             </div>
           </Backdrop>
         </div>
@@ -432,4 +378,4 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
   );
 };
 
-export default InvoiceManagementRow;
+export default BillManagementRow;

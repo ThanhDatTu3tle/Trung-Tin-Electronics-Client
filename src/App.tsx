@@ -13,6 +13,7 @@ import { ProductProvider } from "./Context/ProductContext";
 import { CartProvider } from "./Context/CartContext";
 import CartButton from "./components/CartButton";
 import DetailCategory from "./pages/DetailCategory";
+import { BrandProvider } from "./Context/BrandContext";
 
 const App: React.FC = () => {
   const [search, setSearch] = useState<string | null>(null);
@@ -20,92 +21,90 @@ const App: React.FC = () => {
 
   const clearLocalStorageAfter24Hours = () => {
     setTimeout(() => {
-      localStorage.removeItem('seen'); 
-    }, 24 * 60 * 60 * 1000); 
+      localStorage.removeItem("seen");
+    }, 24 * 60 * 60 * 1000);
   };
 
   const clearLocalStorageAfter18Hours = () => {
     setTimeout(() => {
-      localStorage.removeItem('seen'); 
-    }, 24 * 60 * 60 * 1000); 
+      localStorage.removeItem("seen");
+    }, 24 * 60 * 60 * 1000);
   };
-  
+
   clearLocalStorageAfter24Hours();
   clearLocalStorageAfter18Hours();
 
   return (
     <AuthContext.Provider value={{ token, setToken, search, setSearch }}>
-      <CategoryProvider>
-        <ProductProvider>
-          <CartProvider>
-            <Router>
-              <div className="App">
-                <Routes>
-                  {publicRoutes.map((route, index) => {
-                    const Page = route.component;
+      <BrandProvider>
+        <CategoryProvider>
+          <ProductProvider>
+            <CartProvider>
+              <Router>
+                <div className="App">
+                  <Routes>
+                    {publicRoutes.map((route, index) => {
+                      const Page = route.component;
 
-                    let Layout = MainUserLayout;
+                      let Layout = MainUserLayout;
 
-                    if (route.layout) {
-                      Layout = route.layout;
-                    } else if (route.layout === null) {
-                      Layout = Fragment;
-                    }
-
-                    return (
-                      <Route
-                        key={index}
-                        path={route.path}
-                        element={
-                          <Layout>
-                            <Page />
-                          </Layout>
-                        }
-                      />
-                    );
-                  })}
-
-                  {privateRoutes.map((route, index) => {
-                    const Page = route.component;
-
-                    let Layout = MainUserLayout;
-
-                    if (route.layout) {
-                      Layout = route.layout;
-                    } else if (route.layout === null) {
-                      Layout = Fragment;
-                    }
-
-                    return (
-                      <Route
-                        key={index}
-                        path={route.path}
-                        element={
-                          <ProtectedRoute>
+                      if (route.layout) {
+                        Layout = route.layout;
+                      } else if (route.layout === null) {
+                        Layout = Fragment;
+                      }
+                      return (
+                        <Route
+                          key={index}
+                          path={route.path}
+                          element={
                             <Layout>
                               <Page />
                             </Layout>
-                          </ProtectedRoute>
-                        }
-                      />
-                    );
-                  })}
-                  {/* <Route path="/detailBrand/:name/*" element={<DetailBrand />} /> */}
-                  <Route
-                    path="/detailCategory/:name/*"
-                    element={<DetailCategory />}
-                  />
-                  <Route
-                    path="/detailProduct/:id/*"
-                    element={<DetailProduct />}
-                  />
-                </Routes>
-                <CartButton />
-              </div>
-            </Router>
-          </CartProvider>
-        </ProductProvider>
-      </CategoryProvider>
+                          }
+                        />
+                      );
+                    })}
+                    {privateRoutes.map((route, index) => {
+                      const Page = route.component;
+
+                      let Layout = MainUserLayout;
+
+                      if (route.layout) {
+                        Layout = route.layout;
+                      } else if (route.layout === null) {
+                        Layout = Fragment;
+                      }
+                      return (
+                        <Route
+                          key={index}
+                          path={route.path}
+                          element={
+                            <ProtectedRoute>
+                              <Layout>
+                                <Page />
+                              </Layout>
+                            </ProtectedRoute>
+                          }
+                        />
+                      );
+                    })}
+                    <Route
+                      path="/detailCategory/:name/*"
+                      element={<DetailCategory />}
+                    />
+                    <Route
+                      path="/detailProduct/:id/*"
+                      element={<DetailProduct />}
+                    />
+                  </Routes>
+                  <CartButton />
+                </div>
+              </Router>
+            </CartProvider>
+          </ProductProvider>
+        </CategoryProvider>
+      </BrandProvider>
     </AuthContext.Provider>
   );
 };

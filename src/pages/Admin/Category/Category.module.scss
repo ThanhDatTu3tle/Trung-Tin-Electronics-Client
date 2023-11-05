@@ -3,8 +3,7 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
-    padding: 1rem;
-    background-color: #FFF;
+    padding-left: 1rem;
 
     .header {
         display: flex;
@@ -12,7 +11,10 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
+        padding: 1rem;
         font-size: 1.2rem;
+        background-color: #FFF;
+        box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
 
         .left {
             display: flex;
@@ -59,7 +61,7 @@
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            width: 80%;
+            width: 100%;
             height: auto;
 
             .category {
@@ -68,15 +70,6 @@
                 justify-content: flex-start;
                 width: 100%;
             }
-        }
-
-        .filter {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            width: 20%;
-            height: fit-content;
         }
     }
 }

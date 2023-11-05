@@ -63,6 +63,7 @@ export const CategoryProvider: React.FC<{ children: ReactNode }> = ({
       await Promise.all([refetchCategories()]);
     };
     fetchAllAPIs();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     if (categoriesData) {

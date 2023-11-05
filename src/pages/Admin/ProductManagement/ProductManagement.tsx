@@ -11,7 +11,6 @@ import {
   faHouse,
   faArrowRight,
   faChevronRight,
-  faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./ProductManagement.module.scss";
@@ -23,6 +22,7 @@ import ProductService from "../../../service/ProductService";
 import { useBrand } from '../../../Context/BrandContext';
 import { useCategory } from "../../../Context/CategoryContext";
 import { useProduct } from "../../../Context/ProductContext";
+import Clock from "../../../components/Clock";
 
 const cx = classNames.bind(styles);
 
@@ -357,6 +357,7 @@ const ProductManagement: React.FC<any> = () => {
         </div>
         <div className={cx("right")}>
           <div className={cx("current-position")}>
+            <Clock />
             <FontAwesomeIcon icon={faHouse} style={{ paddingRight: "1rem" }} />
             <FontAwesomeIcon
               icon={faArrowRight}
@@ -625,15 +626,6 @@ const ProductManagement: React.FC<any> = () => {
               value={searchKeyword}
               onChange={(e) => setSearchKeyword(e.target.value)}
             />
-            <FontAwesomeIcon
-              icon={faMagnifyingGlass}
-              style={{
-                position: "absolute",
-                left: "580px",
-                pointerEvents: "none",
-                color: "#888",
-              }}
-            />
           </div>
         </div>
         <div className={cx("filters")}>
@@ -719,7 +711,6 @@ const ProductManagement: React.FC<any> = () => {
             <div className={cx("date")}>Chỉnh sửa gần nhất</div>
             <div className={cx("edit")}>Chỉnh sửa</div>
           </div>
-          <br />
           <div className={cx("information")}>
             {filteredProductsResult.map((filteredProductResult) => (
               <ProductManagementRow

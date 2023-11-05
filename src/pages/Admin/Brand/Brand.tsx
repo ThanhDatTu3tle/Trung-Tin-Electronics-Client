@@ -17,17 +17,12 @@ import Image from "../../../components/Image";
 import { axiosClient } from "../../../axios";
 import { useBrand } from "../../../Context/BrandContext";
 import BrandComponent from "../../../components/BrandCom/BrandComponent";
+import Clock from "../../../components/Clock";
 
 const faHouseIcon = faHouse as IconProp;
 const faArrowRightIcon = faArrowRight as IconProp;
 
 const cx = classNames.bind(styles);
-
-interface Brand {
-  id: number;
-  name: string;
-  image: string;
-}
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 const Brand: React.FC<any> = () => {
@@ -131,10 +126,11 @@ const Brand: React.FC<any> = () => {
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
         <div className={cx("left")}>
-          <p style={{ width: "fit-content" }}>Hãng sản xuất</p>
+          <p style={{ width: "fit-content", fontWeight: 700 }}>HÃNG SẢN XUẤT</p>{" "}
         </div>
         <div className={cx("right")}>
           <div className={cx("current-position")}>
+            <Clock />
             <FontAwesomeIcon
               icon={faHouseIcon}
               style={{ paddingRight: "1rem" }}

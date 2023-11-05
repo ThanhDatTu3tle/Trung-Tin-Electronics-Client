@@ -44,6 +44,7 @@ const CartButton: React.FC = () => {
   const shouldHideCartUI =
     location.pathname.includes("/admin") ||
     location.pathname.includes("/invoice") ||
+    location.pathname.includes("/bill") ||
     location.pathname.includes("/user") ||
     location.pathname.includes("/brand") ||
     location.pathname.includes("/category") ||

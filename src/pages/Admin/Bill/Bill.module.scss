@@ -128,48 +128,6 @@
             }
         }
 
-        .general-statistics {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            height: 12rem;
-            margin-bottom: 1rem;
-
-            .diagram {
-                display: flex;
-                flex-direction: column;
-                width: 30%;
-                height: 100%;
-                padding: 1rem;
-                border-radius: 1.2rem;
-                background-color: #fff;
-                box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
-            }
-
-            .statistics {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                width: 17%;
-                height: 100%;
-                padding: 1.5rem;
-                border-radius: 1.2rem;
-                background-color: #fff;
-                box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
-
-                .icon {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 4rem;
-                    height: 4rem;
-                    border-radius: 0.5rem;
-                }
-            }
-        }
-
         .table {
             width: 100%;
             height: fit-content;

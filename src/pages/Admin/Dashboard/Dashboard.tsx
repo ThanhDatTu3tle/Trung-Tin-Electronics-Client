@@ -21,6 +21,7 @@ import { faHouse, faArrowRight, faKaaba } from '@fortawesome/free-solid-svg-icon
 import { faGem, faMoneyBill1 } from '@fortawesome/free-regular-svg-icons';
 
 import styles from './Dashboard.module.scss';
+import Clock from '../../../components/Clock';
 
 const cx = classNames.bind(styles);
 
@@ -92,6 +93,7 @@ const Dashboard: React.FC<any> = () => {
         </div>
         <div className={cx('right')}>
           <div className={cx('current-position')}>
+            <Clock />
             <FontAwesomeIcon
               icon={faHouse}
               style={{ paddingRight: '1rem' }}

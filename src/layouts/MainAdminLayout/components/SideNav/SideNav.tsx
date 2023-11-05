@@ -15,6 +15,7 @@ import {
     faSortDown, 
     faListCheck, 
     faFilter,
+    faFileInvoice,
     faFileInvoiceDollar,
     faUser 
 } from "@fortawesome/free-solid-svg-icons";
@@ -75,7 +76,8 @@ const SideNav: React.FC = () => {
                 )}
                 <TitleItem title='Danh mục sản phẩm' to={config.routes.category} icon={faListUl}  />
                 <TitleItem title='Hãng sản xuất' to={config.routes.brand} icon={faCodeBranch}  />
-                <TitleItem title='Đơn hàng' to={config.routes.invoice} icon={faFileInvoiceDollar}  />
+                <TitleItem title='Đơn hàng' to={config.routes.invoice} icon={faFileInvoice}  />
+                <TitleItem title='Hóa đơn' to={config.routes.bill} icon={faFileInvoiceDollar}  />
                 <TitleItem title='Khách hàng' to={config.routes.user} icon={faUser}  />
             </Titles>
         </div>

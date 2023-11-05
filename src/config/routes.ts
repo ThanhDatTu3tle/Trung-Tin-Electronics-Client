@@ -22,6 +22,7 @@ const routes = {
     category: "/category",
     brand: "/brand",
     invoice: "/invoice",
+    bill: "/bill",
     user: "/user"
 };
   

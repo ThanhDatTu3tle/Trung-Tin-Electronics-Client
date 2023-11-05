@@ -17,22 +17,17 @@ import Button from "../../../components/Button";
 import { axiosClient } from "../../../axios";
 import { useCategory } from "../../../Context/CategoryContext";
 import CategoryComponent from "../../../components/CategoryCom/CategoryComponent";
+import Clock from "../../../components/Clock";
 
 const faHouseIcon = faHouse as IconProp;
 const faArrowRightIcon = faArrowRight as IconProp;
 
 const cx = classNames.bind(styles);
 
-interface Category {
-  id: number;
-  name: string;
-  image: string;
-}
-
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 const Category: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
-  const categories = useCategory(); 
+  const categories = useCategory();
 
   const [open, setOpen] = useState(false);
   const handleCloseAddForm = () => setOpen(false);
@@ -43,7 +38,6 @@ const Category: React.FC<any> = () => {
     if (swalContainer) {
       swalContainer.style.zIndex = "99999";
     }
-
     setOpen(true);
   };
 
@@ -79,7 +73,6 @@ const Category: React.FC<any> = () => {
         linkRef.current.href = link;
         linkRef.current.innerHTML = link;
       }
-
       MySwal.close();
       setImageUrl(link);
     };
@@ -135,10 +128,13 @@ const Category: React.FC<any> = () => {
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
         <div className={cx("left")}>
-          <p style={{ width: "fit-content" }}>Danh mục sản phẩm</p>
+          <p style={{ width: "fit-content", fontWeight: 700 }}>
+            DANH MỤC SẢN PHẨM
+          </p>
         </div>
         <div className={cx("right")}>
           <div className={cx("current-position")}>
+            <Clock />
             <FontAwesomeIcon
               icon={faHouseIcon}
               style={{ paddingRight: "1rem" }}

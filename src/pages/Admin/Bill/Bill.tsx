@@ -9,29 +9,25 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-import styles from "./Invoice.module.scss";
+import styles from "./Bill.module.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse,
   faArrowRight,
   faChevronRight,
-  faClipboardCheck,
-  faListCheck,
-  faBan,
-  faTruckFast,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useProduct } from "../../../Context/ProductContext";
 import InvoiceService from "../../../service/InvoiceService";
 
-import InvoiceManagementRow from "../../../components/InvoiceManagementRow";
 import Button from "../../../components/Button";
+import BillManagementRow from "../../../components/BillManagementRow";
 import Clock from "../../../components/Clock";
 
 const cx = classNames.bind(styles);
 
-const Invoice: React.FC<any> = () => {
+const Bill: React.FC<any> = () => {
   const [dayFilter, setDayFilter] = React.useState<Dayjs | any>(dayjs());
   const [statusFilter, setStatusFilter] = useState("all");
   const [paymentFilter, setPaymentFilter] = useState("all");
@@ -210,7 +206,7 @@ const Invoice: React.FC<any> = () => {
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
         <div className={cx("left")}>
-          <p style={{ width: "fit-content", fontWeight: 700 }}>ĐƠN HÀNG</p>
+          <p style={{ width: "fit-content", fontWeight: 700 }}>HÓA ĐƠN</p>
         </div>
         <div className={cx("right")}>
           <div className={cx("current-position")}>
@@ -220,7 +216,7 @@ const Invoice: React.FC<any> = () => {
               icon={faArrowRight}
               style={{ width: "1rem", height: "1rem", paddingRight: "1rem" }}
             />
-            <p>Đơn hàng</p>
+            <p>Hóa đơn</p>
           </div>
         </div>
       </div>
@@ -287,51 +283,6 @@ const Invoice: React.FC<any> = () => {
             </div>
           </div>
         </div>
-        <div className={cx("general-statistics")}>
-          <div className={cx("diagram")}>
-            BIỂU ĐỒ
-          </div>
-          <div className={cx("statistics")}>
-            <div className={cx("icon")} style={{ background: '#018ec3' }}>
-              <FontAwesomeIcon
-                icon={faClipboardCheck}
-                style={{ width: "2.2rem", height: "2.2rem" }}
-              />
-            </div>
-            <h5>Đơn hàng thành công</h5>
-            <b>{filteredInvoicesResult.filter((invoice) => invoice.confirm === true).length}</b>
-          </div>
-          <div className={cx("statistics")}>
-            <div className={cx("icon")} style={{ background: 'green' }}>
-              <FontAwesomeIcon
-                icon={faListCheck}
-                style={{ width: "2.2rem", height: "2.2rem" }}
-              />
-            </div>
-            <h5>Đơn chưa xác nhận</h5>
-            <b>{filteredInvoicesResult.filter((invoice) => invoice.status === false && invoice.confirm === false).length}</b>
-          </div>
-          <div className={cx("statistics")}>
-            <div className={cx("icon")} style={{ background: '#fec806' }}>
-              <FontAwesomeIcon
-                icon={faTruckFast}
-                style={{ width: "2.2rem", height: "2.2rem" }}
-              />
-            </div>
-            <h5>Đơn hàng đang giao</h5>
-            <b>{filteredInvoicesResult.filter((invoice) => invoice.status === true && invoice.confirm === false).length}</b>
-          </div>
-          <div className={cx("statistics")}>
-            <div className={cx("icon")} style={{ background: '#FF5470' }}>
-              <FontAwesomeIcon
-                icon={faBan}
-                style={{ width: "2.2rem", height: "2.2rem" }}
-              />
-            </div>
-            <h5>Đơn hàng đã hủy</h5>
-            <b>0</b>
-          </div>
-        </div>
         <div className={cx("table")}>
           <div className={cx("titles")}>
             <div className={cx("id")}># Mã</div>
@@ -348,9 +299,9 @@ const Invoice: React.FC<any> = () => {
           </div>
           <div className={cx("information")}>
             {filteredInvoicesResult
-              .filter((invoice) => !invoice.confirm)
+              .filter((invoice) => invoice.confirm)
               .map((invoice) => (
-                <InvoiceManagementRow
+                <BillManagementRow
                   key={invoice.id}
                   data={invoice}
                   products={products}
@@ -363,4 +314,4 @@ const Invoice: React.FC<any> = () => {
   );
 };
 
-export default Invoice;
+export default Bill;

@@ -27,6 +27,7 @@ const Cart: React.FC<any> = () => {
   const history = useNavigate();
   const { cartItems } = useCart();
   const status = false;
+  const confirm = false;
   const emptyData: {
     fullName?: string;
     phoneNumber?: string;
@@ -402,6 +403,7 @@ const Cart: React.FC<any> = () => {
       formData.append("address", completeAddress);
       formData.append("content", content);
       formData.append("status", status.toString());
+      formData.append("confirm", confirm.toString());
       products.forEach((product, index) => {
         if (product.quantityIsSet <= product.quantity) {
           formData.append(`invoiceDetail[${index}].idProduct`, product.id);

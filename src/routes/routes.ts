@@ -24,6 +24,7 @@ import ProductManagement from "../pages/Admin/ProductManagement";
 import Category from "../pages/Admin/Category";
 import Brand from "../pages/Admin/Brand";
 import Invoice from "../pages/Admin/Invoice";
+import Bill from "../pages/Admin/Bill";
 import User from "../pages/Admin/User";
 
 const publicRoutes = [
@@ -47,6 +48,7 @@ const privateRoutes = [
     { path: config.routes.category, component: Category, layout: MainAdminLayout },
     { path: config.routes.brand, component: Brand, layout: MainAdminLayout },
     { path: config.routes.invoice, component: Invoice, layout: MainAdminLayout },
+    { path: config.routes.bill, component: Bill, layout: MainAdminLayout },
     { path: config.routes.user, component: User, layout: MainAdminLayout },
 ];
 
