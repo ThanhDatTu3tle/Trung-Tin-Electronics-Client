@@ -46,6 +46,8 @@ const CartButton: React.FC = () => {
     location.pathname.includes("/invoice") ||
     location.pathname.includes("/bill") ||
     location.pathname.includes("/user") ||
+    location.pathname.includes("/combo") ||
+    location.pathname.includes("/event") ||
     location.pathname.includes("/brand") ||
     location.pathname.includes("/category") ||
     location.pathname.includes("/product") ||

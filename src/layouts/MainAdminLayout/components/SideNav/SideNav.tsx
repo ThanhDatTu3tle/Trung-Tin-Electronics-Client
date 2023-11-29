@@ -17,7 +17,9 @@ import {
     faFilter,
     faFileInvoice,
     faFileInvoiceDollar,
-    faUser 
+    faUser,
+    faObjectGroup,
+    faCalendarCheck
 } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles)
@@ -79,6 +81,8 @@ const SideNav: React.FC = () => {
                 <TitleItem title='Đơn hàng' to={config.routes.invoice} icon={faFileInvoice}  />
                 <TitleItem title='Hóa đơn' to={config.routes.bill} icon={faFileInvoiceDollar}  />
                 <TitleItem title='Khách hàng' to={config.routes.user} icon={faUser}  />
+                <TitleItem title='Combo sản phẩm' to={config.routes.combo} icon={faObjectGroup}  />
+                <TitleItem title='Sự kiện giảm giá' to={config.routes.event} icon={faCalendarCheck}  />
             </Titles>
         </div>
     )

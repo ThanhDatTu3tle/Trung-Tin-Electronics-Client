@@ -26,6 +26,8 @@ import Brand from "../pages/Admin/Brand";
 import Invoice from "../pages/Admin/Invoice";
 import Bill from "../pages/Admin/Bill";
 import User from "../pages/Admin/User";
+import Combo from "../pages/Admin/Combo";
+import Event from "../pages/Admin/Event";
 
 const publicRoutes = [
   { path: config.routes.home, component: Home, layout: MainUserLayout },
@@ -50,6 +52,8 @@ const privateRoutes = [
     { path: config.routes.invoice, component: Invoice, layout: MainAdminLayout },
     { path: config.routes.bill, component: Bill, layout: MainAdminLayout },
     { path: config.routes.user, component: User, layout: MainAdminLayout },
+    { path: config.routes.combo, component: Combo, layout: MainAdminLayout },
+    { path: config.routes.event, component: Event, layout: MainAdminLayout },
 ];
 
 export { publicRoutes, privateRoutes };

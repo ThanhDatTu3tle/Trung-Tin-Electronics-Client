@@ -23,7 +23,9 @@ const routes = {
     brand: "/brand",
     invoice: "/invoice",
     bill: "/bill",
-    user: "/user"
+    user: "/user",
+    combo: "/combo",
+    event: "/event"
 };
   
 export default routes;
