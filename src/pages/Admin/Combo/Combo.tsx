@@ -11,6 +11,12 @@ import styles from "./Combo.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
+import { useBrand } from "../../../Context/BrandContext";
+import { useCategory } from "../../../Context/CategoryContext";
+import { useProduct } from "../../../Context/ProductContext";
+import { useCombo } from "../../../Context/ComboContext";
+
+import ProductComboComponent from "../../../components/ProductComboCom/ProductComboComponent";
 import Clock from "../../../components/Clock";
 import Button from "../../../components/Button";
 import Image from "../../../components/Image";
@@ -21,6 +27,8 @@ const cx = classNames.bind(styles);
 
 const Combo: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
+  const comboChecked = localStorage.getItem("combo") || [];
+  console.log(comboChecked.length);
 
   const [open, setOpen] = useState(false);
   const handleCloseAddForm = () => setOpen(false);
@@ -31,13 +39,50 @@ const Combo: React.FC<any> = () => {
     if (swalContainer) {
       swalContainer.style.zIndex = "99999";
     }
-    setOpen(true);
+    if (comboChecked.length !== 0) {
+      setOpen(true);
+    }
   };
 
-  const [name, setName] = React.useState("");
-  const [imageUrl, setImageUrl] = React.useState("");
-  const [cost, setCost] = React.useState("");
-  const [price, setPrice] = React.useState("");
+  const [name, setName] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [cost, setCost] = useState("");
+  const [price, setPrice] = useState("");
+
+  const brands = useBrand();
+  const categories = useCategory();
+  const filteredProductsResult = useProduct();
+  const combos = useCombo();
+
+  const [selectedBrandButton, setSelectedBrandButton] = useState<number | null>(
+    null
+  );
+
+  const [brand0, setBrand0] = useState(true);
+  const [, setFilteredBrands] = useState<
+    { id: number; name: string; status: boolean }[]
+  >([]);
+  const [, setBrandChanged] = useState(false);
+  const handleClickBrand0 = () => {
+    setBrand0(!brand0);
+    setBrandChanged(false);
+  };
+
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
+  const [category0, setCategory0] = useState(true);
+  const [, setCategoryChanged] = useState(false);
+  const handleClickCategory0 = () => {
+    setCategory0(!category0);
+    setCategoryChanged(false);
+  };
+
+  const [selectedComboIds, setSelectedComboIds] = useState<string[]>([]);
+  const [combo0, setCombo0] = useState(true);
+  const [, setComboChanged] = useState(false);
+  const handleClickCombo0 = () => {
+    setCombo0(!combo0);
+    setComboChanged(false);
+  };
 
   const linkRef = React.useRef<HTMLAnchorElement>(null);
 
@@ -99,7 +144,7 @@ const Combo: React.FC<any> = () => {
     formData.append("image", imageUrl);
 
     try {
-      await axiosClient.post("category/create", formData);
+      await axiosClient.post("combo/create", formData);
       MySwal.fire({
         title: "Thêm thành công!",
         icon: "success",
@@ -124,11 +169,47 @@ const Combo: React.FC<any> = () => {
     }
   };
 
+  const handleClickBrandAll = (brandId: number) => {
+    setSelectedBrandButton(brandId === selectedBrandButton ? null : brandId);
+    let updatedFilteredBrand: React.SetStateAction<
+      { id: number; name: string; status: boolean }[]
+    > = [];
+    if (brandId !== selectedBrandButton) {
+      updatedFilteredBrand = brands.filter((brand) => brand.id === brandId);
+    }
+    setFilteredBrands(updatedFilteredBrand);
+    setCategory0(false);
+  };
+
+  const handleCategoryToggle = (categoryName: string) => {
+    if (selectedCategoryIds.includes(categoryName)) {
+      setSelectedCategoryIds(
+        selectedCategoryIds.filter((name) => name !== categoryName)
+      );
+    } else {
+      setSelectedCategoryIds([...selectedCategoryIds, categoryName]);
+      setCategory0(!true);
+    }
+  };
+
+  const handleComboToggle = (comboName: string) => {
+    if (selectedComboIds.includes(comboName)) {
+      setSelectedComboIds(
+        selectedComboIds.filter((name) => name !== comboName)
+      );
+    } else {
+      setSelectedComboIds([...selectedComboIds, comboName]);
+      setCombo0(!true);
+    }
+  };
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
         <div className={cx("left")}>
-          <p style={{ width: "fit-content", fontWeight: 700 }}>COMBO SẢN PHẨM</p>
+          <p style={{ width: "fit-content", fontWeight: 700 }}>
+            COMBO SẢN PHẨM
+          </p>
         </div>
         <div className={cx("right")}>
           <div className={cx("current-position")}>
@@ -210,10 +291,135 @@ const Combo: React.FC<any> = () => {
         </div>
       </div>
       <div className={cx("main-container")}>
-        <div className={cx("products")}></div>
+        <div className={cx("products")}>
+          {category0 === true ? (
+            <>
+              {categories.map((dataa) => (
+                <div className={cx("machine")} key={dataa.id}>
+                  <div className={cx("title-wrapper")}>
+                    <div className={cx("title")}>{dataa.name}</div>
+                  </div>
+                  <div className={cx("product")}>
+                    {filteredProductsResult
+                      .filter((data) => data.category.name === dataa.name)
+                      .map((data) => (
+                        <ProductComboComponent key={data.id} data={data} />
+                      ))}
+                  </div>
+                </div>
+              ))}
+            </>
+          ) : (
+            <>
+              {selectedCategoryIds.map((dataa) => (
+                <div className={cx("machine")} key={dataa}>
+                  <div className={cx("title-wrapper")}>
+                    <div className={cx("title")}>{dataa}</div>
+                  </div>
+                  <div className={cx("product")}>
+                    {filteredProductsResult
+                      .filter((data) => data.category.name === dataa)
+                      .map((data) => (
+                        <ProductComboComponent key={data.id} data={data} />
+                      ))}
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
 
         <div className={cx("filter")}>
           <h3>Bộ lọc</h3>
+          <h4>Lọc theo combo sản phẩm</h4>
+          {combo0 === true ? (
+            <Button primary onClick={handleClickCombo0}>
+              Tất cả combo sản phẩm
+            </Button>
+          ) : (
+            <Button outline onClick={handleClickCombo0}>
+              Tất cả combo sản phẩm
+            </Button>
+          )}
+          {combos.map((combo) => (
+            <>
+              {selectedCategoryIds.includes(combo.name) === true ? (
+                <Button
+                  primary
+                  onClick={() => handleComboToggle(combo!.name)}
+                  key={combo.id}
+                >
+                  {combo.name}
+                </Button>
+              ) : (
+                <Button
+                  outline
+                  onClick={() => handleComboToggle(combo!.name)}
+                  key={combo.id}
+                >
+                  {combo.name}
+                </Button>
+              )}
+            </>
+          ))}
+          <h4>Lọc theo danh mục</h4>
+          {category0 === true ? (
+            <Button primary onClick={handleClickCategory0}>
+              Tất cả sản phẩm
+            </Button>
+          ) : (
+            <Button outline onClick={handleClickCategory0}>
+              Tất cả sản phẩm
+            </Button>
+          )}
+          {categories.map((category) => (
+            <>
+              {selectedCategoryIds.includes(category.name) === true ? (
+                <Button
+                  primary
+                  onClick={() => handleCategoryToggle(category!.name)}
+                  key={category.id}
+                >
+                  {category.name}
+                </Button>
+              ) : (
+                <Button
+                  outline
+                  onClick={() => handleCategoryToggle(category!.name)}
+                  key={category.id}
+                >
+                  {category.name}
+                </Button>
+              )}
+            </>
+          ))}
+          <h4>Lọc theo hãng</h4>
+          <>
+            <Button primary onClick={handleClickBrand0}>
+              Tất cả các hãng
+            </Button>
+          </>
+          {brands.map((brand) => (
+            <>
+              {selectedBrandButton === brand.id ? (
+                <Button
+                  primary
+                  onClick={() => handleClickBrandAll(brand!.id)}
+                  key={brand.id}
+                >
+                  {brand.name}
+                </Button>
+              ) : (
+                <Button
+                  outline
+                  onClick={() => handleClickBrandAll(brand!.id)}
+                  key={brand.id}
+                >
+                  {brand.name}
+                </Button>
+              )}
+            </>
+          ))}
         </div>
       </div>
     </div>
