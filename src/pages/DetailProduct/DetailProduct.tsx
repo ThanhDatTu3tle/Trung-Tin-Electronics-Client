@@ -101,7 +101,6 @@ const DetailProduct: React.FC = () => {
     (product) => product.category.name === chosenProduct?.category.name
   );
   const relatedProducts = filteredProducts.filter((item) => item.id !== id);
-  // console.log(filteredProducts);
 
   useEffect(() => {
     const fetchProductDetails = async (productId: string) => {
@@ -109,7 +108,6 @@ const DetailProduct: React.FC = () => {
         const res = await ProductService.GetProduct(productId);
         return res.data;
       } catch (error) {
-        // console.error(error);
         return null;
       }
     };

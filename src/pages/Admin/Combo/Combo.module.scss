@@ -124,11 +124,12 @@
 
 .add-form {
     display: flex;
+    flex-direction: row;
     align-items: center;
     margin: 0;
-    padding: 1.5rem;
+    padding: 1rem;
     outline: 0;
-    width: 40%;
+    width: 60%;
     height: fit-content;
     border-radius: 10px;
     background-color: rgb(255, 255, 255);
@@ -138,7 +139,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        width: 100%;
+        width: 60%;
         height: fit-content;
         color: black;
 
@@ -198,5 +199,15 @@
             width: 70%;
             height: 30%;
         }
+    }
+
+    .product-chosen {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        width: 40%;
+        height: fit-content;
+        color: black;
     }
 }

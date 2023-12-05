@@ -46,8 +46,8 @@ const Event: React.FC<any> = () => {
 
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [cost, setCost] = useState("");
-  const [price, setPrice] = useState("");
+  const [, setCost] = useState("");
+  const [, setPrice] = useState("");
 
   const brands = useBrand();
   const categories = useCategory();
@@ -341,23 +341,23 @@ const Event: React.FC<any> = () => {
               Tất cả sự kiện giảm giá
             </Button>
           )}
-          {combos.map((combo) => (
+          {combos.map((comboItem) => (
             <>
-              {selectedCategoryIds.includes(combo.name) === true ? (
+              {selectedComboIds.includes(comboItem.combo.name) === true ? (
                 <Button
                   primary
-                  onClick={() => handleComboToggle(combo!.name)}
-                  key={combo.id}
+                  onClick={() => handleComboToggle(comboItem.combo!.name)}
+                  key={comboItem.combo.id}
                 >
-                  {combo.name}
+                  {comboItem.combo.name}
                 </Button>
               ) : (
                 <Button
                   outline
-                  onClick={() => handleComboToggle(combo!.name)}
-                  key={combo.id}
+                  onClick={() => handleComboToggle(comboItem.combo!.name)}
+                  key={comboItem.combo.id}
                 >
-                  {combo.name}
+                  {comboItem.combo.name}
                 </Button>
               )}
             </>

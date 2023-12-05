@@ -13,19 +13,15 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import ComboService from "../service/ComboService";
 
 interface ComboContextValue {
-  id: string;
-  name: string;
-  image: string;
-  price: number;
-  cost: number;
-  products: {
-    id: number;
+  combo: {
+    id: string;
     name: string;
     image: string;
     price: number;
-    idBrand: number;
-    idCategory: number;
-  };
+    cost: number;
+    discount: number;
+  },
+  detail: []
 }
 
 const ComboContext = createContext<ComboContextValue[] | undefined>(undefined);
@@ -44,19 +40,15 @@ export const ComboProvider: React.FC<{ children: ReactNode }> = ({
   const MySwal = withReactContent(Swal);
   const [combos, setCombos] = useState<
     {
-      id: string;
-      name: string;
-      image: string;
-      price: number;
-      cost: number;
-      products: {
-        id: number;
+      combo: {
+        id: string;
         name: string;
         image: string;
         price: number;
-        idBrand: number;
-        idCategory: number;
-      };
+        cost: number;
+        discount: number;
+      },
+      detail: []
     }[]
   >([]);
 

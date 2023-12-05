@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -14,6 +14,7 @@ import { faHouse, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useBrand } from "../../../Context/BrandContext";
 import { useCategory } from "../../../Context/CategoryContext";
 import { useProduct } from "../../../Context/ProductContext";
+import ProductService from "../../../service/ProductService";
 import { useCombo } from "../../../Context/ComboContext";
 
 import ProductComboComponent from "../../../components/ProductComboCom/ProductComboComponent";
@@ -27,11 +28,8 @@ const cx = classNames.bind(styles);
 
 const Combo: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
-  const comboChecked = localStorage.getItem("combo") || [];
-  console.log(comboChecked.length);
 
   const [open, setOpen] = useState(false);
-  const handleCloseAddForm = () => setOpen(false);
   const handleOpenAddForm = () => {
     const swalContainer = document.querySelector(
       ".swal2-container"
@@ -39,15 +37,13 @@ const Combo: React.FC<any> = () => {
     if (swalContainer) {
       swalContainer.style.zIndex = "99999";
     }
-    if (comboChecked.length !== 0) {
-      setOpen(true);
-    }
+    setOpen(true);
   };
 
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [cost, setCost] = useState("");
-  const [price, setPrice] = useState("");
+  const [, setCost] = useState("");
+  const [, setPrice] = useState("");
 
   const brands = useBrand();
   const categories = useCategory();
@@ -83,6 +79,55 @@ const Combo: React.FC<any> = () => {
     setCombo0(!combo0);
     setComboChanged(false);
   };
+  const [comboChosens, setComboChosens] = useState<
+    {
+      id: string;
+      name: string;
+      description: string;
+      specification: { id: number; specification: string }[];
+      imageProducts: { id: number; image: string }[];
+      price: number;
+      quantity: number;
+      brand: { id: number; name: string; image: string };
+      event: null;
+      status: boolean;
+      category: { id: number; name: string; image: string; status: boolean };
+      idBrand: number;
+      idCategory: number;
+      idEvent: number;
+    }[]
+  >([]);
+  const comboProductChosen = JSON.parse(localStorage.getItem("combo") || "[]");
+  useEffect(() => {
+    const fetchProductDetails = async (productId: string) => {
+      try {
+        const res = await ProductService.GetProduct(productId);
+        return res.data;
+      } catch (error) {
+        return null;
+      }
+    };
+
+    const fetchAllProductDetails = async () => {
+      const productDetails = await Promise.all(
+        comboProductChosen.map(async (productId: string) => {
+          const productDetail = await fetchProductDetails(productId);
+          if (productDetail) {
+            return {
+              ...productDetail,
+            };
+          }
+          return null;
+        })
+      );
+
+      setComboChosens(
+        productDetails.filter((seenProduct) => seenProduct !== null)
+      );
+    };
+  }, [comboProductChosen]);
+
+  const handleCloseAddForm = () => setOpen(false);
 
   const linkRef = React.useRef<HTMLAnchorElement>(null);
 
@@ -227,6 +272,19 @@ const Combo: React.FC<any> = () => {
             </Button>
             <Backdrop sx={{ color: "#fff", zIndex: 9 }} open={open}>
               <div className={cx("add-form")}>
+                <div className={cx("product-chosen")}>
+                  <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>
+                    SẢN PHẨM ĐƯỢC CHỌN
+                  </p>
+                  <div className={cx("product")}>
+                    {comboChosens.map((comboChosen) => (
+                      <ProductComboComponent
+                        key={comboChosen.id}
+                        data={comboChosen}
+                      />
+                    ))}
+                  </div>
+                </div>
                 <form
                   action="/upload"
                   method="post"
@@ -235,7 +293,7 @@ const Combo: React.FC<any> = () => {
                 >
                   <div className={cx("title")}>
                     <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>
-                      THÊM COMBO SẢN PHẨM
+                      THÔNG TIN COMBO SẢN PHẨM
                     </p>
                     <button
                       type="button"
@@ -341,23 +399,23 @@ const Combo: React.FC<any> = () => {
               Tất cả combo sản phẩm
             </Button>
           )}
-          {combos.map((combo) => (
+          {combos.map((comboItem) => (
             <>
-              {selectedCategoryIds.includes(combo.name) === true ? (
+              {selectedComboIds.includes(comboItem.combo.name) === true ? (
                 <Button
                   primary
-                  onClick={() => handleComboToggle(combo!.name)}
-                  key={combo.id}
+                  onClick={() => handleComboToggle(comboItem.combo!.name)}
+                  key={comboItem.combo.id}
                 >
-                  {combo.name}
+                  {comboItem.combo.name}
                 </Button>
               ) : (
                 <Button
                   outline
-                  onClick={() => handleComboToggle(combo!.name)}
-                  key={combo.id}
+                  onClick={() => handleComboToggle(comboItem.combo!.name)}
+                  key={comboItem.combo.id}
                 >
-                  {combo.name}
+                  {comboItem.combo.name}
                 </Button>
               )}
             </>
