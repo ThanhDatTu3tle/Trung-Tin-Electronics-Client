@@ -52,9 +52,8 @@ const LoginAdmin: React.FC<any> = () => {
   };
 
   useEffect(() => {
-    // Kiểm tra xem token có hiệu lực không
     if (isTokenValid(token)) {
-      navigate('/admin'); // Điều hướng đến trang admin nếu token hợp lệ
+      navigate('/admin');
     }
   }, [navigate, token]);
 
@@ -62,7 +61,6 @@ const LoginAdmin: React.FC<any> = () => {
     if (res.username && res.password) {
       try {
         const { data } = await Login(res.username, res.password);
-        // console.log('Data from server:', data); // In dữ liệu từ server để kiểm tra cấu trúc
         setToken(data.token);
         setUsername("");
         setPassword("");
@@ -88,7 +86,6 @@ const LoginAdmin: React.FC<any> = () => {
         console.error('Error from server:', error); // Log lỗi từ server
       }
     }
-    // Xử lý khi không có username hoặc password
   };
 
   return (
@@ -100,7 +97,7 @@ const LoginAdmin: React.FC<any> = () => {
             src={logo}
             alt='Logo'
           />
-          <h3>Công ty Trung Tín</h3>
+          <h4>Công ty Trung Tín</h4>
         </div>
         <h4 style={{ color: '#4f7496' }}>Đăng nhập</h4>
         <div className={cx('inputs')}>

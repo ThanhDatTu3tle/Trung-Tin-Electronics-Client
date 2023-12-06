@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -97,21 +97,24 @@ const Combo: React.FC<any> = () => {
       idEvent: number;
     }[]
   >([]);
-  const comboProductChosen = JSON.parse(localStorage.getItem("combo") || "[]");
-  useEffect(() => {
-    const fetchProductDetails = async (productId: string) => {
-      try {
-        const res = await ProductService.GetProduct(productId);
-        return res.data;
-      } catch (error) {
-        return null;
-      }
-    };
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
 
+  useEffect(() => {
+    const comboProductChosen = JSON.parse(localStorage.getItem("combo") || "[]");
+    
     const fetchAllProductDetails = async () => {
+      const fetchProductDetails = async (productId: string) => {
+        try {
+          const res = await ProductService.GetProduct(productId);
+          return res.data;
+        } catch (error) {
+          return null;
+        }
+      };
       const productDetails = await Promise.all(
         comboProductChosen.map(async (productId: string) => {
           const productDetail = await fetchProductDetails(productId);
+          console.log(productDetail);
           if (productDetail) {
             return {
               ...productDetail,
@@ -121,11 +124,23 @@ const Combo: React.FC<any> = () => {
         })
       );
 
-      setComboChosens(
-        productDetails.filter((seenProduct) => seenProduct !== null)
+      const updatedComboChosens = productDetails.filter(
+        (chosenProduct) => chosenProduct !== null
       );
+
+      setComboChosens(updatedComboChosens);
+
+      // console.log(updatedComboChosens);
     };
-  }, [comboProductChosen]);
+    // fetchAllProductDetails();
+
+    if (isLoadingProducts === true) {
+      fetchAllProductDetails();
+      setIsLoadingProducts(false);
+    }
+  }, [isLoadingProducts]);
+
+  console.log(comboChosens);
 
   const handleCloseAddForm = () => setOpen(false);
 
