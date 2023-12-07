@@ -41,7 +41,9 @@ const Product: React.FC<any> = () => {
     setBrandChanged(false);
   };
 
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<
+    { id: number; name: string; status: boolean }[]
+  >([]);
   const [category0, setCategory0] = useState(true);
   const [, setCategoryChanged] = useState(false);
   const handleClickCategory0 = () => {
@@ -61,7 +63,7 @@ const Product: React.FC<any> = () => {
     setCategory0(false);
   };
 
-  const handleCategoryToggle = (categoryName: string) => {
+  const handleCategoryToggle = (categoryName: any) => {
     if (selectedCategoryIds.includes(categoryName)) {
       setSelectedCategoryIds(
         selectedCategoryIds.filter((name) => name !== categoryName)
@@ -122,13 +124,13 @@ const Product: React.FC<any> = () => {
           ) : (
             <>
               {selectedCategoryIds.map((dataa) => (
-                <div className={cx("machine")} key={dataa}>
+                <div className={cx("machine")} key={dataa.id}>
                   <div className={cx("title-wrapper")}>
-                    <div className={cx("title")}>{dataa}</div>
+                    <div className={cx("title")}>{dataa.name}</div>
                   </div>
                   <div className={cx("product")}>
                     {filteredProductsResult
-                      .filter((data) => data.category.name === dataa)
+                      .filter((data) => data.category.name === dataa.name)
                       .map((data) => (
                         <ProductAdminComponent key={data.id} data={data} />
                       ))}
@@ -153,7 +155,7 @@ const Product: React.FC<any> = () => {
           )}
           {categories.map((category) => (
             <>
-              {selectedCategoryIds.includes(category.name) === true ? (
+              {selectedCategoryIds.includes(category) === true ? (
                 <Button
                   primary
                   onClick={() => handleCategoryToggle(category!.name)}

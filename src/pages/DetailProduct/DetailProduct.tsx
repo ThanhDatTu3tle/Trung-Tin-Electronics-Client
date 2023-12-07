@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import classNames from "classnames/bind";
@@ -14,9 +14,10 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import styles from "./DetailProduct.module.scss";
 import Button from "../../components/Button";
 import Image from "../../components/Image";
+import CartButton from "../../components/CartButton";
+
 import ProductService from "../../service/ProductService";
 import { useProduct } from "../../Context/ProductContext";
-import CartButton from "../../components/CartButton";
 import { useCart } from "../../Context/CartContext";
 
 const faStarIcon = faStar as IconProp;
@@ -30,7 +31,9 @@ function updateScreenSize() {
 updateScreenSize();
 window.addEventListener("resize", updateScreenSize);
 
-const ProductComponent = React.lazy(() => import('../../components/ProductCom'));
+const ProductComponent = React.lazy(
+  () => import("../../components/ProductCom")
+);
 
 const DetailProduct: React.FC = () => {
   const MySwal = withReactContent(Swal);
@@ -125,10 +128,13 @@ const DetailProduct: React.FC = () => {
         })
       );
 
-      setSeenProducts(
-        productDetails.filter((seenProduct) => seenProduct !== null)
+      const updateSeenProducts = productDetails.filter(
+        (seenProduct) => seenProduct !== null
       );
+
+      setSeenProducts(updateSeenProducts);
       setIsLoadingProducts(false);
+      console.log(updateSeenProducts);
     };
 
     if (isLoadingProducts) {
@@ -191,10 +197,8 @@ const DetailProduct: React.FC = () => {
       <div className={cx("title-detail")}>
         <ul className={cx("list-title")}>
           <li>
-            <Link to={`/`}>
-              Trang chủ
-            </Link>
-             &nbsp;&nbsp;»&nbsp;&nbsp;
+            <Link to={`/`}>Trang chủ</Link>
+            &nbsp;&nbsp;»&nbsp;&nbsp;
           </li>
           <li>
             <Link to={`/detailCategory/${product.category.name}`}>
@@ -268,13 +272,21 @@ const DetailProduct: React.FC = () => {
           <div className={cx("quantity")}>
             Số lượng:
             <div className={cx("count")}>
-              <Button primary small onClick={() => handleMinus(product!.quantity)}>
+              <Button
+                primary
+                small
+                onClick={() => handleMinus(product!.quantity)}
+              >
                 -
               </Button>
               <Button outline large>
                 {count}
               </Button>
-              <Button primary small onClick={() => handleAdd(product!.quantity)}>
+              <Button
+                primary
+                small
+                onClick={() => handleAdd(product!.quantity)}
+              >
                 +
               </Button>
             </div>

@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
@@ -14,7 +13,6 @@ import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import styles from "./CartButton.module.scss";
 import Button from "../Button";
 import { useCart } from "../../Context/CartContext";
-import config from "../../config";
 
 const faCartShoppingIcon = faCartShopping as IconProp;
 

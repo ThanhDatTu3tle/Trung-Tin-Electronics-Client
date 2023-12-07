@@ -41,8 +41,8 @@ const Category: React.FC<any> = () => {
     setOpen(true);
   };
 
-  const [name, setName] = React.useState("");
-  const [imageUrl, setImageUrl] = React.useState("");
+  const [name, setName] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
 
   const linkRef = React.useRef<HTMLAnchorElement>(null);
 
