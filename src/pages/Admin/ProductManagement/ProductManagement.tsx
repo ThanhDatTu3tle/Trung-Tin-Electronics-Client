@@ -333,8 +333,8 @@ const ProductManagement: React.FC<any> = () => {
         },
         timer: 2000,
       });
-      setOpen(false);
-      window.location.reload();
+      // setOpen(false);
+      // window.location.reload();
     } catch (error) {
       MySwal.fire({
         title: "Đã có lỗi xảy ra!",

@@ -44,7 +44,6 @@ const Combo: React.FC<any> = () => {
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [price, setPrice] = useState(0);
-  const [discount, setDiscount] = useState(0);
   const [comboChosens, setComboChosens] = useState<
   {
     id: string;
@@ -201,10 +200,6 @@ const Combo: React.FC<any> = () => {
     const priceValue = Number(event.target.value);
     setPrice(priceValue);
   };
-  const handleDiscountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const discountValue = Number(event.target.value);
-    setDiscount(discountValue);
-  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -213,7 +208,7 @@ const Combo: React.FC<any> = () => {
     formData.append("name", name);
     formData.append("image", imageUrl);
     formData.append("price", price.toString());
-    formData.append("discount", discount.toString());
+    formData.append("discount", '0');
     comboChosens.forEach((comboChosen, index) => {
       formData.append(`product[${index}].idProduct`, comboChosen.id);
       formData.append(`product[${index}].quantity`, comboChosen.quantity.toString());
@@ -379,14 +374,6 @@ const Combo: React.FC<any> = () => {
                       placeholder="Giá combo sản phẩm mới"
                       className={cx("input-name")}
                       onChange={handlePriceChange}
-                    />
-                    <br />
-                    <label>Discount</label>
-                    <input
-                      type="number"
-                      placeholder="Discount"
-                      className={cx("input-name")}
-                      onChange={handleDiscountChange}
                     />
                   </div>
                   <div className={cx("show-image")}>
