@@ -61,7 +61,9 @@ const Combo: React.FC<any> = () => {
     idCategory: number;
     idEvent: number;
   }[]
->([]);
+  >([]);
+  const [comboChosenIds, setComboChosenIds] = useState<string[]>([]);
+  const [comboChosenQuantitys, setComboChosenQuantitys] = useState<number[]>([]);
 
   const brands = useBrand();
   const categories = useCategory();
@@ -130,6 +132,7 @@ const Combo: React.FC<any> = () => {
       );
 
       setComboChosens(updatedComboChosens);
+      // setComboChosenIds(comboChosens.id);
       setIsLoadingProducts(false);
       setSumPriceProductsChosen(updatedComboChosens.reduce((accumulator, currentProduct) => {
         return accumulator + currentProduct.price;
@@ -211,8 +214,12 @@ const Combo: React.FC<any> = () => {
     formData.append("discount", '0');
     comboChosens.forEach((comboChosen, index) => {
       formData.append(`product[${index}].idProduct`, comboChosen.id);
-      formData.append(`product[${index}].quantity`, comboChosen.quantity.toString());
+      // formData.append(`product[${index}].quantity`, comboChosen.quantity.toString());
     });
+    // comboChosens.forEach((comboChosen, index) => {
+    //   // formData.append(`product[${index}].idProduct`, comboChosen.id);
+    //   formData.append(`product[${index}].quantity`, comboChosen.quantity.toString());
+    // });
 
     try {
       await axiosClient.post("combo/create", formData);
