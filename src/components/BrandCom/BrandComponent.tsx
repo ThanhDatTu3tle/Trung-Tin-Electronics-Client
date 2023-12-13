@@ -32,53 +32,44 @@ const BrandComponent: React.FC<any> = ({ data }) => {
     setOpen(true);
   };
   const handleDeleteForm = () => {
-    // console.log("Cook");
+    try {
+      axiosClient.delete(`brand/delete/${idBrand}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      MySwal.fire({
+        title: "Xóa thành công!",
+        icon: "success",
+        didOpen: () => {
+          MySwal.showLoading();
+        },
+        timer: 2000,
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      MySwal.fire({
+        title: "Đã có lỗi xảy ra!",
+        icon: "error",
+        didOpen: () => {
+          MySwal.showLoading();
+        },
+        timer: 2000,
+      });
+    }
   }
 
   const [name, setName] = React.useState('');
-  const [imageUrl, setImageUrl] = React.useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
-  const linkRef = React.useRef<HTMLAnchorElement>(null);
-
-  const upload = (file: File) => {
-    if (!file || !file.type.match(/image.*/)) return;
-  
-    MySwal.fire({
-      title: 'Đang tải ảnh lên...',
-      allowOutsideClick: false,
-      didOpen: () => {
-        const popup = MySwal.getPopup();
-        if (popup) {
-          popup.style.zIndex = "9999"; 
-        }
-        MySwal.showLoading();
-      },
-      timer: 2000,
-    });
-  
-    const fd = new FormData();
-    fd.append('image', file);
-  
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://api.imgur.com/3/image.json');
-    xhr.onload = function () {
-      const link = JSON.parse(xhr.responseText).data.link;
-      if (linkRef.current) {
-        linkRef.current.href = link;
-        linkRef.current.innerHTML = link;
-      }
-  
-      MySwal.close();
-      setImageUrl(link);
-    };
-    xhr.setRequestHeader('Authorization', 'Client-ID 983c8532c49a20e');
-    xhr.send(fd);
-  };
-  
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      upload(file);
+    const files = event.target.files;
+  
+    if (files && files.length > 0) {
+      const file = files[0]; 
+      setImageFile(file);
     }
   };
 
@@ -90,33 +81,34 @@ const BrandComponent: React.FC<any> = ({ data }) => {
     event.preventDefault();
   
     const formData = new FormData();
-    formData.append('id', idBrand);
-    formData.append('name', name);
-    formData.append('image', imageUrl);
+    formData.append("name", name);
+    if (imageFile) {
+      formData.append('image', imageFile);
+    }
   
     try {
-      axiosClient.put(`brand/edit/${idBrand}`, formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      // Gửi dữ liệu lên server
+      await axiosClient.post("brand/create", formData);
+  
       MySwal.fire({
-        title: "Chỉnh sửa thành công!",
+        title: "Thêm thành công!",
         icon: "success",
         didOpen: () => {
           MySwal.showLoading();
         },
-        timer: 2000,
+        timer: 1500,
       });
       setOpen(false);
+      window.location.reload();
     } catch (error) {
+      console.error("Error uploading brand:", error);
       MySwal.fire({
         title: "Đã có lỗi xảy ra!",
         icon: "error",
         didOpen: () => {
           MySwal.showLoading();
         },
-        timer: 2000,
+        timer: 1500,
       });
     }
   };
@@ -175,7 +167,7 @@ const BrandComponent: React.FC<any> = ({ data }) => {
                         />
                       </div>
                       <div className={cx('show-image')}>
-                        <Image src={imageUrl} loading={React.lazy} />
+                        <Image src={imageFile} loading={React.lazy} />
                       </div>
                       <Button small primary>Xác nhận</Button>
                     </form>   

@@ -42,48 +42,14 @@ const Brand: React.FC<any> = () => {
   };
 
   const [name, setName] = React.useState("");
-  const [imageUrl, setImageUrl] = React.useState("");
-
-  const linkRef = React.useRef<HTMLAnchorElement>(null);
-
-  const upload = (file: File) => {
-    if (!file || !file.type.match(/image.*/)) return;
-
-    MySwal.fire({
-      title: "Đang tải lên...",
-      allowOutsideClick: false,
-      didOpen: () => {
-        const popup = MySwal.getPopup();
-        if (popup) {
-          popup.style.zIndex = "9999";
-        }
-        MySwal.showLoading();
-      },
-      timer: 2000,
-    });
-
-    const fd = new FormData();
-    fd.append("image", file);
-
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://api.imgur.com/3/image.json");
-    xhr.onload = function () {
-      const link = JSON.parse(xhr.responseText).data.link;
-      if (linkRef.current) {
-        linkRef.current.href = link;
-        linkRef.current.innerHTML = link;
-      }
-      MySwal.close();
-      setImageUrl(link);
-    };
-    xhr.setRequestHeader("Authorization", "Client-ID 983c8532c49a20e");
-    xhr.send(fd);
-  };
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      upload(file);
+    const files = event.target.files;
+  
+    if (files && files.length > 0) {
+      const file = files[0]; 
+      setImageFile(file);
     }
   };
 
@@ -93,13 +59,17 @@ const Brand: React.FC<any> = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+  
     const formData = new FormData();
     formData.append("name", name);
-    formData.append("image", imageUrl);
-
+    if (imageFile) {
+      formData.append('image', imageFile);
+    }
+  
     try {
+      // Gửi dữ liệu lên server
       await axiosClient.post("brand/create", formData);
+  
       MySwal.fire({
         title: "Thêm thành công!",
         icon: "success",
@@ -111,6 +81,7 @@ const Brand: React.FC<any> = () => {
       setOpen(false);
       window.location.reload();
     } catch (error) {
+      console.error("Error uploading brand:", error);
       MySwal.fire({
         title: "Đã có lỗi xảy ra!",
         icon: "error",
@@ -189,7 +160,7 @@ const Brand: React.FC<any> = () => {
                     />
                   </div>
                   <div className={cx("show-image")}>
-                    <Image src={imageUrl} />
+                    <Image src={imageFile} />
                   </div>
                   <Button small primary>
                     Xác nhận
