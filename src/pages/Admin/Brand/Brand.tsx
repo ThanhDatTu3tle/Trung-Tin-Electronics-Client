@@ -68,6 +68,7 @@ const Brand: React.FC<any> = () => {
   
     try {
       // Gửi dữ liệu lên server
+      console.log(imageFile)
       await axiosClient.post("brand/create", formData);
   
       MySwal.fire({
@@ -77,7 +78,7 @@ const Brand: React.FC<any> = () => {
           MySwal.showLoading();
         },
         timer: 1500,
-      });
+      });      
       setOpen(false);
       window.location.reload();
     } catch (error) {

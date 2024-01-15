@@ -221,8 +221,14 @@ const Combo: React.FC<any> = () => {
     //   formData.append(`product[${index}].quantity`, comboChosen.quantity.toString());
     // });
 
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
     try {
-      await axiosClient.post("combo/create", formData);
+      await axiosClient.post("combo/create", formData, config);
       MySwal.fire({
         title: "Thêm thành công!",
         icon: "success",

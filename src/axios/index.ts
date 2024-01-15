@@ -1,9 +1,9 @@
 import axios from 'axios';
 import queryString from 'query-string';
 
-const baseUrl = `${process.env.REACT_APP_API_ENDPOINT}`;
-console.log(baseUrl);
-// const baseUrl = `https://ec0b-27-3-233-71.ngrok-free.app/api/v1/`;
+// const baseUrl = `${process.env.REACT_APP_API_ENDPOINT}`;
+// console.log(baseUrl);
+const baseUrl = `https://cf8f-27-3-240-171.ngrok-free.app/api/v1/`;
 const getToken = () => localStorage.getItem('token');
 
 const axiosClient = axios.create({

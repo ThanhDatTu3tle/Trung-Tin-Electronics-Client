@@ -87,29 +87,36 @@ const BrandComponent: React.FC<any> = ({ data }) => {
     }
   
     try {
-      // Gửi dữ liệu lên server
-      await axiosClient.post("brand/create", formData);
-  
+      const response = await axiosClient.put(
+        `category/edit/${idBrand}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       MySwal.fire({
-        title: "Thêm thành công!",
+        title: "Chỉnh sửa thành công!",
         icon: "success",
         didOpen: () => {
           MySwal.showLoading();
         },
-        timer: 1500,
+        timer: 2000,
       });
       setOpen(false);
       window.location.reload();
+      console.log("Response from server:", response);
     } catch (error) {
-      console.error("Error uploading brand:", error);
       MySwal.fire({
         title: "Đã có lỗi xảy ra!",
         icon: "error",
         didOpen: () => {
           MySwal.showLoading();
         },
-        timer: 1500,
+        timer: 2000,
       });
+      console.error("Error:", error);
     }
   };
 
