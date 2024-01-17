@@ -127,6 +127,8 @@
 }
 
 .menu-bar {
+    position: sticky;
+    top: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -136,6 +138,7 @@
     box-shadow: 0 5px 20px rgb(0 0 0 / 20%);
 
     .menu {
+
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -144,6 +147,7 @@
     }
 
     .menu-hamburger {
+
         display: flex;
         align-items: center;
         justify-content: center;

@@ -23,6 +23,11 @@
     background-color: #fff;
     box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
 
+    .image {
+        height: 62%;
+        object-fit: cover;
+    }
+
     .name {
         font-size: 1.1rem;
         font-weight: 700;
@@ -130,6 +135,11 @@
         padding: 0.8rem;
         background-color: #fff;
         box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
+
+        .image {
+            height: 44%;
+            object-fit: cover;
+        }
 
         .name {
             font-size: 1rem;
@@ -239,6 +249,11 @@
         background-color: #fff;
         box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
 
+        .image {
+            height: 55%;
+            object-fit: cover;
+        }
+
         .name {
             font-size: 0.9rem;
         }
@@ -344,6 +359,11 @@
         position: relative;
         background-color: #fff;
         box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
+
+        .image {
+            height: 45%;
+            object-fit: cover;
+        }
 
         .name {
             font-size: 0.9rem;
@@ -452,6 +472,11 @@
         background-color: #fff;
         box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
 
+        .image {
+            height: 40%;
+            object-fit: cover;
+        }
+
         .name {
             font-size: 0.9rem;
         }
@@ -558,6 +583,11 @@
         position: relative;
         background-color: #fff;
         box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
+        
+        .image {
+            height: 47%;
+            object-fit: cover;
+        }
 
         .name {
             font-size: 0.9 rem;

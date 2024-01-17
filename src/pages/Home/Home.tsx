@@ -31,7 +31,7 @@ const ProductComHome = React.lazy(
 
 const Home: React.FC<any> = () => {
   // const MySwal = withReactContent(Swal);
-  const categories = useCategory(); 
+  const categories = useCategory();
   const products = useProduct();
 
   const settings = {

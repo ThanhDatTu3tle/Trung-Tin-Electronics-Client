@@ -134,7 +134,6 @@ const DetailProduct: React.FC = () => {
 
       setSeenProducts(updateSeenProducts);
       setIsLoadingProducts(false);
-      console.log(updateSeenProducts);
     };
 
     if (isLoadingProducts) {
@@ -324,21 +323,25 @@ const DetailProduct: React.FC = () => {
         {screenWidth <= 899 && screenWidth >= 600 ? (
           <>
             <div className={cx("product")}>
-              {seenProducts.map((data) => (
-                <React.Suspense fallback="" key={data.id}>
-                  <ProductComponent data={data} />
-                </React.Suspense>
-              ))}
+              {seenProducts
+                .filter((seenProduct) => seenProduct.status === true)
+                .map((data) => (
+                  <React.Suspense fallback="" key={data.id}>
+                    <ProductComponent data={data} />
+                  </React.Suspense>
+                ))}
             </div>
           </>
         ) : (
           <>
             <div className={cx("product")}>
-              {seenProducts.map((data) => (
-                <React.Suspense fallback="" key={data.id}>
-                  <ProductComponent data={data} />
-                </React.Suspense>
-              ))}
+            {seenProducts
+                .filter((seenProduct) => seenProduct.status === true)
+                .map((data) => (
+                  <React.Suspense fallback="" key={data.id}>
+                    <ProductComponent data={data} />
+                  </React.Suspense>
+                ))}
             </div>
           </>
         )}
@@ -357,7 +360,9 @@ const DetailProduct: React.FC = () => {
         {screenWidth <= 899 && screenWidth >= 600 ? (
           <>
             <div className={cx("product")}>
-              {relatedProducts.map((data) => (
+              {relatedProducts
+              .filter((relatedProduct) => relatedProduct.status === true)
+              .map((data) => (
                 <React.Suspense fallback="" key={data.id}>
                   <ProductComponent data={data} />
                 </React.Suspense>
@@ -367,7 +372,9 @@ const DetailProduct: React.FC = () => {
         ) : (
           <>
             <div className={cx("product")}>
-              {relatedProducts.map((data) => (
+            {relatedProducts
+              .filter((relatedProduct) => relatedProduct.status === true)
+              .map((data) => (
                 <React.Suspense fallback="" key={data.id}>
                   <ProductComponent data={data} />
                 </React.Suspense>

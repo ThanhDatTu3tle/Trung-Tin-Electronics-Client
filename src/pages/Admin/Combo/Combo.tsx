@@ -19,6 +19,7 @@ import { useCombo } from "../../../Context/ComboContext";
 
 import ProductCombo from "../../../components/ProductCombo";
 import ProductComboComponent from "../../../components/ProductComboCom/ProductComboComponent";
+import ComboComponent from "../../../components/ComboCom/ComboComponent";
 import Clock from "../../../components/Clock";
 import Button from "../../../components/Button";
 import Image from "../../../components/Image";
@@ -62,8 +63,8 @@ const Combo: React.FC<any> = () => {
     idEvent: number;
   }[]
   >([]);
-  const [comboChosenIds, setComboChosenIds] = useState<string[]>([]);
-  const [comboChosenQuantitys, setComboChosenQuantitys] = useState<number[]>([]);
+  // const [comboChosenIds, setComboChosenIds] = useState<string[]>([]);
+  // const [comboChosenQuantitys, setComboChosenQuantitys] = useState<number[]>([]);
 
   const brands = useBrand();
   const categories = useCategory();
@@ -90,14 +91,6 @@ const Combo: React.FC<any> = () => {
   const handleClickCategory0 = () => {
     setCategory0(!category0);
     setCategoryChanged(false);
-  };
-
-  const [selectedComboIds, setSelectedComboIds] = useState<string[]>([]);
-  const [combo0, setCombo0] = useState(true);
-  const [, setComboChanged] = useState(false);
-  const handleClickCombo0 = () => {
-    setCombo0(!combo0);
-    setComboChanged(false);
   };
 
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
@@ -214,12 +207,7 @@ const Combo: React.FC<any> = () => {
     formData.append("discount", '0');
     comboChosens.forEach((comboChosen, index) => {
       formData.append(`product[${index}].idProduct`, comboChosen.id);
-      // formData.append(`product[${index}].quantity`, comboChosen.quantity.toString());
     });
-    // comboChosens.forEach((comboChosen, index) => {
-    //   // formData.append(`product[${index}].idProduct`, comboChosen.id);
-    //   formData.append(`product[${index}].quantity`, comboChosen.quantity.toString());
-    // });
 
     const config = {
       headers: {
@@ -273,17 +261,6 @@ const Combo: React.FC<any> = () => {
     } else {
       setSelectedCategoryIds([...selectedCategoryIds, categoryName]);
       setCategory0(!true);
-    }
-  };
-
-  const handleComboToggle = (comboName: string) => {
-    if (selectedComboIds.includes(comboName)) {
-      setSelectedComboIds(
-        selectedComboIds.filter((name) => name !== comboName)
-      );
-    } else {
-      setSelectedComboIds([...selectedComboIds, comboName]);
-      setCombo0(!true);
     }
   };
 
@@ -372,7 +349,9 @@ const Combo: React.FC<any> = () => {
                       name="image"
                       onChange={handleImageUpload}
                     />
-                    <br />
+                    <div className={cx("show-image")}>
+                      <Image src={imageUrl} />
+                    </div>
                     <label>Tổng giá gốc sản phẩm:</label>
                     <input
                       type="number"
@@ -388,9 +367,6 @@ const Combo: React.FC<any> = () => {
                       className={cx("input-name")}
                       onChange={handlePriceChange}
                     />
-                  </div>
-                  <div className={cx("show-image")}>
-                    <Image src={imageUrl} />
                   </div>
                   <Button primary small>
                     Xác nhận
@@ -408,6 +384,14 @@ const Combo: React.FC<any> = () => {
       </div>
       <div className={cx("main-container")}>
         <div className={cx("products")}>
+          <div className={cx("machine-combo")}>
+            <div className={cx("title-wrapper")}>
+              <div className={cx("title")}>Các combo sản phẩm</div>
+              {combos.map((data) => (
+                <ComboComponent data={data.combo} />
+              ))}
+            </div>
+          </div>
           {category0 === true ? (
             <>
               {categories.map((dataa) => (
@@ -417,7 +401,7 @@ const Combo: React.FC<any> = () => {
                   </div>
                   <div className={cx("product")}>
                     {filteredProductsResult
-                      .filter((data) => data.category.name === dataa.name)
+                      .filter((data) => data.category.name === dataa.name && data.status === true)
                       .map((data) => (
                         <ProductComboComponent key={data.id} data={data} />
                       ))}
@@ -434,7 +418,7 @@ const Combo: React.FC<any> = () => {
                   </div>
                   <div className={cx("product")}>
                     {filteredProductsResult
-                      .filter((data) => data.category.name === dataa)
+                      .filter((data) => data.category.name === dataa && data.status === true)
                       .map((data) => (
                         <ProductComboComponent key={data.id} data={data} />
                       ))}
@@ -447,37 +431,6 @@ const Combo: React.FC<any> = () => {
 
         <div className={cx("filter")}>
           <h3>Bộ lọc</h3>
-          <h4>Lọc theo combo sản phẩm</h4>
-          {combo0 === true ? (
-            <Button primary onClick={handleClickCombo0}>
-              Tất cả combo sản phẩm
-            </Button>
-          ) : (
-            <Button outline onClick={handleClickCombo0}>
-              Tất cả combo sản phẩm
-            </Button>
-          )}
-          {combos.map((comboItem) => (
-            <>
-              {selectedComboIds.includes(comboItem.combo.name) === true ? (
-                <Button
-                  primary
-                  onClick={() => handleComboToggle(comboItem.combo!.name)}
-                  key={comboItem.combo.id}
-                >
-                  {comboItem.combo.name}
-                </Button>
-              ) : (
-                <Button
-                  outline
-                  onClick={() => handleComboToggle(comboItem.combo!.name)}
-                  key={comboItem.combo.id}
-                >
-                  {comboItem.combo.name}
-                </Button>
-              )}
-            </>
-          ))}
           <h4>Lọc theo danh mục</h4>
           {category0 === true ? (
             <Button primary onClick={handleClickCategory0}>

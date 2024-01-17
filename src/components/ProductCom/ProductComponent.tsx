@@ -45,14 +45,16 @@ const ProductComponent: React.FC<any> = ({ data }) => {
   return (
     <div className={cx(`wrapper`)} onClick={handleClick}>
       <div className={cx("inner")}>
-        {data.imageProducts && data.imageProducts.length > 0 && (
-          <LazyLoadImage
-            src={data.imageProducts[0].image}
-            effect="blur"
-            width="100%"
-            height="auto"
-          />
-        )}
+        <div className={cx("image")}>
+          {data.imageProducts && data.imageProducts.length > 0 && (
+            <LazyLoadImage
+              src={data.imageProducts[0].image}
+              effect="blur"
+              width="100%"
+              height="100%"
+            />
+          )}
+        </div>
         <div className={cx("name")}>
           <p>
             {data.name} {data.id}

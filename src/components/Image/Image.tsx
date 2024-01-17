@@ -13,7 +13,7 @@ const Image: React.FC<any> = forwardRef(({
     href, 
     className, 
     to, 
-    loading,
+    // loading,
     ...props 
 }, ref) => {
 
@@ -24,7 +24,7 @@ const Image: React.FC<any> = forwardRef(({
   }
 
   const editImage = () => {
-    // console.log('Ngu')
+    // console.log('')
   }
 
   return (
@@ -35,7 +35,7 @@ const Image: React.FC<any> = forwardRef(({
       alt={alt} 
       href={href}
       to={to}
-      loading={loading}
+      // loading={loading}
       {...props} 
       onClick={editImage}
       onError={handleError} 
