@@ -14,8 +14,8 @@ import { faHouse, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useBrand } from "../../../Context/BrandContext";
 import { useCategory } from "../../../Context/CategoryContext";
 import { useProduct } from "../../../Context/ProductContext";
-import ProductService from "../../../service/ProductService";
 import { useCombo } from "../../../Context/ComboContext";
+import ProductService from "../../../service/ProductService";
 
 import ProductCombo from "../../../components/ProductCombo";
 import ProductComboComponent from "../../../components/ProductComboCom/ProductComboComponent";
@@ -203,6 +203,7 @@ const Combo: React.FC<any> = () => {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("image", imageUrl);
+    formData.append("cost", sumPriceProductsChosen.toString());
     formData.append("price", price.toString());
     formData.append("discount", '0');
     comboChosens.forEach((comboChosen, index) => {
@@ -388,7 +389,7 @@ const Combo: React.FC<any> = () => {
             <div className={cx("title-wrapper")}>
               <div className={cx("title")}>Các combo sản phẩm</div>
               {combos.map((data) => (
-                <ComboComponent data={data.combo} />
+                <ComboComponent data={data} />
               ))}
             </div>
           </div>

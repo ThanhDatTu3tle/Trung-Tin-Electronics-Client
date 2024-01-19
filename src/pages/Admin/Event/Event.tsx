@@ -17,6 +17,7 @@ import { useProduct } from "../../../Context/ProductContext";
 import { useCombo } from "../../../Context/ComboContext";
 
 import ProductComboComponent from "../../../components/ProductComboCom/ProductComboComponent";
+import ComboComponent from "../../../components/ComboCom/ComboComponent";
 import Clock from "../../../components/Clock";
 import Button from "../../../components/Button";
 import Image from "../../../components/Image";
@@ -74,14 +75,6 @@ const Event: React.FC<any> = () => {
   const handleClickCategory0 = () => {
     setCategory0(!category0);
     setCategoryChanged(false);
-  };
-
-  const [selectedComboIds, setSelectedComboIds] = useState<string[]>([]);
-  const [combo0, setCombo0] = useState(true);
-  const [, setComboChanged] = useState(false);
-  const handleClickCombo0 = () => {
-    setCombo0(!combo0);
-    setComboChanged(false);
   };
 
   const linkRef = React.useRef<HTMLAnchorElement>(null);
@@ -143,8 +136,14 @@ const Event: React.FC<any> = () => {
     formData.append("name", name);
     formData.append("image", imageUrl);
 
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
     try {
-      await axiosClient.post("combo/create", formData);
+      await axiosClient.post("combo/create", formData, config);
       MySwal.fire({
         title: "Thêm thành công!",
         icon: "success",
@@ -189,17 +188,6 @@ const Event: React.FC<any> = () => {
     } else {
       setSelectedCategoryIds([...selectedCategoryIds, categoryName]);
       setCategory0(!true);
-    }
-  };
-
-  const handleComboToggle = (comboName: string) => {
-    if (selectedComboIds.includes(comboName)) {
-      setSelectedComboIds(
-        selectedComboIds.filter((name) => name !== comboName)
-      );
-    } else {
-      setSelectedComboIds([...selectedComboIds, comboName]);
-      setCombo0(!true);
     }
   };
 
@@ -292,6 +280,14 @@ const Event: React.FC<any> = () => {
       </div>
       <div className={cx("main-container")}>
         <div className={cx("products")}>
+          <div className={cx("machine-combo")}>
+            <div className={cx("title-wrapper")}>
+              <div className={cx("title")}>Các sự kiện giảm giá</div>
+              {combos.map((data) => (
+                <ComboComponent data={data.combo} />
+              ))}
+            </div>
+          </div>
           {category0 === true ? (
             <>
               {categories.map((dataa) => (
@@ -331,37 +327,6 @@ const Event: React.FC<any> = () => {
 
         <div className={cx("filter")}>
           <h3>Bộ lọc</h3>
-          <h4>Lọc theo sự kiện giảm giá</h4>
-          {combo0 === true ? (
-            <Button primary onClick={handleClickCombo0}>
-              Tất cả sự kiện giảm giá
-            </Button>
-          ) : (
-            <Button outline onClick={handleClickCombo0}>
-              Tất cả sự kiện giảm giá
-            </Button>
-          )}
-          {combos.map((comboItem) => (
-            <>
-              {selectedComboIds.includes(comboItem.combo.name) === true ? (
-                <Button
-                  primary
-                  onClick={() => handleComboToggle(comboItem.combo!.name)}
-                  key={comboItem.combo.id}
-                >
-                  {comboItem.combo.name}
-                </Button>
-              ) : (
-                <Button
-                  outline
-                  onClick={() => handleComboToggle(comboItem.combo!.name)}
-                  key={comboItem.combo.id}
-                >
-                  {comboItem.combo.name}
-                </Button>
-              )}
-            </>
-          ))}
           <h4>Lọc theo danh mục</h4>
           {category0 === true ? (
             <Button primary onClick={handleClickCategory0}>

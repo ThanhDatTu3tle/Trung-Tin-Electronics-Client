@@ -1,56 +1,85 @@
 import * as React from "react";
-import { useState } from "react";
 import classNames from "classnames/bind";
-import Backdrop from "@mui/material/Backdrop";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 import styles from "./ComboComponent.module.scss";
 
+import ProductComboComponent from "../ProductComboCom/ProductComboComponent";
 import Image from "../Image";
+import Button from "../Button";
+import { axiosClient } from "../../axios";
 
 const cx = classNames.bind(styles);
 
 const ComboComponent: React.FC<any> = ({ data }) => {
-  const [open, setOpen] = useState(false);
-  const handleViewDetail = () => {
-    const swalContainer = document.querySelector(
-      ".swal2-container"
-    ) as HTMLElement;
-    if (swalContainer) {
-      swalContainer.style.zIndex = "99999";
-    }
-    setOpen(true);
-  };
+  const MySwal = withReactContent(Swal);
 
-  const handleCloseViewDetail = () => {
-    setOpen(false);
+  const handleConfirm = () => {
+
+  }
+
+  const handleDelete = () => {
+    try {
+      axiosClient.delete(`combo/delete/${data.combo.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      MySwal.fire({
+        title: "Xóa thành công!",
+        icon: "success",
+        didOpen: () => {
+          MySwal.showLoading();
+        },
+        timer: 2000,
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      MySwal.fire({
+        title: "Đã có lỗi xảy ra!",
+        icon: "error",
+        didOpen: () => {
+          MySwal.showLoading();
+        },
+        timer: 2000,
+      });
+    }
   }
 
   return (
-    <div className={cx("wrapper")} onClick={handleViewDetail}>
-      <Backdrop sx={{ color: "#fff", zIndex: 9 }} open={open}>
-        <div className={cx("detail-combo")}>
-          <div className={cx("title")}>
-            <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>
-              THÔNG TIN COMBO SẢN PHẨM
-            </p>
-            <button
-              type="button"
-              className={cx("close-btn")}
-              onClick={handleCloseViewDetail}
-            >
-              ×
-            </button>
-          </div>
-        </div>
-      </Backdrop>
+    <div className={cx("wrapper")}>
       <div className={cx("inner")}>
         <div className={cx("image")}>
-          <Image src={data.image} />
+          <Image src={data.combo.image} />
         </div>
         <div className={cx("content")}>
-          <div className={cx("name")}>{data.name}</div>
-          <div className={cx("price")}>
-            {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+          <div className={cx("name")}>{data.combo.name}</div>
+          <div className={cx("products-combo")}>
+            {data.detail.map((dataa: any) => (
+              <ProductComboComponent key={dataa.id} data={dataa.product} />
+            ))}
+          </div>
+          <div className={cx("costs")}>
+            <div className={cx("price")}>
+              <span>Tổng giá gốc combo: </span>
+              {data.combo.cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+            </div>
+            <div className={cx("price")}>
+              <span>Tổng giá hiện tại: </span>
+              {data.combo.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+            </div>
+          </div>
+          <div className={cx("btns")}>
+            <Button primary onClick={handleConfirm} style={{marginRight: '1rem'}}>
+              Áp dụng combo
+            </Button>
+            <Button outline onClick={handleDelete}>
+              Xóa combo
+            </Button>
           </div>
         </div>
       </div>
