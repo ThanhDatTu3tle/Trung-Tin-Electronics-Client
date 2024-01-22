@@ -289,9 +289,20 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
   return (
     <div className={cx("wrapper")} onClick={handleClick}>
       <div className={cx("inner")}>
-        {data.imageProducts && data.imageProducts.length > 0 && (
-          <Image src={data.imageProducts[0].image} />
+        {data.status === true ? (
+          <></>
+        ) : (
+          <>
+            <div className={cx("tag")}>
+              <div className={cx("tag-text")}>Đã ẩn</div>
+            </div>
+          </>
         )}
+        <div className={cx("image")}>
+          {data.imageProducts && data.imageProducts.length > 0 && (
+            <Image src={data.imageProducts[0].image} />
+          )}
+        </div>
         <div className={cx("name")}>
           <a title="" href="/category/product">
             {data.name} {data.id}

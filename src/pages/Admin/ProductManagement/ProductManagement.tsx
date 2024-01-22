@@ -216,50 +216,50 @@ const ProductManagement: React.FC<any> = () => {
     setPrice(priceValue);
   };
 
-  // const upload = async (files: File[]) => {
-  //   try {
-  //     const uploadedImages = await Promise.all(
-  //       files.map((file) => {
-  //         if (!file || !file.type.match(/image.*/)) return null;
-  //         return new Promise<string | null>((resolve, reject) => {
-  //           MySwal.fire({
-  //             title: "Đang tải lên...",
-  //             allowOutsideClick: false,
-  //             didOpen: () => {
-  //               const popup = MySwal.getPopup();
-  //               if (popup) {
-  //                 popup.style.zIndex = "9999";
-  //               }
-  //               MySwal.showLoading();
-  //             },
-  //             timer: 2000,
-  //           });
-  //           const fd = new FormData();
-  //           fd.append("image", file);
-  //           const xhr = new XMLHttpRequest();
-  //           xhr.open("POST", "https://api.imgur.com/3/image.json");
-  //           xhr.onload = function () {
-  //             const link = JSON.parse(xhr.responseText).data.link;
-  //             resolve(link);
-  //             MySwal.close();
-  //           };
-  //           xhr.onerror = function () {
-  //             reject(new Error("Failed to upload image"));
-  //           };
-  //           xhr.setRequestHeader("Authorization", "Client-ID 983c8532c49a20e");
-  //           xhr.send(fd);
-  //         });
-  //       })
-  //     );
-  //     return {
-  //       uploadedImages,
-  //     };
-  //   } catch (error) {
-  //     return {
-  //       uploadedImages: [],
-  //     };
-  //   }
-  // };
+  const upload = async (files: File[]) => {
+    try {
+      const uploadedImages = await Promise.all(
+        files.map((file) => {
+          if (!file || !file.type.match(/image.*/)) return null;
+          return new Promise<string | null>((resolve, reject) => {
+            MySwal.fire({
+              title: "Đang tải lên...",
+              allowOutsideClick: false,
+              didOpen: () => {
+                const popup = MySwal.getPopup();
+                if (popup) {
+                  popup.style.zIndex = "9999";
+                }
+                MySwal.showLoading();
+              },
+              timer: 2000,
+            });
+            const fd = new FormData();
+            fd.append("image", file);
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://api.imgur.com/3/image.json");
+            xhr.onload = function () {
+              const link = JSON.parse(xhr.responseText).data.link;
+              resolve(link);
+              MySwal.close();
+            };
+            xhr.onerror = function () {
+              reject(new Error("Failed to upload image"));
+            };
+            xhr.setRequestHeader("Authorization", "Client-ID 983c8532c49a20e");
+            xhr.send(fd);
+          });
+        })
+      );
+      return {
+        uploadedImages,
+      };
+    } catch (error) {
+      return {
+        uploadedImages: [],
+      };
+    }
+  };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
@@ -288,10 +288,8 @@ const ProductManagement: React.FC<any> = () => {
     event.preventDefault();
 
     try {
-      // const { uploadedImages } = await upload(images);
-      const validImages = images.filter(
-        (link): link is File => link !== null
-      );
+      const { uploadedImages } = await upload(images);
+      const validImages = uploadedImages.filter((link): link is string => link !== null);
       const selectedBrandData = brands.find(
         (brand) => brand.name === selectedBrand
       );
@@ -310,7 +308,7 @@ const ProductManagement: React.FC<any> = () => {
       formData.append("price", price.toString());
       formData.append("idBrand", selectedBrandData.id.toString());
       formData.append("idCategory", selectedCategoryData.id.toString());
-      console.log("validImages: ", validImages);
+      // console.log("validImages: ", validImages);
       validImages.forEach((image, index) => {
         formData.append(`imageProducts[${index}].image`, image);
       });
@@ -333,8 +331,8 @@ const ProductManagement: React.FC<any> = () => {
         },
         timer: 2000,
       });
-      // setOpen(false);
-      // window.location.reload();
+      setOpen(false);
+      window.location.reload();
     } catch (error) {
       MySwal.fire({
         title: "Đã có lỗi xảy ra!",
@@ -595,11 +593,11 @@ const ProductManagement: React.FC<any> = () => {
                     onChange={handleImageUpload}
                   />
                   {/* <div className={cx('show-image')}>
-                        {filteredProductsResult.imageProducts.map((img) => (
+                        {filteredProductsResult.imageProducts.map((img: { image: any; }) => (
                           <Image src={img.image}/>
                         ))}
-                      </div> */}
-                  <br />
+                      </div>
+                  <br /> */}
                   <label htmlFor="specification">
                     Thêm thông số cho sản phẩm:
                   </label>

@@ -8,6 +8,7 @@
 }
 
 .inner {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -19,6 +20,32 @@
     position: relative;
     background-color: #fff;
     box-shadow: 1px 1px 5px rgb(0 0 0 / 15%);
+
+    .tag {
+        position: absolute;
+        content: "";
+        top: 0;
+        right: 0;
+        width: 30%;
+        height: 15%;
+        clip-path: polygon(0 0, 50% 0, 100% 50%, 100% 100%);
+        background-color: orange;
+        
+        .tag-text {
+            position: absolute;
+            content: "";
+            top: 22px;
+            left: 25px;
+            color: #000;
+            font-weight: 700;
+            transform: rotate(47deg);
+        }
+    }
+
+    .image {
+        height: 52%;
+        object-fit: cover;
+    }
 
     .name {
         font-size: 1.1rem;

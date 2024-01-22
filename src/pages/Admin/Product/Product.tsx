@@ -41,9 +41,7 @@ const Product: React.FC<any> = () => {
     setBrandChanged(false);
   };
 
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState<
-    { id: number; name: string; status: boolean }[]
-  >([]);
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
   const [category0, setCategory0] = useState(true);
   const [, setCategoryChanged] = useState(false);
   const handleClickCategory0 = () => {
@@ -124,13 +122,13 @@ const Product: React.FC<any> = () => {
           ) : (
             <>
               {selectedCategoryIds.map((dataa) => (
-                <div className={cx("machine")} key={dataa.id}>
+                <div className={cx("machine")} key={dataa}>
                   <div className={cx("title-wrapper")}>
-                    <div className={cx("title")}>{dataa.name}</div>
+                    <div className={cx("title")}>{dataa}</div>
                   </div>
                   <div className={cx("product")}>
                     {filteredProductsResult
-                      .filter((data) => data.category.name === dataa.name)
+                      .filter((data) => data.category.name === dataa)
                       .map((data) => (
                         <ProductAdminComponent key={data.id} data={data} />
                       ))}
@@ -155,7 +153,7 @@ const Product: React.FC<any> = () => {
           )}
           {categories.map((category) => (
             <>
-              {selectedCategoryIds.includes(category) === true ? (
+              {selectedCategoryIds.includes(category.name) === true ? (
                 <Button
                   primary
                   onClick={() => handleCategoryToggle(category!.name)}

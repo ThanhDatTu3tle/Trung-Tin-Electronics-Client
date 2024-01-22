@@ -73,9 +73,9 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
   const [description, setDescription] = useState<string>(data.description);
   const [price, setPrice] = useState<number>(data.price);
   const [images, setImages] = useState<File[]>([]);
-  const [imageProducts, setImageProducts] = useState<File[]>(
-    data.imageProducts.image
-  );
+  // const [imageProducts, setImageProducts] = useState<File[]>(
+  //   data.imageProducts.image
+  // );
   const [specification, setSpecification] = useState<string[]>(
     data.specification.specification
   );
@@ -162,7 +162,10 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
     setSpecification(newSpecificationArray);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+    images: File[]
+  ) => {
     event.preventDefault();
 
     try {
@@ -193,17 +196,17 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
 
       // console.log('validImages: ', validImages);
       // console.log('data.imageProducts: ', data.imageProducts);
-      const imgProducts = data.imageProducts.map(
-        (item: { image: string }) => item.image
-      );
+      // const imgProducts = data.imageProducts.map(
+      //   (item: { image: string }) => item.image
+      // );
       // console.log('imgProducts: ', imgProducts)
-      const finalImgItem = [...validImages, ...imgProducts];
+      // const finalImgItem = [...validImages, ...imgProducts];
       // console.log('finalImgItem: ', finalImgItem);
-      finalImgItem.forEach((imgItem: any, index: any) => {
-        formData.append(`imageProducts[${index}].image`, imgItem.image);
+      validImages.forEach((image, index) => {
+        formData.append(`imageProducts[${index}].image`, image);
       });
-      data.specification.forEach((specItem: any, index: any) => {
-        formData.append(`specification[${index}]`, specItem.specification);
+      specification.forEach((specItem, index) => {
+        formData.append(`specification[${index}]`, specItem);
       });
 
       const config = {
@@ -464,7 +467,7 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                 action="/upload"
                 method="post"
                 className={cx("form")}
-                onSubmit={(event) => handleSubmit(event)}
+                onSubmit={(event) => handleSubmit(event, images)}
               >
                 <div className={cx("title")}>
                   <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>
@@ -570,29 +573,29 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                         )
                       )}
                     </div>
-                    {/* <br />
-                                        <label htmlFor="image">Thêm hình ảnh mới:</label>
-                                        <input
-                                            id="image"
-                                            type="file"
-                                            accept="image/*"
-                                            multiple
-                                            name="image"
-                                            onChange={handleImageUpload}
-                                        /> */}
-                    {/* <br />
-                                        <label htmlFor="specification">Chỉnh sửa thông số cho sản phẩm:</label>
-                                        <textarea
-                                            id="specification"
-                                            name="specification"
-                                            value={
-                                                data.specification.map((spec: { specification: any; }) => (
-                                                    spec.specification
-                                                ))
-                                            }
-                                            onChange={handleSpecChange}
-                                            rows={5}
-                                        /> */}
+                    <br />
+                    <label htmlFor="image">Thêm hình ảnh mới:</label>
+                    <input
+                        id="image"
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        name="image"
+                        onChange={handleImageUpload}
+                    />
+                    <br />
+                    <label htmlFor="specification">Chỉnh sửa thông số cho sản phẩm:</label>
+                    <textarea
+                        id="specification"
+                        name="specification"
+                        value={
+                            data.specification.map((spec: { specification: any; }) => (
+                                spec.specification
+                            ))
+                        }
+                        onChange={handleSpecChange}
+                        rows={5}
+                    />
                   </div>
                 </div>
                 <Button primary small>
