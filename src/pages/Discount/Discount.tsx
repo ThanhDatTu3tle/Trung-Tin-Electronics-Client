@@ -1,21 +1,39 @@
-import * as React from 'react';
+import * as React from "react";
 import classNames from "classnames/bind";
 
-import styles from './Discount.module.scss';
+import styles from "./Discount.module.scss";
 
-const cx = classNames.bind(styles)
+import { useCombo } from "../../Context/ComboContext";
+
+const cx = classNames.bind(styles);
+
+const ComboComHome = React.lazy(() => import("../../components/ComboComHome"));
 
 const Discount: React.FC<any> = () => {
-    return (
-        <div className={cx('wrapper')}>
-            <h3>KHUYẾN MÃI</h3>
-            <br />
-            <h4>Hiện vẫn chưa có khuyến mãi mới</h4>
-            <div className={cx('content')}>
+  const combos = useCombo();
 
-            </div>
+  return (
+    <div className={cx("wrapper")}>
+      <h3>KHUYẾN MÃI</h3>
+      <br />
+      <div className={cx("title-wrapper")}>
+        <div className={cx("title")}>Combo Lý Tưởng</div>
+      </div>
+      <div className={cx("content")}>
+        <div className={cx("combos")}>
+          {combos.map((data) => (
+            <React.Suspense fallback="" key={data.combo.id}>
+              <ComboComHome data={data.combo} />
+            </React.Suspense>
+          ))}
+        </div>
+      </div>
+
+      <div className={cx("title-wrapper")}>
+        <div className={cx("title")}>Các Sản Phẩm Giảm Giá</div>
+      </div>
     </div>
-    )
-}
+  );
+};
 
 export default Discount;

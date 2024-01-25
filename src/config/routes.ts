@@ -19,6 +19,7 @@ const routes = {
     admin: "/admin",
     product: "/product",
         productManagement: "/management",
+        productDiscount: "/discount",
     category: "/category",
     brand: "/brand",
     invoice: "/invoice",

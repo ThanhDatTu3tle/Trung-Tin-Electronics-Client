@@ -45,6 +45,7 @@ const Combo: React.FC<any> = () => {
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [price, setPrice] = useState(0);
+  const [discount, setDiscount] = useState(0);
   const [comboChosens, setComboChosens] = useState<
   {
     id: string;
@@ -63,8 +64,6 @@ const Combo: React.FC<any> = () => {
     idEvent: number;
   }[]
   >([]);
-  // const [comboChosenIds, setComboChosenIds] = useState<string[]>([]);
-  // const [comboChosenQuantitys, setComboChosenQuantitys] = useState<number[]>([]);
 
   const brands = useBrand();
   const categories = useCategory();
@@ -196,6 +195,10 @@ const Combo: React.FC<any> = () => {
     const priceValue = Number(event.target.value);
     setPrice(priceValue);
   };
+  const handlePercentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const percentValue = Number(event.target.value);
+    setDiscount(percentValue);
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -205,7 +208,7 @@ const Combo: React.FC<any> = () => {
     formData.append("image", imageUrl);
     formData.append("cost", sumPriceProductsChosen.toString());
     formData.append("price", price.toString());
-    formData.append("discount", '0');
+    formData.append("discount", discount.toString());
     comboChosens.forEach((comboChosen, index) => {
       formData.append(`product[${index}].idProduct`, comboChosen.id);
     });
@@ -226,6 +229,7 @@ const Combo: React.FC<any> = () => {
         },
         timer: 1500,
       });
+      localStorage.removeItem('combo');
       setOpen(false);
       setTimeout(() => {
         window.location.reload();
@@ -361,13 +365,26 @@ const Combo: React.FC<any> = () => {
                       value={sumPriceProductsChosen}
                     />
                     <br />
-                    <label>Giá combo sản phẩm mới:</label>
-                    <input
-                      type="number"
-                      placeholder="Giá combo sản phẩm mới"
-                      className={cx("input-name")}
-                      onChange={handlePriceChange}
-                    />
+                    <div className={cx("new-price-percent")}>
+                      <div className={cx("new-price")}>
+                        <label>Giá combo sản phẩm mới:</label>
+                        <input
+                          type="number"
+                          placeholder="Giá combo sản phẩm mới"
+                          className={cx("input-name")}
+                          onChange={handlePriceChange}
+                        />
+                      </div>
+                      <div className={cx("percent")}>
+                        <label>Phần trăm giảm giá:</label>
+                        <input
+                          type="number"
+                          placeholder="Phần trăm giảm giá"
+                          className={cx("input-name")}
+                          onChange={handlePercentChange}
+                        />
+                      </div> 
+                    </div>
                   </div>
                   <Button primary small>
                     Xác nhận

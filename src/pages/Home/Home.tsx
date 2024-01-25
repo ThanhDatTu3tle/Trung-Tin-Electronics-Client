@@ -10,7 +10,6 @@ import styles from "./Home.module.scss";
 
 import { useCategory } from "../../Context/CategoryContext";
 import { useProduct } from "../../Context/ProductContext";
-import { useCombo } from "../../Context/ComboContext";
 import CartButton from "../../components/CartButton";
 
 const cx = classNames.bind(styles);
@@ -29,14 +28,10 @@ const CategoryComponent = React.lazy(
 const ProductComHome = React.lazy(
   () => import("../../components/ProductComHome")
 );
-const ComboComHome = React.lazy(
-  () => import("../../components/ComboComHome")
-)
 
 const Home: React.FC<any> = () => {
   const categories = useCategory();
   const products = useProduct();
-  const combos = useCombo();
 
   const settings = {
     infinite: false,
@@ -134,47 +129,6 @@ const Home: React.FC<any> = () => {
     ],
   };
 
-  const settingsCombo = {
-    infinite: false,
-    speed: 500,
-    slidesToShow: 2,
-    initialSlide: 0,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 8,
-          slidesToScroll: 1,
-          infinite: false,
-        },
-      },
-      {
-        breakpoint: 913,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
-          infinite: true,
-        },
-      },
-      {
-        breakpoint: 599,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          infinite: true,
-        },
-      },
-      {
-        breakpoint: 280,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          infinite: true,
-        },
-      },
-    ],
-  }
-
   return (
     <div className={cx("wrapper")}>
       Danh mục sản phẩm
@@ -187,18 +141,6 @@ const Home: React.FC<any> = () => {
           ))}
         </Slider>
       </div>
-      {/* Các Combo sản phẩm
-      <Slider {...settingsCombo}>
-      {combos.map((data) => (
-        <div key={data.combo.id}>
-          {combos.map((data) => (
-            <React.Suspense fallback="" key={data.combo.id}>
-              <ComboComHome data={data.combo} />
-            </React.Suspense>
-          ))}
-        </div>
-      ))}
-      </Slider> */}
       {categories.map((data) => (
         <div key={data.id}>
           <div className={cx("title-wrapper")}>

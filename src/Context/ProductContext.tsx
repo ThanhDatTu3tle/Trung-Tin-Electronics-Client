@@ -57,6 +57,8 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({
       brand: { id: number; name: string; image: string };
       event: null;
       status: boolean;
+      discount: number;
+      promotional: number;
       category: { id: number; name: string; image: string; status: boolean };
       idBrand: number;
       idCategory: number;

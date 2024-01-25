@@ -19,6 +19,7 @@ interface ComboContextValue {
     image: string;
     price: number;
     cost: number;
+    discount: number;
     status: boolean;
   },
   detail: [
@@ -84,6 +85,7 @@ export const ComboProvider: React.FC<{ children: ReactNode }> = ({
         image: string;
         price: number;
         cost: number;
+        discount: number;
         status: boolean;
       },
       detail: [

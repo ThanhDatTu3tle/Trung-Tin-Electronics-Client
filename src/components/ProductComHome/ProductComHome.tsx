@@ -14,7 +14,6 @@ import styles from "./ProductComHome.module.scss";
 import Button from "../Button";
 
 import { useCombo } from "../../Context/ComboContext";
-import { da } from "@faker-js/faker";
 
 const faCartShoppingIcon = faCartShopping as IconProp;
 
@@ -30,7 +29,6 @@ const ProductComHome: React.FC<any> = ({ data }) => {
     combo.detail.some((product) => product.idProduct === data.id)
   );
   const comboName = foundCombo ? foundCombo.combo.name : null;
-  const comboId = foundCombo ? foundCombo.combo.id : null;
 
   const MySwal = withReactContent(Swal);
 
@@ -53,7 +51,7 @@ const ProductComHome: React.FC<any> = ({ data }) => {
       timer: 1000,
     });
 
-    window.location.href = `/detailProduct/${comboId}`;
+    window.location.href = `/detailProduct/${data.id}`;
   };
 
   const handleClickCombo = async () => {
@@ -65,14 +63,14 @@ const ProductComHome: React.FC<any> = ({ data }) => {
       timer: 1000,
     });
 
-    window.location.href = `/detailProduct/${data.id}`;
-  }
+    window.location.href = `/detailProduct/${comboName}`;
+  };
 
   return (
-    <div className={cx("wrapper")} onClick={handleClick}>
+    <div className={cx("wrapper")}>
       {productComboIds.includes(data.id) === true ? (
         <div className={cx("inner")}>
-          <div className={cx("image")}>
+          <div className={cx("image")} onClick={handleClick}>
             {data.imageProducts && data.imageProducts.length > 0 && (
               <LazyLoadImage
                 src={data.imageProducts[0].image}
@@ -82,8 +80,10 @@ const ProductComHome: React.FC<any> = ({ data }) => {
               />
             )}
           </div>
-          <div className={cx("combo")} onClick={handleClickCombo}><p>{comboName}</p></div>
-          <div className={cx("name")}>
+          <div className={cx("combo")} onClick={handleClickCombo}>
+            <p>{comboName}</p>
+          </div>
+          <div className={cx("name")} onClick={handleClick}>
             <p>
               {data.name} {data.id}
             </p>
@@ -95,7 +95,7 @@ const ProductComHome: React.FC<any> = ({ data }) => {
               </div>
             ))}
           </div>
-          {data.event === null ? (
+          {data.promotional === null ? (
             <>
               <div className={cx("product-price")}>
                 {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
@@ -109,7 +109,7 @@ const ProductComHome: React.FC<any> = ({ data }) => {
                 </div>
                 <div className={cx("price-origin")}>
                   <s>
-                    {data.price
+                    {data.promotional
                       .toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                     đ
@@ -132,7 +132,7 @@ const ProductComHome: React.FC<any> = ({ data }) => {
         </div>
       ) : (
         <div className={cx("inner")}>
-          <div className={cx("image")}>
+          <div className={cx("image")} onClick={handleClick}>
             {data.imageProducts && data.imageProducts.length > 0 && (
               <LazyLoadImage
                 src={data.imageProducts[0].image}
@@ -142,7 +142,14 @@ const ProductComHome: React.FC<any> = ({ data }) => {
               />
             )}
           </div>
-          <div className={cx("name")}>
+          {data.discount === null ? (
+            <></>
+          ) : (
+            <div className={cx("discount")} onClick={handleClickCombo}>
+              <p>Khuyến mãi {data.discount}%</p>
+            </div>
+          )}
+          <div className={cx("name")} onClick={handleClick}>
             <p>
               {data.name} {data.id}
             </p>
@@ -154,7 +161,7 @@ const ProductComHome: React.FC<any> = ({ data }) => {
               </div>
             ))}
           </div>
-          {data.event === null ? (
+          {data.promotional === null ? (
             <>
               <div className={cx("product-price")}>
                 {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
@@ -168,7 +175,7 @@ const ProductComHome: React.FC<any> = ({ data }) => {
                 </div>
                 <div className={cx("price-origin")}>
                   <s>
-                    {data.price
+                    {data.promotional
                       .toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                     đ

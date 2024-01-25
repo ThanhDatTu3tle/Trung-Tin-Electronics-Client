@@ -291,6 +291,11 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
     setOpenQuantity(true);
   };
 
+  const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const quantityValue = Number(event.target.value);
+    setQuantity(quantityValue);
+  };
+
   const updateProductQuantity = () => {
     try {
       ProductService.UpdateProductQuantity(data.id, quantity);
@@ -314,11 +319,6 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
         timer: 2000,
       });
     }
-  };
-
-  const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const quantityValue = Number(event.target.value);
-    setQuantity(quantityValue);
   };
 
   return (
