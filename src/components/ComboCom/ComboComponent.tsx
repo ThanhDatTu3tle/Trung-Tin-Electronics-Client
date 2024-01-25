@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -9,15 +10,57 @@ import styles from "./ComboComponent.module.scss";
 import ProductComboComponent from "../ProductComboCom/ProductComboComponent";
 import Image from "../Image";
 import Button from "../Button";
+
 import { axiosClient } from "../../axios";
+import ComboService from "../../service/ComboService";
 
 const cx = classNames.bind(styles);
 
 const ComboComponent: React.FC<any> = ({ data }) => {
   const MySwal = withReactContent(Swal);
 
-  const handleConfirm = () => {
-
+  const [state, setState] = useState(data.combo.status);
+  const handleConfirm = async () => {
+    try {
+      if (data.combo.status === true) {
+        MySwal.fire({
+          title: "Gỡ áp dụng thành công!",
+          icon: "success",
+          didOpen: () => {
+            MySwal.showLoading();
+          },
+          timer: 3000,
+        });
+        ComboService.UpdateComboStatus(data.combo.id, 0);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+        setState(!state);
+      } else {
+        MySwal.fire({
+          title: "Áp dụng thành công!",
+          icon: "success",
+          didOpen: () => {
+            MySwal.showLoading();
+          },
+          timer: 3000,
+        });
+        ComboService.UpdateComboStatus(data.combo.id, 1);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+        setState(!state);
+      }
+    } catch (error) {
+      MySwal.fire({
+        title: "Đã có lỗi xảy ra!",
+        icon: "error",
+        didOpen: () => {
+          MySwal.showLoading();
+        },
+        timer: 2000,
+      });
+    }
   }
 
   const handleDelete = () => {

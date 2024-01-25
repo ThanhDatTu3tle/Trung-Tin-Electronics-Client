@@ -13,11 +13,25 @@ import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import styles from "./ProductComHome.module.scss";
 import Button from "../Button";
 
+import { useCombo } from "../../Context/ComboContext";
+import { da } from "@faker-js/faker";
+
 const faCartShoppingIcon = faCartShopping as IconProp;
 
 const cx = classNames.bind(styles);
 
 const ProductComHome: React.FC<any> = ({ data }) => {
+  const combos = useCombo();
+  const productComboIds = combos.flatMap((combo) =>
+    combo.detail.map((product) => product.idProduct)
+  );
+
+  const foundCombo = combos.find((combo) =>
+    combo.detail.some((product) => product.idProduct === data.id)
+  );
+  const comboName = foundCombo ? foundCombo.combo.name : null;
+  const comboId = foundCombo ? foundCombo.combo.id : null;
+
   const MySwal = withReactContent(Swal);
 
   const handleClick = async () => {
@@ -39,66 +53,143 @@ const ProductComHome: React.FC<any> = ({ data }) => {
       timer: 1000,
     });
 
-    window.location.href = `/detailProduct/${data.id}`;
+    window.location.href = `/detailProduct/${comboId}`;
   };
 
+  const handleClickCombo = async () => {
+    await MySwal.fire({
+      title: "Loading...",
+      didOpen: () => {
+        MySwal.showLoading();
+      },
+      timer: 1000,
+    });
+
+    window.location.href = `/detailProduct/${data.id}`;
+  }
+
   return (
-    <div className={cx(`wrapper`)} onClick={handleClick}>
-      <div className={cx("inner")}>
-        <div className={cx("image")}>
-          {data.imageProducts && data.imageProducts.length > 0 && (
-            <LazyLoadImage
-              src={data.imageProducts[0].image}
-              effect="blur"
-              width="100%"
-              height="auto"
-            />
-          )}
-        </div>
-        <div className={cx("name")}>
-          <p>
-            {data.name} {data.id}
-          </p>
-        </div>
-        <div className={cx("specifications")}>
-          {data.specification.slice(0, 3).map((content: any) => (
-            <div key={content.id} className={cx("specification")}>
-              {content.specification}
-            </div>
-          ))}
-        </div>
-        {data.event === null ? (
-          <>
-            <div className={cx("product-price")}>
-              {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
-            </div>
-          </>
-        ) : (
-          <>
-            <div className={cx("product-price-sale")}>
-              <div className={cx("price-sale")}>
+    <div className={cx("wrapper")} onClick={handleClick}>
+      {productComboIds.includes(data.id) === true ? (
+        <div className={cx("inner")}>
+          <div className={cx("image")}>
+            {data.imageProducts && data.imageProducts.length > 0 && (
+              <LazyLoadImage
+                src={data.imageProducts[0].image}
+                effect="blur"
+                width="100%"
+                height="auto"
+              />
+            )}
+          </div>
+          <div className={cx("combo")} onClick={handleClickCombo}><p>{comboName}</p></div>
+          <div className={cx("name")}>
+            <p>
+              {data.name} {data.id}
+            </p>
+          </div>
+          <div className={cx("specifications")}>
+            {data.specification.slice(0, 3).map((content: any) => (
+              <div key={content.id} className={cx("specification")}>
+                {content.specification}
+              </div>
+            ))}
+          </div>
+          {data.event === null ? (
+            <>
+              <div className={cx("product-price")}>
                 {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
               </div>
-              <div className={cx("price-origin")}>
-                <s>
+            </>
+          ) : (
+            <>
+              <div className={cx("product-price-sale")}>
+                <div className={cx("price-sale")}>
                   {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
-                </s>
+                </div>
+                <div className={cx("price-origin")}>
+                  <s>
+                    {data.price
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                    đ
+                  </s>
+                </div>
               </div>
-            </div>
-          </>
-        )}
-        <Button primary className={cx("btn")}>
-          <FontAwesomeIcon
-            icon={faCartShoppingIcon}
-            style={{
-              color: "#fff",
-              marginRight: "1rem",
-              fontSize: "1rem",
-            }}
-          />
-          Đặt hàng
-        </Button>
-      </div>
+            </>
+          )}
+          <Button primary className={cx("btn")}>
+            <FontAwesomeIcon
+              icon={faCartShoppingIcon}
+              style={{
+                color: "#fff",
+                marginRight: "1rem",
+                fontSize: "1rem",
+              }}
+            />
+            Đặt hàng
+          </Button>
+        </div>
+      ) : (
+        <div className={cx("inner")}>
+          <div className={cx("image")}>
+            {data.imageProducts && data.imageProducts.length > 0 && (
+              <LazyLoadImage
+                src={data.imageProducts[0].image}
+                effect="blur"
+                width="100%"
+                height="auto"
+              />
+            )}
+          </div>
+          <div className={cx("name")}>
+            <p>
+              {data.name} {data.id}
+            </p>
+          </div>
+          <div className={cx("specifications")}>
+            {data.specification.slice(0, 3).map((content: any) => (
+              <div key={content.id} className={cx("specification")}>
+                {content.specification}
+              </div>
+            ))}
+          </div>
+          {data.event === null ? (
+            <>
+              <div className={cx("product-price")}>
+                {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={cx("product-price-sale")}>
+                <div className={cx("price-sale")}>
+                  {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+                </div>
+                <div className={cx("price-origin")}>
+                  <s>
+                    {data.price
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                    đ
+                  </s>
+                </div>
+              </div>
+            </>
+          )}
+          <Button primary className={cx("btn")}>
+            <FontAwesomeIcon
+              icon={faCartShoppingIcon}
+              style={{
+                color: "#fff",
+                marginRight: "1rem",
+                fontSize: "1rem",
+              }}
+            />
+            Đặt hàng
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

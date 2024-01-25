@@ -14,14 +14,52 @@ import ComboService from "../service/ComboService";
 
 interface ComboContextValue {
   combo: {
-    id: string;
+    id: number;
     name: string;
     image: string;
     price: number;
     cost: number;
-    discount: number;
+    status: boolean;
   },
-  detail: []
+  detail: [
+    {
+      id: number;
+      idProduct: string;
+      idCombo: number;
+      productNumber: number;
+      combo: {
+        id: number;
+        name: string;
+        image: string;
+        price: number;
+        cost: number;
+        status: boolean;
+      };
+      product: {
+        id: string;
+        name: string;
+        description: string;
+        price: number;
+        status: boolean;
+        idBrand: number;
+        idCategory: number;
+        idEvent: null;
+        quantity: number;
+        brand: {
+          id: number;
+          name: string;
+          image: string;
+        };
+        category: {
+          id: number;
+          name: string;
+          image: string;
+          status: boolean;
+        };
+        event: null;
+      }
+    }
+  ]
 }
 
 const ComboContext = createContext<ComboContextValue[] | undefined>(undefined);
@@ -41,14 +79,52 @@ export const ComboProvider: React.FC<{ children: ReactNode }> = ({
   const [combos, setCombos] = useState<
     {
       combo: {
-        id: string;
+        id: number;
         name: string;
         image: string;
         price: number;
         cost: number;
-        discount: number;
+        status: boolean;
       },
-      detail: []
+      detail: [
+        {
+          id: number;
+          idProduct: string;
+          idCombo: number;
+          productNumber: number;
+          combo: {
+            id: number;
+            name: string;
+            image: string;
+            price: number;
+            cost: number;
+            status: boolean;
+          };
+          product: {
+            id: string;
+            name: string;
+            description: string;
+            price: number;
+            status: boolean;
+            idBrand: number;
+            idCategory: number;
+            idEvent: null;
+            quantity: number;
+            brand: {
+              id: number;
+              name: string;
+              image: string;
+            };
+            category: {
+              id: number;
+              name: string;
+              image: string;
+              status: boolean;
+            };
+            event: null;
+          }
+        }
+      ]
     }[]
   >([]);
 
