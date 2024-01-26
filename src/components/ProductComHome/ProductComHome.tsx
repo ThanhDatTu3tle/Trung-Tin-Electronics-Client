@@ -43,7 +43,7 @@ const ProductComHome: React.FC<any> = ({ data }) => {
     }
 
     await MySwal.fire({
-      title: "Loading...",
+      title: "Đang tải...",
       didOpen: () => {
         MySwal.showLoading();
       },
@@ -55,7 +55,7 @@ const ProductComHome: React.FC<any> = ({ data }) => {
 
   const handleClickCombo = async () => {
     await MySwal.fire({
-      title: "Loading...",
+      title: "Đang tải...",
       didOpen: () => {
         MySwal.showLoading();
       },
@@ -94,29 +94,9 @@ const ProductComHome: React.FC<any> = ({ data }) => {
               </div>
             ))}
           </div>
-          {data.promotional === null ? (
-            <>
-              <div className={cx("product-price")}>
-                {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
-              </div>
-            </>
-          ) : (
-            <>
-              <div className={cx("product-price-sale")}>
-                <div className={cx("price-sale")}>
-                  {data.promotional.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
-                </div>
-                <div className={cx("price-origin")}>
-                  <s>
-                    {data.price
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
-                    đ
-                  </s>
-                </div>
-              </div>
-            </>
-          )}
+          <div className={cx("product-price")}>
+            {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+          </div>
           <Button primary className={cx("btn")}>
             <FontAwesomeIcon
               icon={faCartShoppingIcon}
@@ -169,9 +149,6 @@ const ProductComHome: React.FC<any> = ({ data }) => {
           ) : (
             <>
               <div className={cx("product-price-sale")}>
-                <div className={cx("price-sale")}>
-                  {data.promotional.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
-                </div>
                 <div className={cx("price-origin")}>
                   <s>
                     {data.price
@@ -179,6 +156,12 @@ const ProductComHome: React.FC<any> = ({ data }) => {
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                     đ
                   </s>
+                </div>
+                <div className={cx("price-sale")}>
+                  {data.promotional
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                  đ
                 </div>
               </div>
             </>

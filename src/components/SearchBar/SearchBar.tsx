@@ -79,7 +79,7 @@ const SearchBar: React.FC<any> = ({ placeholder, data }) => {
                 key={value.id}
                 onClick={async (event) => {
                   await MySwal.fire({
-                    title: "Loading...",
+                    title: "Đang tải...",
                     didOpen: () => {
                       MySwal.showLoading();
                     },

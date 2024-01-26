@@ -61,7 +61,7 @@ const CartButton: React.FC = () => {
 
   const handleRoute = async () => {
     await MySwal.fire({
-      title: "Loading...",
+      title: "Đang tải...",
       didOpen: () => {
         MySwal.showLoading();
       },

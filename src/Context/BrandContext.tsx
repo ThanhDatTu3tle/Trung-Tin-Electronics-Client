@@ -52,7 +52,7 @@ export const BrandProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     const fetchAllAPIs = async () => {
       await MySwal.fire({
-        title: "Loading...",
+        title: "Đang tải...",
         didOpen: () => {
           MySwal.showLoading();
         },

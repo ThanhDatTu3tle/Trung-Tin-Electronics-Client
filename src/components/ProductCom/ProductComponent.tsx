@@ -32,7 +32,7 @@ const ProductComponent: React.FC<any> = ({ data }) => {
     }
 
     await MySwal.fire({
-      title: "Loading...",
+      title: "Đang tải...",
       didOpen: () => {
         MySwal.showLoading();
       },

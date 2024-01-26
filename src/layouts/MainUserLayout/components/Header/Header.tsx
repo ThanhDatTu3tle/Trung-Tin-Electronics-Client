@@ -224,7 +224,7 @@ const Header: React.FC = () => {
                                 onClick={async (event) => {
                                   handleMenuItemClick(event, index);
                                   await MySwal.fire({
-                                    title: "Loading...",
+                                    title: "Đang tải...",
                                     didOpen: () => {
                                       MySwal.showLoading();
                                     },
@@ -292,7 +292,7 @@ const Header: React.FC = () => {
                                 onClick={async (event) => {
                                   handleMenuItemClick(event, index);
                                   await MySwal.fire({
-                                    title: "Loading...",
+                                    title: "Đang tải...",
                                     didOpen: () => {
                                       MySwal.showLoading();
                                     },

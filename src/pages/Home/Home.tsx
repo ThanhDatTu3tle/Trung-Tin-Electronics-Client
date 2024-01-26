@@ -40,7 +40,7 @@ const Home: React.FC<any> = () => {
     initialSlide: 0,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1099,
         settings: {
           slidesToShow: 8,
           slidesToScroll: 1,
@@ -83,7 +83,7 @@ const Home: React.FC<any> = () => {
     pauseOnHover: true,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1099,
         settings: {
           infinite: true,
           slidesToShow: 4,

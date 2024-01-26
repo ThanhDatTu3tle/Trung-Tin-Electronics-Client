@@ -157,7 +157,7 @@ const CategoryComponent: React.FC<any> = ({ data }) => {
 
   const handleClick = async () => {
     await MySwal.fire({
-      title: "Loading...",
+      title: "Đang tải...",
       didOpen: () => {
         MySwal.showLoading();
       },
