@@ -24,7 +24,6 @@ const ProductComHome: React.FC<any> = ({ data }) => {
   const productComboIds = combos.flatMap((combo) =>
     combo.detail.map((product) => product.idProduct)
   );
-
   const foundCombo = combos.find((combo) =>
     combo.detail.some((product) => product.idProduct === data.id)
   );
@@ -105,11 +104,11 @@ const ProductComHome: React.FC<any> = ({ data }) => {
             <>
               <div className={cx("product-price-sale")}>
                 <div className={cx("price-sale")}>
-                  {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+                  {data.promotional.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
                 </div>
                 <div className={cx("price-origin")}>
                   <s>
-                    {data.promotional
+                    {data.price
                       .toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                     đ
@@ -171,11 +170,11 @@ const ProductComHome: React.FC<any> = ({ data }) => {
             <>
               <div className={cx("product-price-sale")}>
                 <div className={cx("price-sale")}>
-                  {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+                  {data.promotional.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
                 </div>
                 <div className={cx("price-origin")}>
                   <s>
-                    {data.promotional
+                    {data.price
                       .toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                     đ

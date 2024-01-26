@@ -56,7 +56,6 @@
         height: 1.4rem;
         text-align: center;
         margin-top: 1rem;
-        border-radius: 1rem;
         background-color: #ff342d;
         clip-path: polygon(100% 0, 92% 50%, 100% 99%, 0% 100%, 8% 50%, 0% 0%);
         cursor: pointer;
@@ -202,6 +201,27 @@
             }
         }
 
+        .discount {
+            padding: 0;
+            font-size: 0.8rem;
+            width: fit-content;
+            height: 1.3rem;
+            text-align: center;
+            margin-top: 1rem;
+            background-color: #ff342d;
+            clip-path: polygon(100% 0, 92% 50%, 100% 99%, 0% 100%, 8% 50%, 0% 0%);
+            cursor: pointer;
+    
+            &:hover {
+                background-color: #ff453f;
+            }
+    
+            p {
+                color: #fff;
+                padding: 1px 20px;
+            }
+        }
+
         .name {
             font-size: 1rem;
         }
@@ -333,6 +353,27 @@
             }
         }
 
+        .discount {
+            padding: 0;
+            font-size: 0.8rem;
+            width: fit-content;
+            height: 1.3rem;
+            text-align: center;
+            margin-top: 1rem;
+            background-color: #ff342d;
+            clip-path: polygon(100% 0, 92% 50%, 100% 99%, 0% 100%, 8% 50%, 0% 0%);
+            cursor: pointer;
+    
+            &:hover {
+                background-color: #ff453f;
+            }
+    
+            p {
+                color: #fff;
+                padding: 1px 20px;
+            }
+        }
+
         .name {
             font-size: 0.9rem;
         }
@@ -459,6 +500,27 @@
     
             p {
                 padding: 1px 10px;
+            }
+        }
+
+        .discount {
+            padding: 0;
+            font-size: 0.8rem;
+            width: fit-content;
+            height: 1.3rem;
+            text-align: center;
+            margin-top: 1rem;
+            background-color: #ff342d;
+            clip-path: polygon(100% 0, 92% 50%, 100% 99%, 0% 100%, 8% 50%, 0% 0%);
+            cursor: pointer;
+    
+            &:hover {
+                background-color: #ff453f;
+            }
+    
+            p {
+                color: #fff;
+                padding: 1px 20px;
             }
         }
 
@@ -592,6 +654,27 @@
             }
         }
 
+        .discount {
+            padding: 0;
+            font-size: 0.8rem;
+            width: fit-content;
+            height: 1.3rem;
+            text-align: center;
+            margin-top: 1rem;
+            background-color: #ff342d;
+            clip-path: polygon(100% 0, 92% 50%, 100% 99%, 0% 100%, 8% 50%, 0% 0%);
+            cursor: pointer;
+    
+            &:hover {
+                background-color: #ff453f;
+            }
+    
+            p {
+                color: #fff;
+                padding: 1px 20px;
+            }
+        }
+
         .name {
             font-size: 0.9rem;
         }
@@ -719,6 +802,27 @@
     
             p {
                 padding: 1px 10px;
+            }
+        }
+
+        .discount {
+            padding: 0;
+            font-size: 0.8rem;
+            width: fit-content;
+            height: 1.3rem;
+            text-align: center;
+            margin-top: 1rem;
+            background-color: #ff342d;
+            clip-path: polygon(100% 0, 92% 50%, 100% 99%, 0% 100%, 8% 50%, 0% 0%);
+            cursor: pointer;
+    
+            &:hover {
+                background-color: #ff453f;
+            }
+    
+            p {
+                color: #fff;
+                padding: 1px 20px;
             }
         }
 

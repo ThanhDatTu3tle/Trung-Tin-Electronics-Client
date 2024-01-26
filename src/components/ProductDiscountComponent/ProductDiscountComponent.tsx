@@ -13,9 +13,20 @@ import Image from "../Image";
 import ProductService from "../../service/ProductService";
 import Button from "../Button";
 
+import { useCombo } from "../../Context/ComboContext";
+
 const cx = classNames.bind(styles);
 
 const ProductDiscountComponent: React.FC<any> = ({ data }) => {
+  const combos = useCombo();
+  const productComboIds = combos.flatMap((combo) =>
+    combo.detail.map((product) => product.idProduct)
+  );
+  const foundCombo = combos.find((combo) =>
+    combo.detail.some((product) => product.idProduct === data.id)
+  );
+  const comboName = foundCombo ? foundCombo.combo.name : null;
+
   const MySwal = withReactContent(Swal);
 
   const [openDiscount, setOpenDiscount] = useState(false);
@@ -79,9 +90,43 @@ const ProductDiscountComponent: React.FC<any> = ({ data }) => {
           <div className={cx("name")}>
             {data.name} {data.id}
           </div>
-          <div className={cx("product-price")}>
-            {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
-          </div>
+          {data.promotional === null ? (
+            <>
+              <div className={cx("product-price")}>
+                {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={cx("product-price-sale")}>
+                <div className={cx("price-sale")}>
+                  {data.promotional.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+                </div>
+                <div className={cx("price-origin")}>
+                  <s>
+                    {data.price
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                    đ
+                  </s>
+                </div>
+              </div>
+            </>
+          )}
+          {data.discount === null ? (
+            <></>
+          ) : (
+            <div className={cx("discount")}>
+              <p>Khuyến mãi {data.discount}%</p>
+            </div>
+          )}
+          {productComboIds.includes(data.id) === true ? (
+            <div className={cx("combo")}>
+              <p>{comboName}</p>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
       <Backdrop sx={{ color: "#fff", zIndex: 9 }} open={openDiscount}>
@@ -102,11 +147,12 @@ const ProductDiscountComponent: React.FC<any> = ({ data }) => {
             <div className={cx("inputs")}>
               <br />
               <p>Mã sản phẩm: {data.id}</p>
-              <p>Giá gốc sản phẩm: {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</p>
+              <p>
+                Giá gốc sản phẩm:{" "}
+                {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+              </p>
               <br />
-              <label htmlFor="discount">
-                Giá khuyến mãi:
-              </label>
+              <label htmlFor="discount">Giá khuyến mãi:</label>
               <input
                 id="new-price"
                 type="number"

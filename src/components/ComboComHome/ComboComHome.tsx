@@ -8,8 +8,6 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 
 import styles from "./ComboComHome.module.scss";
 
-import { useCombo } from "../../Context/ComboContext";
-
 const cx = classNames.bind(styles);
 
 const ComboComHome: React.FC<any> = ({ data }) => {

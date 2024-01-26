@@ -16,8 +16,7 @@ import { useCategory } from "../../../Context/CategoryContext";
 import { useProduct } from "../../../Context/ProductContext";
 import { useCombo } from "../../../Context/ComboContext";
 
-import ProductComboComponent from "../../../components/ProductComboCom/ProductComboComponent";
-import ComboComponent from "../../../components/ComboCom/ComboComponent";
+import ProductDiscountComponent from "../../../components/ProductDiscountComponent";
 import Clock from "../../../components/Clock";
 import Button from "../../../components/Button";
 import Image from "../../../components/Image";
@@ -143,7 +142,7 @@ const Event: React.FC<any> = () => {
     };
 
     try {
-      await axiosClient.post("combo/create", formData, config);
+      await axiosClient.post("event/create", formData, config);
       MySwal.fire({
         title: "Thêm thành công!",
         icon: "success",
@@ -282,10 +281,10 @@ const Event: React.FC<any> = () => {
         <div className={cx("products")}>
           <div className={cx("machine-combo")}>
             <div className={cx("title-wrapper")}>
-              <div className={cx("title")}>Các sự kiện giảm giá</div>
-              {combos.map((data) => (
+              <div className={cx("title")}>Sự kiện giảm giá</div>
+              {/* {combos.map((data) => (
                 <ComboComponent data={data.combo} />
-              ))}
+              ))} */}
             </div>
           </div>
           {category0 === true ? (
@@ -297,9 +296,9 @@ const Event: React.FC<any> = () => {
                   </div>
                   <div className={cx("product")}>
                     {filteredProductsResult
-                      .filter((data) => data.category.name === dataa.name)
+                      .filter((data) => data.category.name === dataa.name && data.discount !== null)
                       .map((data) => (
-                        <ProductComboComponent key={data.id} data={data} />
+                        <ProductDiscountComponent key={data.id} data={data} />
                       ))}
                   </div>
                 </div>
@@ -314,9 +313,9 @@ const Event: React.FC<any> = () => {
                   </div>
                   <div className={cx("product")}>
                     {filteredProductsResult
-                      .filter((data) => data.category.name === dataa)
+                      .filter((data) => data.category.name === dataa && data.discount !== null)
                       .map((data) => (
-                        <ProductComboComponent key={data.id} data={data} />
+                        <ProductDiscountComponent key={data.id} data={data} />
                       ))}
                   </div>
                 </div>
