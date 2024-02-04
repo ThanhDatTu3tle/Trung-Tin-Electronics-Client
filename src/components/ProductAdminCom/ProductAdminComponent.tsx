@@ -122,6 +122,7 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
   const [name, setName] = useState<string>(data.name);
   const [description, setDescription] = useState<string>(data.description);
   const [price, setPrice] = useState<number>(data.price);
+  const [cost, setCost] = useState<number>(data.cost || 0);
   const [images, setImages] = useState<File[]>([]);
   const [imageProducts, setImageProducts] = useState<File[]>(
     data.imageProducts.image
@@ -143,6 +144,10 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const priceValue = Number(event.target.value);
     setPrice(priceValue);
+  };
+  const handleCostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const costValue = Number(event.target.value);
+    setCost(costValue);
   };
 
   // const upload = async (files: File[]) => {
@@ -395,6 +400,14 @@ const ProductAdminComponent: React.FC<any> = ({ data }) => {
                     value={price}
                     className={cx("input-name")}
                     onChange={handlePriceChange}
+                  />
+                  <label htmlFor="cost">Chỉnh sửa giá gốc sản phẩm:</label>
+                  <input
+                    id="cost"
+                    type="number"
+                    value={cost || 0}
+                    className={cx("input-name")}
+                    onChange={handleCostChange}
                   />
                   <label htmlFor="brand">Chỉnh sửa hãng sản xuất:</label>
                   <select

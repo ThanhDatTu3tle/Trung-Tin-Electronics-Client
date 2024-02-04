@@ -25,6 +25,7 @@ interface ProductContextValue {
   status: boolean;
   discount: number;
   promotional: number;
+  cost: number;
   category: { id: number; name: string; image: string; status: boolean };
   idBrand: number;
   idCategory: number;
@@ -61,6 +62,7 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({
       status: boolean;
       discount: number;
       promotional: number;
+      cost: number;
       category: { id: number; name: string; image: string; status: boolean };
       idBrand: number;
       idCategory: number;

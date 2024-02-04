@@ -22,6 +22,7 @@ import { faGem, faMoneyBill1 } from '@fortawesome/free-regular-svg-icons';
 
 import styles from './Dashboard.module.scss';
 import Clock from '../../../components/Clock';
+import { useInvoice } from '../../../Context/InvoiceContext';
 
 const cx = classNames.bind(styles);
 
@@ -70,14 +71,14 @@ export const data = {
     {
       fill: false,
       label: 'Doanh Thu',
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+      data: labels.map(() => faker.datatype.number({ min: 0, max: 100000000 })),
       borderColor: 'rgb(0, 186, 157)',
       backgroundColor: 'rgba(0, 186, 157, 0.5)',
     },
     {
       fill: false,
       label: 'Chi Phí',
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+      data: labels.map(() => faker.datatype.number({ min: 0, max: 100000000 })),
       borderColor: 'rgb(255, 84, 112)',
       backgroundColor: 'rgba(255, 84, 112, 0.5)',
     },
@@ -85,6 +86,8 @@ export const data = {
 };
 
 const Dashboard: React.FC<any> = () => {
+  const invoices = useInvoice();
+
   return (
     <div className={cx('wrapper')}>
       <div className={cx('header')}>
@@ -117,7 +120,7 @@ const Dashboard: React.FC<any> = () => {
             </div>
             <div className={cx('info')}>
               <h3>Điện Máy Trung Tín</h3>
-              <h5>Thống kê doanh thu năm 2023</h5>
+              <h5>Thống kê doanh thu năm 2024</h5>
               <br />
               <div className={cx('revenue')}>
                 <div className={cx('revenue-child')}>
@@ -128,8 +131,8 @@ const Dashboard: React.FC<any> = () => {
                     />
                   </div>
                   <div className={cx('parameter')}>
-                    <h3>Ngu</h3>
-                    <p style={{ fontSize: '1.2rem' }}>Thu nhập</p>
+                    <h5>{invoices.reduce((a, b) => a + b.total, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</h5>
+                    <p style={{ fontSize: '1.2rem' }}>Doanh thu</p>
                   </div>
                 </div>
                 <div className={cx('revenue-child')}>
@@ -140,7 +143,7 @@ const Dashboard: React.FC<any> = () => {
                     />
                   </div>
                   <div className={cx('parameter')}>
-                    <h3>Ngu</h3>
+                    <h5>Ngu</h5>
                     <p style={{ fontSize: '1.2rem' }}>Chi phí</p>
                   </div>
                 </div>
@@ -152,8 +155,8 @@ const Dashboard: React.FC<any> = () => {
                     />
                   </div>
                   <div className={cx('parameter')}>
-                    <h3>Ngu</h3>
-                    <p style={{ fontSize: '1.2rem' }}>Đơn hàng mới</p>
+                    <h3>{invoices.filter(invoice => invoice.status === true).length}</h3>
+                    <p style={{ fontSize: '1.2rem' }}>Tổng đơn hàng</p>
                   </div>
                 </div>
               </div>
@@ -168,10 +171,12 @@ const Dashboard: React.FC<any> = () => {
         <div className={cx('content-right')}>
           <div className={cx('total-balance')}>
             <div className={cx('parameter')}>
-              <h3>Tổng Số Dư</h3>
-              <p style={{ fontSize: '1.2rem' }}>Ngu</p>
+              <h3>Tổng thu nhập</h3>
+              <p style={{ fontSize: '1.4rem' }}>
+                {invoices.reduce((a, b) => a + b.total, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} VNĐ
+              </p>
             </div>
-            <div className={cx('logo')}>
+            <div className={cx('logoo')}>
               <img
                 src='https://shop-point.merku.love/assets/balance-c2e80db3.webp'
                 alt='Avatar'

@@ -52,6 +52,9 @@ const DetailProduct: React.FC = () => {
       brand: { id: number; name: string; image: string };
       event: null;
       status: boolean;
+      discount: number;
+      promotional: number;
+      cost: number;
       category: { id: number; name: string; image: string; status: boolean };
       idBrand: number;
       idCategory: number;
@@ -87,6 +90,9 @@ const DetailProduct: React.FC = () => {
         brand: { id: number; name: string; image: string };
         event: null;
         status: boolean;
+        discount: number;
+        promotional: number;
+        cost: number;
         category: { id: number; name: string; image: string; status: boolean };
         idBrand: number;
         idCategory: number;
@@ -246,10 +252,29 @@ const DetailProduct: React.FC = () => {
           <p className={cx("name")}>
             {product.name} {product.id}
           </p>
-          <p className={cx("text")}>
-            Giá:{" "}
-            {product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
-          </p>
+          {product.discount === null ? (
+            <p className={cx("price")}>
+              {product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+            </p>
+          ) : (
+            <div className={cx("text-price")}>
+              {product.promotional
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+              đ
+              <span className={cx("old-price")}>
+                <s>
+                  {product.price
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                  đ
+                </s>
+              </span>
+              <div className={cx("discount")}>
+                <p>Khuyến mãi {product.discount}%</p>
+              </div>
+            </div>
+          )}
           <div className={cx("stars")}>
             <FontAwesomeIcon icon={faStarIcon} style={{ color: "#fec806" }} />
             <FontAwesomeIcon icon={faStarIcon} style={{ color: "#fec806" }} />
@@ -335,7 +360,7 @@ const DetailProduct: React.FC = () => {
         ) : (
           <>
             <div className={cx("product")}>
-            {seenProducts
+              {seenProducts
                 .filter((seenProduct) => seenProduct.status === true)
                 .map((data) => (
                   <React.Suspense fallback="" key={data.id}>
@@ -361,24 +386,24 @@ const DetailProduct: React.FC = () => {
           <>
             <div className={cx("product")}>
               {relatedProducts
-              .filter((relatedProduct) => relatedProduct.status === true)
-              .map((data) => (
-                <React.Suspense fallback="" key={data.id}>
-                  <ProductComponent data={data} />
-                </React.Suspense>
-              ))}
+                .filter((relatedProduct) => relatedProduct.status === true)
+                .map((data) => (
+                  <React.Suspense fallback="" key={data.id}>
+                    <ProductComponent data={data} />
+                  </React.Suspense>
+                ))}
             </div>
           </>
         ) : (
           <>
             <div className={cx("product")}>
-            {relatedProducts
-              .filter((relatedProduct) => relatedProduct.status === true)
-              .map((data) => (
-                <React.Suspense fallback="" key={data.id}>
-                  <ProductComponent data={data} />
-                </React.Suspense>
-              ))}
+              {relatedProducts
+                .filter((relatedProduct) => relatedProduct.status === true)
+                .map((data) => (
+                  <React.Suspense fallback="" key={data.id}>
+                    <ProductComponent data={data} />
+                  </React.Suspense>
+                ))}
             </div>
           </>
         )}

@@ -7,6 +7,7 @@ import { publicRoutes, privateRoutes } from "./routes";
 import ProtectedRoute from "./ProtectedRoute";
 
 import { MainUserLayout } from "./layouts/MainUserLayout";
+import { MainAdminLayout } from "./layouts/MainAdminLayout";
 import DetailCategory from "./pages/DetailCategory";
 import DetailProduct from "./pages/DetailProduct";
 
@@ -16,6 +17,7 @@ import { CategoryProvider } from "./Context/CategoryContext";
 import { ProductProvider } from "./Context/ProductContext";
 import { CartProvider } from "./Context/CartContext";
 import { ComboProvider } from "./Context/ComboContext";
+import { InvoiceProvider } from "./Context/InvoiceContext";
 
 import CartButton from "./components/CartButton";
 
@@ -40,77 +42,79 @@ const App: React.FC = () => {
 
   return (
     <AuthContext.Provider value={{ token, setToken, search, setSearch }}>
-      <ComboProvider>
-        <BrandProvider>
-          <CategoryProvider>
-            <ProductProvider>
-              <CartProvider>
-                <Router>
-                  <div className="App">
-                    <Routes>
-                      {publicRoutes.map((route, index) => {
-                        const Page = route.component;
+      <InvoiceProvider>
+        <ComboProvider>
+          <BrandProvider>
+            <CategoryProvider>
+              <ProductProvider>
+                <CartProvider>
+                  <Router>
+                    <div className="App">
+                      <Routes>
+                        {publicRoutes.map((route, index) => {
+                          const Page = route.component;
 
-                        let Layout = MainUserLayout;
+                          let Layout = MainUserLayout;
 
-                        if (route.layout) {
-                          Layout = route.layout;
-                        } else if (route.layout === null) {
-                          Layout = Fragment;
-                        }
-                        return (
-                          <Route
-                            key={index}
-                            path={route.path}
-                            element={
-                              <Layout>
-                                <Page />
-                              </Layout>
-                            }
-                          />
-                        );
-                      })}
-                      {privateRoutes.map((route, index) => {
-                        const Page = route.component;
-
-                        let Layout = MainUserLayout;
-
-                        if (route.layout) {
-                          Layout = route.layout;
-                        } else if (route.layout === null) {
-                          Layout = Fragment;
-                        }
-                        return (
-                          <Route
-                            key={index}
-                            path={route.path}
-                            element={
-                              <ProtectedRoute>
+                          if (route.layout) {
+                            Layout = route.layout;
+                          } else if (route.layout === null) {
+                            Layout = Fragment;
+                          }
+                          return (
+                            <Route
+                              key={index}
+                              path={route.path}
+                              element={
                                 <Layout>
                                   <Page />
                                 </Layout>
-                              </ProtectedRoute>
-                            }
-                          />
-                        );
-                      })}
-                      <Route
-                        path="/detailCategory/:name/*"
-                        element={<DetailCategory />}
-                      />
-                      <Route
-                        path="/detailProduct/:id/*"
-                        element={<DetailProduct />}
-                      />
-                    </Routes>
-                    <CartButton />
-                  </div>
-                </Router>
-              </CartProvider>
-            </ProductProvider>
-          </CategoryProvider>
-        </BrandProvider>
-      </ComboProvider>
+                              }
+                            />
+                          );
+                        })}
+                        {privateRoutes.map((route, index) => {
+                          const Page = route.component;
+
+                          let Layout = MainAdminLayout;
+
+                          if (route.layout) {
+                            Layout = route.layout;
+                          } else if (route.layout === null) {
+                            Layout = Fragment;
+                          }
+                          return (
+                            <Route
+                              key={index}
+                              path={route.path}
+                              element={
+                                <ProtectedRoute>
+                                  <Layout>
+                                    <Page />
+                                  </Layout>
+                                </ProtectedRoute>
+                              }
+                            />
+                          );
+                        })}
+                        <Route
+                          path="/detailCategory/:name/*"
+                          element={<DetailCategory />}
+                        />
+                        <Route
+                          path="/detailProduct/:id/*"
+                          element={<DetailProduct />}
+                        />
+                      </Routes>
+                      <CartButton />
+                    </div>
+                  </Router>
+                </CartProvider>
+              </ProductProvider>
+            </CategoryProvider>
+          </BrandProvider>
+        </ComboProvider>
+      </InvoiceProvider>
     </AuthContext.Provider>
   );
 };

@@ -30,7 +30,7 @@ const cx = classNames.bind(styles);
 
 const Combo: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
-
+  
   const [open, setOpen] = useState(false);
   const handleOpenAddForm = () => {
     const swalContainer = document.querySelector(
@@ -58,6 +58,9 @@ const Combo: React.FC<any> = () => {
     brand: { id: number; name: string; image: string };
     event: null;
     status: boolean;
+    discount: number;
+    promotional: number;
+    cost: number;
     category: { id: number; name: string; image: string; status: boolean };
     idBrand: number;
     idCategory: number;

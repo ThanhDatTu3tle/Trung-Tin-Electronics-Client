@@ -97,7 +97,7 @@ const ProductComHome: React.FC<any> = ({ data }) => {
           <div className={cx("product-price")}>
             {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
           </div>
-          <Button primary className={cx("btn")}>
+          <Button primary className={cx("btn")} onClick={handleClick}>
             <FontAwesomeIcon
               icon={faCartShoppingIcon}
               style={{
@@ -166,7 +166,7 @@ const ProductComHome: React.FC<any> = ({ data }) => {
               </div>
             </>
           )}
-          <Button primary className={cx("btn")}>
+          <Button primary className={cx("btn")} onClick={handleClick}>
             <FontAwesomeIcon
               icon={faCartShoppingIcon}
               style={{

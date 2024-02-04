@@ -58,6 +58,15 @@
             }
         }
 
+        .small-title-promotional {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 10%;
+            font-size: 1.2rem;
+        }
+
         .img {
             width: 50%;
             height: auto;

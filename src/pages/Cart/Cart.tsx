@@ -61,6 +61,9 @@ const Cart: React.FC<any> = () => {
       brand: { id: number; name: string; image: string };
       event: null;
       status: boolean;
+      discount: number;
+      promotional: number;
+      cost: number;
       category: { id: number; name: string; image: string; status: boolean };
       idBrand: number;
       idCategory: number;
@@ -264,7 +267,7 @@ const Cart: React.FC<any> = () => {
     const newTotalPrice = products.reduce((total, product) => {
       const cartItem = cartItems.find((item) => item.productId === product.id);
       if (cartItem) {
-        return total + product.price * cartItem.quantityIsSet;
+        return total + (product.promotional !== null ? product.promotional : product.price) * cartItem.quantityIsSet;
       }
   
       return total;

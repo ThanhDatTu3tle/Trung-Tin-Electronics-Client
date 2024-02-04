@@ -19,7 +19,7 @@ import ProductManagementRow from "../../../components/ProductManagementRow";
 
 import { axiosClient } from "../../../axios";
 import ProductService from "../../../service/ProductService";
-import { useBrand } from '../../../Context/BrandContext';
+import { useBrand } from "../../../Context/BrandContext";
 import { useCategory } from "../../../Context/CategoryContext";
 import { useProduct } from "../../../Context/ProductContext";
 import Clock from "../../../components/Clock";
@@ -29,7 +29,7 @@ const cx = classNames.bind(styles);
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 const ProductManagement: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
-  const categories = useCategory(); 
+  const categories = useCategory();
   const products = useProduct();
   const brands = useBrand();
 
@@ -37,21 +37,20 @@ const ProductManagement: React.FC<any> = () => {
 
   // Thêm state cho bộ lọc
   const [statusFilter, setStatusFilter] = useState("all");
+  const [quantityFilter, setQuantityFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [brandFilter, setBrandFilter] = useState("");
 
-  const handleStatusFilterChange = (event: {
+  const handleQuantityFilterChange = (event: {
     target: { value: React.SetStateAction<string> };
   }) => {
-    setStatusFilter(event.target.value);
+    setQuantityFilter(event.target.value);
   };
-
   const handleCategoryFilterChange = (event: {
     target: { value: React.SetStateAction<string> };
   }) => {
     setCategoryFilter(event.target.value);
   };
-
   const handleBrandFilterChange = (event: {
     target: { value: React.SetStateAction<string> };
   }) => {
@@ -71,15 +70,6 @@ const ProductManagement: React.FC<any> = () => {
   };
 
   const [statusProduct, setStatusProduct] = useState("all");
-  const handleStatusAllProduct = () => {
-    setStatusProduct("all");
-  };
-  const handleStatusPublishedProduct = () => {
-    setStatusProduct("published");
-  };
-  const handleStatusHidedProduct = () => {
-    setStatusProduct("hided");
-  };
 
   const [filteredProductsResult, setFilteredProductsResult] = useState<
     {
@@ -89,14 +79,17 @@ const ProductManagement: React.FC<any> = () => {
       specification: { id: number; specification: string }[];
       imageProducts: { id: number; image: string }[];
       price: number;
+      quantity: number;
       brand: { id: number; name: string; image: string };
       event: null;
       status: boolean;
+      discount: number;
+      promotional: number;
+      cost: number;
       category: { id: number; name: string; image: string; status: boolean };
       idBrand: number;
       idCategory: number;
       idEvent: number;
-      quantity: number;
     }[]
   >([]);
   const [initialProducts, setInitialProducts] = useState<
@@ -107,16 +100,41 @@ const ProductManagement: React.FC<any> = () => {
       specification: { id: number; specification: string }[];
       imageProducts: { id: number; image: string }[];
       price: number;
+      quantity: number;
       brand: { id: number; name: string; image: string };
       event: null;
       status: boolean;
+      discount: number;
+      promotional: number;
+      cost: number;
       category: { id: number; name: string; image: string; status: boolean };
       idBrand: number;
       idCategory: number;
       idEvent: number;
-      quantity: number;
     }[]
   >([]);
+
+  const handleStatusAllProduct = () => {
+    let filteredProducts = [...initialProducts];
+    setFilteredProductsResult(filteredProducts);
+    setStatusProduct("all");
+  };
+  const handleStatusPublishedProduct = () => {
+    let filteredProducts = [...initialProducts];
+    filteredProducts = filteredProducts.filter(
+      (product) => product.status === (statusFilter === "all")
+    );
+    setFilteredProductsResult(filteredProducts);
+    setStatusProduct("published");
+  };
+  const handleStatusHidedProduct = () => {
+    let filteredProducts = [...initialProducts];
+    filteredProducts = filteredProducts.filter(
+      (product) => product.status === (statusFilter === "hided")
+    );
+    setFilteredProductsResult(filteredProducts);
+    setStatusProduct("hided");
+  };
 
   useEffect(() => {
     // Thực hiện tìm kiếm và cập nhật danh sách sản phẩm hiển thị ngay lập tức
@@ -149,10 +167,15 @@ const ProductManagement: React.FC<any> = () => {
     // Bắt đầu từ danh sách sản phẩm ban đầu
     let filteredProducts = [...initialProducts];
 
-    // Áp dụng bộ lọc trạng thái sản phẩm
-    if (statusFilter !== "all") {
+    // Áp dụng bộ lọc hàng tồn sản phẩm
+    console.log(quantityFilter)
+    if (quantityFilter === "true") {
       filteredProducts = filteredProducts.filter(
-        (product) => product.status === (statusFilter === "published")
+        (product) => product.quantity > 0
+      );
+    } else if (quantityFilter === "false") {
+      filteredProducts = filteredProducts.filter(
+        (product) => product.quantity === null
       );
     }
 
@@ -197,6 +220,7 @@ const ProductManagement: React.FC<any> = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
+  const [cost, setCost] = useState(0);
   const [images, setImages] = useState<File[]>([]);
   const [specification, setSpecification] = useState<string[]>([]);
 
@@ -211,6 +235,10 @@ const ProductManagement: React.FC<any> = () => {
   ) => {
     setDescription(event.target.value);
   };
+  const handleCostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const costValue = Number(event.target.value);
+    setCost(costValue);
+  }
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const priceValue = Number(event.target.value);
     setPrice(priceValue);
@@ -289,7 +317,9 @@ const ProductManagement: React.FC<any> = () => {
 
     try {
       const { uploadedImages } = await upload(images);
-      const validImages = uploadedImages.filter((link): link is string => link !== null);
+      const validImages = uploadedImages.filter(
+        (link): link is string => link !== null
+      );
       const selectedBrandData = brands.find(
         (brand) => brand.name === selectedBrand
       );
@@ -306,6 +336,7 @@ const ProductManagement: React.FC<any> = () => {
       formData.append("name", name);
       formData.append("description", description);
       formData.append("price", price.toString());
+      formData.append("cost", cost.toString());
       formData.append("idBrand", selectedBrandData.id.toString());
       formData.append("idCategory", selectedCategoryData.id.toString());
       // console.log("validImages: ", validImages);
@@ -542,6 +573,14 @@ const ProductManagement: React.FC<any> = () => {
                     className={cx("input-name")}
                     onChange={handlePriceChange}
                   />
+                  <label htmlFor="price">Giá gốc sản phẩm:</label>
+                  <input
+                    id="cost"
+                    type="number"
+                    placeholder="Giá gốc sản phẩm"
+                    className={cx("input-name")}
+                    onChange={handleCostChange}
+                  />
                   <label htmlFor="brand">Chọn hãng sản xuất:</label>
                   <select
                     id="brand"
@@ -631,14 +670,14 @@ const ProductManagement: React.FC<any> = () => {
             id="stock"
             name="stock"
             className={cx("selector")}
-            value={statusFilter}
-            onChange={handleStatusFilterChange}
+            value={quantityFilter}
+            onChange={handleQuantityFilterChange}
           >
             <option className={cx("option-first")} value="all" disabled>
               Trạng thái hàng tồn
             </option>
-            <option value="published">Còn hàng</option>
-            <option value="hided">Hết hàng</option>
+            <option value="true">Còn hàng</option>
+            <option value="false">Hết hàng</option>
           </select>
 
           <select

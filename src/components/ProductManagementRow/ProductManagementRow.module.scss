@@ -30,6 +30,39 @@
             justify-content: flex-start;
             width: 15%;
         }
+
+        .id-combo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            width: 10%;
+
+            .id {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+            }
+    
+            .combo {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 0;
+                font-size: 0.8rem;
+                width: 100%;
+                height: 1.4rem;
+                text-align: center;
+                border-radius: 1rem;
+                background-color: #FEC806;
+        
+                p {
+                    color: #000;
+                    padding: 1px 5px;
+                }
+            }
+        }
     
         .id {
             display: flex;
@@ -50,6 +83,49 @@
             align-items: center;
             justify-content: center;
             width: 6%;
+        }
+
+        .all-price {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            width: 5%;
+
+            .new-price {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                width: 100%;
+            }
+
+            .old-price {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                width: 100%;
+            }
+
+            .discount {
+                padding: 0;
+                font-size: 0.8rem;
+                width: 8rem;
+                height: 1.5rem;
+                text-align: center;
+                background-color: #ff342d;
+                clip-path: polygon(100% 0, 92% 50%, 100% 99%, 0% 100%, 8% 50%, 0% 0%);
+                cursor: pointer;
+        
+                &:hover {
+                    background-color: #ff453f;
+                }
+        
+                p {
+                    color: #fff;
+                    padding: 2px 5px;
+                }
+            }
+        
         }
 
         .price {

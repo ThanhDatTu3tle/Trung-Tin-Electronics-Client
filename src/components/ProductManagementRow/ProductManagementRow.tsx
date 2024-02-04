@@ -23,6 +23,7 @@ import { axiosClient } from "../../axios";
 import ProductService from "../../service/ProductService";
 import { useBrand } from "../../Context/BrandContext";
 import { useCategory } from "../../Context/CategoryContext";
+import { useCombo } from "../../Context/ComboContext";
 
 const cx = classNames.bind(styles);
 
@@ -31,6 +32,14 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
 
   const brands = useBrand();
   const categories = useCategory();
+  const combos = useCombo();
+  const productComboIds = combos.flatMap((combo) =>
+    combo.detail.map((product) => product.idProduct)
+  );
+  const foundCombo = combos.find((combo) =>
+    combo.detail.some((product) => product.idProduct === data.id)
+  );
+  const comboName = foundCombo ? foundCombo.combo.name : null;
 
   const [state, setState] = useState(data.status);
   const [open, setOpen] = useState(false);
@@ -72,6 +81,7 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
   const [name, setName] = useState<string>(data.name);
   const [description, setDescription] = useState<string>(data.description);
   const [price, setPrice] = useState<number>(data.price);
+  const [cost, setCost] = useState<number>(data.cost);
   const [images, setImages] = useState<File[]>([]);
   // const [imageProducts, setImageProducts] = useState<File[]>(
   //   data.imageProducts.image
@@ -95,6 +105,10 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const priceValue = Number(event.target.value);
     setPrice(priceValue);
+  };
+  const handleCostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const costValue = Number(event.target.value);
+    setCost(costValue);
   };
 
   const upload = async (files: File[]) => {
@@ -191,6 +205,7 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
       formData.append("name", name);
       formData.append("description", description);
       formData.append("price", price.toString());
+      formData.append("cost", cost.toString());
       formData.append("idBrand", selectedBrandData.id.toString());
       formData.append("idCategory", selectedCategoryData.id.toString());
 
@@ -328,12 +343,46 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
           <img className={cx("img")} src={data.imageProducts[0].image} alt="" />
         </div>
         <div className={cx("name")}>{data.name}</div>
-        <div className={cx("id")}>{data.id}</div>
+        {productComboIds.includes(data.id) === true ? (
+          <div className={cx("id-combo")}>
+            <div className={cx("id")}>
+              <b>{data.id}</b>
+            </div>
+            <div className={cx("combo")}>
+              <p>{comboName}</p>
+            </div>
+          </div>
+        ) : (
+          <div className={cx("id")}>
+            <b>{data.id}</b>
+          </div>
+        )}
         <div className={cx("category")}>{data.category.name}</div>
         <div className={cx("brand")}>{data.brand.name}</div>
-        <div className={cx("price")}>
-          {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
-        </div>
+        {data.promotional === null ? (
+          <div className={cx("price")}>
+            {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+          </div>
+        ) : (
+          <div className={cx("all-price")}>
+            <div className="new-price">
+              <b>
+                {data.promotional
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                đ
+              </b>
+            </div>
+            <div className={cx("old-price")}>
+              <s>
+                {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+              </s>
+            </div>
+            <div className={cx("discount")}>
+              <p>Khuyến mãi {data.discount}%</p>
+            </div>
+          </div>
+        )}
         {data.quantity !== 0 && data.quantity !== null ? (
           <div className={cx("wrapper-stock")}>
             <div
@@ -518,6 +567,14 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                       className={cx("input-name")}
                       onChange={handlePriceChange}
                     />
+                    <label htmlFor="price">Chỉnh sửa giá gốc sản phẩm:</label>
+                    <input
+                      id="cost"
+                      type="number"
+                      value={cost}
+                      className={cx("input-name")}
+                      onChange={handleCostChange}
+                    />
                     <label htmlFor="brand">Chỉnh sửa hãng sản xuất:</label>
                     <select
                       id="brand"
@@ -576,25 +633,25 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                     <br />
                     <label htmlFor="image">Thêm hình ảnh mới:</label>
                     <input
-                        id="image"
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        name="image"
-                        onChange={handleImageUpload}
+                      id="image"
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      name="image"
+                      onChange={handleImageUpload}
                     />
                     <br />
-                    <label htmlFor="specification">Chỉnh sửa thông số cho sản phẩm:</label>
+                    <label htmlFor="specification">
+                      Chỉnh sửa thông số cho sản phẩm:
+                    </label>
                     <textarea
-                        id="specification"
-                        name="specification"
-                        value={
-                            data.specification.map((spec: { specification: any; }) => (
-                                spec.specification
-                            ))
-                        }
-                        onChange={handleSpecChange}
-                        rows={5}
+                      id="specification"
+                      name="specification"
+                      value={data.specification.map(
+                        (spec: { specification: any }) => spec.specification
+                      )}
+                      onChange={handleSpecChange}
+                      rows={5}
                     />
                   </div>
                 </div>

@@ -6,7 +6,6 @@ import withReactContent from "sweetalert2-react-content";
 import "sweetalert2/dist/sweetalert2.min.css";
 import Backdrop from "@mui/material/Backdrop";
 
-import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleInfo,
@@ -52,7 +51,9 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
       const product = products.find(
         (product: { id: string }) => product.id === item.idProduct
       );
-      if (product && product.price) {
+      if (product && product.promotional) {
+        return product.promotional * item.number;
+      } else if (product && product.price && product.promotional === null) {
         return product.price * item.number;
       }
       return 0;
@@ -197,9 +198,7 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
             Đang giao hàng
           </div>
         )}
-        <div className={cx("content")}>
-            {data.content}
-        </div>
+        <div className={cx("content")}>{data.content}</div>
         <div
           className={cx("time")}
         >{`${day}/${month}/${year} ${hours}:${minutes}:${seconds}`}</div>
@@ -340,35 +339,74 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                             ).id}
                         </div>
                         <div className={cx("quantity")}>{item.number}</div>
-                        <div className={cx("price")}>
-                          {products.find(
-                            (product: { id: string }) =>
-                              product.id === item.idProduct
-                          ) &&
-                            products
-                              .find(
+                        {products.find(
+                          (product: { id: string }) =>
+                            product.id === item.idProduct
+                        ).promotional === null ? (
+                          <>
+                            <div className={cx("price")}>
+                              {products.find(
                                 (product: { id: string }) =>
                                   product.id === item.idProduct
-                              )
-                              .price.toString()
-                              .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
-                          đ
-                        </div>
-                        <div className={cx("total")}>
-                          {products.find(
-                            (product: { id: string }) =>
-                              product.id === item.idProduct
-                          ) &&
-                            (
-                              products.find(
+                              ) &&
+                                products
+                                  .find(
+                                    (product: { id: string }) =>
+                                      product.id === item.idProduct
+                                  )
+                                  .price.toString()
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                              đ
+                            </div>
+                            <div className={cx("total")}>
+                              {products.find(
                                 (product: { id: string }) =>
                                   product.id === item.idProduct
-                              ).price * item.number
-                            )
-                              .toString()
-                              .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
-                          đ
-                        </div>
+                              ) &&
+                                (
+                                  products.find(
+                                    (product: { id: string }) =>
+                                      product.id === item.idProduct
+                                  ).price * item.number
+                                )
+                                  .toString()
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                              đ
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className={cx("price")}>
+                              {products.find(
+                                (product: { id: string }) =>
+                                  product.id === item.idProduct
+                              ) &&
+                                products
+                                  .find(
+                                    (product: { id: string }) =>
+                                      product.id === item.idProduct
+                                  )
+                                  .promotional.toString()
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                              đ
+                            </div>
+                            <div className={cx("total")}>
+                              {products.find(
+                                (product: { id: string }) =>
+                                  product.id === item.idProduct
+                              ) &&
+                                (
+                                  products.find(
+                                    (product: { id: string }) =>
+                                      product.id === item.idProduct
+                                  ).promotional * item.number
+                                )
+                                  .toString()
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                              đ
+                            </div>
+                          </>
+                        )}
                       </div>
                     )
                   )}

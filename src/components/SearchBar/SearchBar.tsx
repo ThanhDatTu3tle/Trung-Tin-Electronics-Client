@@ -25,14 +25,17 @@ const SearchBar: React.FC<any> = ({ placeholder, data }) => {
       specification: { id: number; specification: string }[];
       imageProducts: { id: number; image: string }[];
       price: number;
+      quantity: number;
       brand: { id: number; name: string; image: string };
       event: null;
       status: boolean;
+      discount: number;
+      promotional: number;
+      cost: number;
       category: { id: number; name: string; image: string; status: boolean };
       idBrand: number;
       idCategory: number;
       idEvent: number;
-      quantity: number;
     }[]
   >([]);
   const [wordEntered, setWordEntered] = useState("");

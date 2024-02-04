@@ -17,7 +17,6 @@ const routes = {
     refund: "/chinh-sach-hoan-tien",
 
     admin: "/admin",
-    product: "/product",
         productManagement: "/management",
         productDiscount: "/discount",
     category: "/category",

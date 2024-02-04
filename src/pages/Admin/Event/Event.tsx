@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import classNames from "classnames/bind";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -15,6 +15,7 @@ import { useBrand } from "../../../Context/BrandContext";
 import { useCategory } from "../../../Context/CategoryContext";
 import { useProduct } from "../../../Context/ProductContext";
 import { useCombo } from "../../../Context/ComboContext";
+import ProductService from "../../../service/ProductService";
 
 import ProductDiscountComponent from "../../../components/ProductDiscountComponent";
 import Clock from "../../../components/Clock";
@@ -27,11 +28,9 @@ const cx = classNames.bind(styles);
 
 const Event: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
-  const comboChecked = localStorage.getItem("combo") || [];
-  console.log(comboChecked.length);
 
   const [open, setOpen] = useState(false);
-  const handleCloseAddForm = () => setOpen(false);
+  // const handleCloseAddForm = () => setOpen(false);
   const handleOpenAddForm = () => {
     const swalContainer = document.querySelector(
       ".swal2-container"
@@ -39,15 +38,34 @@ const Event: React.FC<any> = () => {
     if (swalContainer) {
       swalContainer.style.zIndex = "99999";
     }
-    if (comboChecked.length !== 0) {
-      setOpen(true);
-    }
+    setOpen(true);
   };
 
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [, setCost] = useState("");
-  const [, setPrice] = useState("");
+  const [price, setPrice] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [eventChosens, setEventChosens] = useState<
+  {
+    id: string;
+    name: string;
+    description: string;
+    specification: { id: number; specification: string }[];
+    imageProducts: { id: number; image: string }[];
+    price: number;
+    quantity: number;
+    brand: { id: number; name: string; image: string };
+    event: null;
+    status: boolean;
+    discount: number;
+    promotional: number;
+    cost: number;
+    category: { id: number; name: string; image: string; status: boolean };
+    idBrand: number;
+    idCategory: number;
+    idEvent: number;
+  }[]
+  >([]);
 
   const brands = useBrand();
   const categories = useCategory();
@@ -75,6 +93,60 @@ const Event: React.FC<any> = () => {
     setCategory0(!category0);
     setCategoryChanged(false);
   };
+
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [sumPriceProductsChosen, setSumPriceProductsChosen] = useState(0);
+  const comboProductChosen = JSON.parse(localStorage.getItem("combo") || "[]");
+
+  useEffect(() => {    
+    const fetchProductDetails = async (productId: string) => {
+      try {
+        const res = await ProductService.GetProduct(productId);
+        return res.data;
+      } catch (error) {
+        return null;
+      }
+    };
+
+    const fetchAllProductDetails = async () => {
+      const productDetails = await Promise.all(
+        comboProductChosen.map(async (productId: string) => {
+          const productDetail = await fetchProductDetails(productId);
+          if (productDetail) {
+            return {
+              ...productDetail,
+            };
+          }
+          return null;
+        })
+      );
+
+      const updatedComboChosens = productDetails.filter(
+        (chosenProduct) => chosenProduct !== null
+      );
+
+      setEventChosens(updatedComboChosens);
+      // setComboChosenIds(comboChosens.id);
+      setIsLoadingProducts(false);
+      setSumPriceProductsChosen(updatedComboChosens.reduce((accumulator, currentProduct) => {
+        return accumulator + currentProduct.price;
+      }, 0));
+    }
+
+    if (isLoadingProducts) {
+      fetchAllProductDetails();
+    }
+  }, [isLoadingProducts, comboProductChosen]);
+
+  const handleCloseAddForm = () => {
+    localStorage.removeItem('combo');
+    if (comboProductChosen.length > 0) {
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+    setOpen(false);
+  }
 
   const linkRef = React.useRef<HTMLAnchorElement>(null);
 
@@ -121,11 +193,13 @@ const Event: React.FC<any> = () => {
       upload(file);
     }
   };
-  const handleCostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCost(event.target.value);
-  };
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPrice(event.target.value);
+    const priceValue = Number(event.target.value);
+    setPrice(priceValue);
+  };
+  const handlePercentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const percentValue = Number(event.target.value);
+    setDiscount(percentValue);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -190,6 +264,20 @@ const Event: React.FC<any> = () => {
     }
   };
 
+  const handleConfirmEvent = () => {
+    MySwal.fire({
+      title: "Khởi tạo combo mới thành công!",
+      icon: "success",
+      didOpen: () => {
+        MySwal.showLoading();
+      },
+      timer: 1500,
+    });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
@@ -210,7 +298,7 @@ const Event: React.FC<any> = () => {
           </div>
           <div className={cx("add-btn")}>
             <Button primary small onClick={handleOpenAddForm}>
-              Thêm sự kiện giảm giá
+              Thêm sự kiện 
             </Button>
             <Backdrop sx={{ color: "#fff", zIndex: 9 }} open={open}>
               <div className={cx("add-form")}>
@@ -248,25 +336,37 @@ const Event: React.FC<any> = () => {
                       name="image"
                       onChange={handleImageUpload}
                     />
-                    <br />
-                    <label>Giá gốc sản phẩm:</label>
+                    <div className={cx("show-image")}>
+                      <Image src={imageUrl} />
+                    </div>
+                    <label>Tổng giá gốc sản phẩm:</label>
                     <input
                       type="number"
-                      placeholder="Giá gốc sản phẩm"
+                      placeholder="Tổng giá gốc sản phẩm"
                       className={cx("input-name")}
-                      onChange={handleCostChange}
+                      value={sumPriceProductsChosen}
                     />
                     <br />
-                    <label>Giá combo sản phẩm:</label>
-                    <input
-                      type="number"
-                      placeholder="Giá combo"
-                      className={cx("input-name")}
-                      onChange={handlePriceChange}
-                    />
-                  </div>
-                  <div className={cx("show-image")}>
-                    <Image src={imageUrl} />
+                    <div className={cx("new-price-percent")}>
+                      <div className={cx("new-price")}>
+                        <label>Giá combo sản phẩm mới:</label>
+                        <input
+                          type="number"
+                          placeholder="Giá combo sản phẩm mới"
+                          className={cx("input-name")}
+                          onChange={handlePriceChange}
+                        />
+                      </div>
+                      <div className={cx("percent")}>
+                        <label>Phần trăm giảm giá:</label>
+                        <input
+                          type="number"
+                          placeholder="Phần trăm giảm giá"
+                          className={cx("input-name")}
+                          onChange={handlePercentChange}
+                        />
+                      </div> 
+                    </div>
                   </div>
                   <Button primary small>
                     Xác nhận
@@ -274,6 +374,11 @@ const Event: React.FC<any> = () => {
                 </form>
               </div>
             </Backdrop>
+          </div>
+          <div className={cx("confirm-btn")}>
+            <Button outline small onClick={handleConfirmEvent}>
+              Xác nhận
+            </Button>
           </div>
         </div>
       </div>

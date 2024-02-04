@@ -14,7 +14,6 @@ import {
     faCaretRight, 
     faSortDown, 
     faListCheck, 
-    faFilter,
     faPercent,
     faFileInvoice,
     faFileInvoiceDollar,
@@ -73,7 +72,6 @@ const SideNav: React.FC = () => {
                         </div>
                         <div className={cx('children')}>
                             <TitleItem title='Quản lý sản phẩm' to={config.routes.productManagement} icon={faListCheck} />
-                            <TitleItem title='Bộ lọc sản phẩm' to={config.routes.product} icon={faFilter} />
                             <TitleItem title='Khuyến mãi sản phẩm' to={config.routes.productDiscount} icon={faPercent} />
                         </div>       
                     </>
