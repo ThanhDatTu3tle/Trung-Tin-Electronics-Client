@@ -3,7 +3,7 @@ import queryString from 'query-string';
 
 // const baseUrl = `http://localhost:8080/api/v1/`;
 // console.log(baseUrl);
-const baseUrl = `https://4e42-27-3-233-29.ngrok-free.app/api/v1/`;
+const baseUrl = `https://3fca-27-3-232-145.ngrok-free.app/api/v1/`;
 const getToken = () => localStorage.getItem('token');
 
 const axiosClient = axios.create({
