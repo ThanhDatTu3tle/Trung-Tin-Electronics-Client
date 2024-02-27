@@ -13,12 +13,23 @@ import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import styles from "./ProductComponent.module.scss";
 import Button from "../Button";
 
+import { useCombo } from "../../Context/ComboContext";
+
 const faCartShoppingIcon = faCartShopping as IconProp;
 
 const cx = classNames.bind(styles);
 
 const ProductComponent: React.FC<any> = ({ data }) => {
   const MySwal = withReactContent(Swal);
+
+  const combos = useCombo();
+  const productComboIds = combos.flatMap((combo) =>
+    combo.detail.map((product) => product.idProduct)
+  );
+  const foundCombo = combos.find((combo) =>
+    combo.detail.some((product) => product.idProduct === data.id)
+  );
+  const comboName = foundCombo ? foundCombo.combo.name : null;
 
   const handleClick = async () => {
     if (!localStorage.getItem("seen")) {
@@ -42,63 +53,139 @@ const ProductComponent: React.FC<any> = ({ data }) => {
     window.location.href = `/detailProduct/${data.id}`;
   };
 
+  const handleClickCombo = async () => {
+    await MySwal.fire({
+      title: "Đang tải...",
+      didOpen: () => {
+        MySwal.showLoading();
+      },
+      timer: 1000,
+    });
+
+    window.location.href = `/detailProduct/${comboName}`;
+  };
+
   return (
     <div className={cx(`wrapper`)} onClick={handleClick}>
-      <div className={cx("inner")}>
-        <div className={cx("image")}>
-          {data.imageProducts && data.imageProducts.length > 0 && (
-            <LazyLoadImage
-              src={data.imageProducts[0].image}
-              effect="blur"
-              width="100%"
-              height="100%"
-            />
+      {productComboIds.includes(data.id) === true ? (
+        <div className={cx("inner")}>
+          <div className={cx("image")} onClick={handleClick}>
+            {data.imageProducts && data.imageProducts.length > 0 && (
+              <LazyLoadImage
+                src={data.imageProducts[0].image}
+                effect="blur"
+                width="100%"
+                height="auto"
+              />
+            )}
+          </div>
+          {data.discount === null ? (
+            <></>
+          ) : (
+            <div className={cx("discount")} onClick={handleClickCombo}>
+              <p>Khuyến mãi {data.discount}%</p>
+            </div>
           )}
+          <div className={cx("combo")} onClick={handleClickCombo}>
+            <p>{comboName}</p>
+          </div>
+          <div className={cx("name")} onClick={handleClick}>
+            <p>
+              {data.name} {data.id}
+            </p>
+          </div>
+          <div className={cx("specifications")}>
+            {data.specification.slice(0, 3).map((content: any) => (
+              <div key={content.id} className={cx("specification")}>
+                {content.specification}
+              </div>
+            ))}
+          </div>
+          <div className={cx("product-price")}>
+            {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+          </div>
+          <Button primary className={cx("btn")} onClick={handleClick}>
+            <FontAwesomeIcon
+              icon={faCartShoppingIcon}
+              style={{
+                color: "#fff",
+                marginRight: "1rem",
+                fontSize: "1rem",
+              }}
+            />
+            Đặt hàng
+          </Button>
         </div>
-        <div className={cx("name")}>
-          <p>
-            {data.name} {data.id}
-          </p>
-        </div>
-        <div className={cx("specifications")}>
-          {data.specification.slice(0, 3).map((content: any) => (
-            <div key={content.id} className={cx("specification")}>
-              {content.specification}
+      ) : (
+        <div className={cx("inner")}>
+          <div className={cx("image")} onClick={handleClick}>
+            {data.imageProducts && data.imageProducts.length > 0 && (
+              <LazyLoadImage
+                src={data.imageProducts[0].image}
+                effect="blur"
+                width="100%"
+                height="auto"
+              />
+            )}
+          </div>
+          {data.discount === null ? (
+            <></>
+          ) : (
+            <div className={cx("discount")} onClick={handleClickCombo}>
+              <p>Khuyến mãi {data.discount}%</p>
             </div>
-          ))}
-        </div>
-        {data.event === null ? (
-          <>
-            <div className={cx("product-price")}>
-              {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
-            </div>
-          </>
-        ) : (
-          <>
-            <div className={cx("product-price-sale")}>
-              <div className={cx("price-sale")}>
+          )}
+          <div className={cx("name")} onClick={handleClick}>
+            <p>
+              {data.name} {data.id}
+            </p>
+          </div>
+          <div className={cx("specifications")}>
+            {data.specification.slice(0, 3).map((content: any) => (
+              <div key={content.id} className={cx("specification")}>
+                {content.specification}
+              </div>
+            ))}
+          </div>
+          {data.promotional === null ? (
+            <>
+              <div className={cx("product-price")}>
                 {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
               </div>
-              <div className={cx("price-origin")}>
-                <s>
-                  {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
-                </s>
+            </>
+          ) : (
+            <>
+              <div className={cx("product-price-sale")}>
+                <div className={cx("price-origin")}>
+                  <s>
+                    {data.price
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                    đ
+                  </s>
+                </div>
+                <div className={cx("price-sale")}>
+                  {data.promotional
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                  đ
+                </div>
               </div>
-            </div>
-          </>
-        )}
-        <Button primary className={cx("btn")}>
-          <FontAwesomeIcon
-            icon={faCartShoppingIcon}
-            style={{
-              color: "#fff",
-              marginRight: "1rem",
-              fontSize: "1rem",
-            }}
-          />
-          Đặt hàng
-        </Button>
-      </div>
+            </>
+          )}
+          <Button primary className={cx("btn")} onClick={handleClick}>
+            <FontAwesomeIcon
+              icon={faCartShoppingIcon}
+              style={{
+                color: "#fff",
+                marginRight: "1rem",
+                fontSize: "1rem",
+              }}
+            />
+            Đặt hàng
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

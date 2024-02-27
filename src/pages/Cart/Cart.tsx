@@ -13,6 +13,34 @@ import Button from "../../components/Button";
 import { axiosClient } from "../../axios";
 import { useCart } from "../../Context/CartContext";
 
+import provincesData from "../../assets/data/provinces_vietnam.json";
+
+interface Ward {
+  name: string;
+  code: number;
+  codename: string;
+  division_type: string;
+  short_codename: string;
+}
+
+interface District {
+  name: string;
+  code: number;
+  codename: string;
+  division_type: string;
+  short_codename: string;
+  wards: Ward[];
+}
+
+interface Province {
+  name: string;
+  code: number;
+  codename: string;
+  division_type: string;
+  phone_code: number;
+  districts: District[];
+}
+
 const cx = classNames.bind(styles);
 
 let screenWidth = window.innerWidth;
@@ -40,13 +68,15 @@ const Cart: React.FC<any> = () => {
   } = {};
   const [errors, setErrors] = useState(emptyData);
   const [errorsVisibleFullName, setErrorsVisibleFullName] = useState(true);
-  const [errorsVisiblePhoneNumber, setErrorsVisiblePhoneNumber] = useState(true);
+  const [errorsVisiblePhoneNumber, setErrorsVisiblePhoneNumber] =
+    useState(true);
   const [errorsVisibleEmail, setErrorsVisibleEmail] = useState(true);
   const [errorsVisibleProvinces, setErrorsVisibleProvinces] = useState(true);
   const [errorsVisibleDistricts, setErrorsVisibleDistricts] = useState(true);
   const [errorsVisibleWards, setErrorsVisibleWards] = useState(true);
   const [errorsVisibleAddress, setErrorsVisibleAddress] = useState(true);
-  const [errorsVisibleMethodPayment, setErrorsVisibleMethodPayment] = useState(true);
+  const [errorsVisibleMethodPayment, setErrorsVisibleMethodPayment] =
+    useState(true);
 
   const [products, setProducts] = useState<
     {
@@ -78,38 +108,14 @@ const Cart: React.FC<any> = () => {
   const [fullName, setFullName] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [provinces, setProvinces] = useState<
-    {
-      name: string;
-      code: number;
-      division_type: string;
-      codename: string;
-      phone_code: number;
-    }[]
-  >([]);
-  const [districts, setDistricts] = useState<
-    {
-      name: string;
-      code: number;
-      division_type: string;
-      codename: string;
-      province_code: number;
-    }[]
-  >([]);
-  const [wards, setWards] = useState<
-    {
-      name: string;
-      code: number;
-      division_type: string;
-      codename: string;
-      district_code: number;
-    }[]
-  >([]);
+  const [provinces, setProvinces] = useState<Province[]>([]);
+  const [districts, setDistricts] = useState<District[]>([]);
+  const [wards, setWards] = useState<Ward[]>([]);
   const [address, setAddress] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [selectedWard, setSelectedWard] = useState<string>("");
-  const [selectedDistrict, setSelectedDistrict] = useState<string>("");
-  const [selectedProvince, setSelectedProvince] = useState<string>("");
+  const [selectedDistrict, setSelectedDistrict] = useState<number>(0);
+  const [selectedProvince, setSelectedProvince] = useState<number>(0);
   const [selectedOption, setSelectedOption] = useState<string>("");
 
   const handleFullNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,80 +136,37 @@ const Cart: React.FC<any> = () => {
       setErrorsVisibleEmail(false);
     }
   };
-  useEffect(() => {
-    const fetchProvinces = async () => {
-      try {
-        const responseProvinces = await fetch(
-          "https://provinces.open-api.vn/api/p"
-        );
-        const dataProvinces = await responseProvinces.json();
-        setProvinces(dataProvinces);
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
-    fetchProvinces();
+  useEffect(() => {
+    setProvinces(provincesData);
   }, []);
-  const handleProvinceChange = async (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handleProvinceChange = (event: { target: { value: any } }) => {
     const selectedProvinceCode = Number(event.target.value);
+    setSelectedProvince(selectedProvinceCode);
 
-    try {
-      const response = await fetch(`https://provinces.open-api.vn/api/d`);
-      const data = await response.json();
-
-      const selectedDistricts = data.filter(
-        (district: { province_code: number }) =>
-          district.province_code === selectedProvinceCode
-      );
-
-      setDistricts(selectedDistricts);
-      setSelectedProvince(event.target.value);
-      setErrorsVisibleProvinces(false);
-      setSelectedDistrict("");
+    const selectedProvinceData = provinces.find(
+      (province) => province.code === selectedProvinceCode
+    );
+    if (selectedProvinceData) {
+      setDistricts(selectedProvinceData.districts);
       setWards([]);
-    } catch (error) {
-      console.error(error);
     }
+
+    setErrorsVisibleProvinces(false);
   };
-  useEffect(() => {
-    const fetchDistricts = async () => {
-      try {
-        const responseDistricts = await fetch(
-          "https://provinces.open-api.vn/api/w"
-        );
-        const dataDistricts = await responseDistricts.json();
 
-        setDistricts(dataDistricts);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchDistricts();
-  }, []);
-  const handleDistrictChange = async (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handleDistrictChange = (event: { target: { value: any } }) => {
     const selectedDistrictCode = Number(event.target.value);
+    setSelectedDistrict(selectedDistrictCode);
 
-    try {
-      const response = await fetch(`https://provinces.open-api.vn/api/w`);
-      const data = await response.json();
-
-      const selectedWards = data.filter(
-        (ward: { district_code: number }) =>
-          ward.district_code === selectedDistrictCode
-      );
-
-      setWards(selectedWards);
-      setSelectedDistrict(event.target.value);
-      setErrorsVisibleDistricts(false);
-    } catch (error) {
-      console.error(error);
+    const selectedDistrictData = districts.find(
+      (district) => district.code === selectedDistrictCode
+    );
+    if (selectedDistrictData) {
+      setWards(selectedDistrictData.wards);
     }
+
+    setErrorsVisibleDistricts(false);
   };
   const handleWardChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedWard(event.target.value);
@@ -260,16 +223,19 @@ const Cart: React.FC<any> = () => {
     if (isLoadingProducts) {
       fetchAllProductDetails();
     }
-
   }, [cartData, isLoadingProducts]);
 
   useEffect(() => {
     const newTotalPrice = products.reduce((total, product) => {
       const cartItem = cartItems.find((item) => item.productId === product.id);
       if (cartItem) {
-        return total + (product.promotional !== null ? product.promotional : product.price) * cartItem.quantityIsSet;
+        return (
+          total +
+          (product.promotional !== null ? product.promotional : product.price) *
+            cartItem.quantityIsSet
+        );
       }
-  
+
       return total;
     }, 0);
     setTotalPrice(newTotalPrice);
@@ -299,8 +265,8 @@ const Cart: React.FC<any> = () => {
     fullName: string;
     phoneNumber: string;
     email: string;
-    selectedProvince: string;
-    selectedDistrict: string;
+    selectedProvince: number;
+    selectedDistrict: number;
     selectedWard: string;
     address: string;
     selectedOption: string;
@@ -363,7 +329,7 @@ const Cart: React.FC<any> = () => {
 
     setErrors(newErrors);
 
-    return Object.values(newErrors).every(error => error === "");
+    return Object.values(newErrors).every((error) => error === "");
   };
 
   const handleOrder = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -452,6 +418,23 @@ const Cart: React.FC<any> = () => {
     }
   };
 
+  // const startPollingForNewOrders = () => {
+  //   const pollingInterval = setInterval(async () => {
+  //       try {
+  //           // Gửi yêu cầu kiểm tra có đơn hàng mới từ server
+  //           const response = await axios.get("/api/orders");
+
+  //           // Xử lý dữ liệu đơn hàng mới từ server
+  //           console.log("Dữ liệu đơn hàng mới:", response.data);
+
+  //           // Dừng Polling khi nhận được dữ liệu mới
+  //           clearInterval(pollingInterval);
+  //       } catch (error) {
+  //           console.error("Lỗi khi kiểm tra đơn hàng mới:", error);
+  //       }
+  //   }, 5000); // Polling sau mỗi 5 giây
+  // };
+
   return (
     <div className={cx("wrapper")}>
       <h3>GIỎ HÀNG</h3>
@@ -485,7 +468,7 @@ const Cart: React.FC<any> = () => {
       <div className={cx("result")}>
         <p className={cx("price")}>
           Tổng giá trị đơn hàng:{" "}
-          {totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+          <b>{totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</b>
         </p>
       </div>
       <br />

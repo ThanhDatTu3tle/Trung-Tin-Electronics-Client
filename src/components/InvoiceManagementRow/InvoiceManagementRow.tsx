@@ -46,6 +46,19 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
     setOpen(true);
   };
 
+  // const totalOriginProducts = data.invoiceDetail.map(
+  //   (item: { idProduct: any; number: number }) => {
+  //     const product = products.find(
+  //       (product: { id: string }) => product.id === item.idProduct
+  //     );
+  //     if (product && product.price) {
+  //       return product.price * item.number;
+  //     } else {
+  //       return 0;
+  //     }
+  //   }
+  // );
+
   const totalForProducts = data.invoiceDetail.map(
     (item: { idProduct: any; number: number }) => {
       const product = products.find(
@@ -60,7 +73,22 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
     }
   );
 
+  // const priceDiscount = data.invoiceDetail.map(
+  //   (item: { idProduct: any; number: number }) => {
+  //     const product = products.find(
+  //       (product: { id: string }) => product.id === item.idProduct
+  //     );
+  //     if (product && product.promotional) {
+  //       return (product.price - product.promotional) * item.number;
+  //     } else {
+  //       return 0;
+  //     }
+  //   }
+  // );
+
+  // const totalPrice = totalOriginProducts.reduce((a: any, b: any) => a + b, 0);
   const total = totalForProducts.reduce((a: any, b: any) => a + b, 0);
+  // const totalPriceDiscount = priceDiscount.reduce((a: any, b: any) => a + b, 0);
 
   const handlePrint = async () => {
     try {
@@ -101,6 +129,8 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
     }
   };
 
+  const handleCancel = async () => {};
+
   const handleConfirm = async () => {
     try {
       if (data.confirm === false) {
@@ -139,7 +169,7 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
       });
     }
   };
-
+  
   return (
     <div className={cx("wrapper")}>
       <div className={cx("content")}>
@@ -303,6 +333,7 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                       number: number;
                       id: string;
                       idProduct: string;
+                      idInvoice: number;
                     }) => (
                       <div className={cx("information")} key={item.id}>
                         <div className={cx("image")}>
@@ -328,7 +359,7 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                               (product: { id: string }) =>
                                 product.id === item.idProduct
                             ).name}
-                          -
+                          <pre> </pre>
                           {products.find(
                             (product: { id: string }) =>
                               product.id === item.idProduct
@@ -340,6 +371,10 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                         </div>
                         <div className={cx("quantity")}>{item.number}</div>
                         {products.find(
+                          (product: { id: string }) =>
+                            product.id === item.idProduct
+                        ) &&
+                        products.find(
                           (product: { id: string }) =>
                             product.id === item.idProduct
                         ).promotional === null ? (
@@ -381,6 +416,10 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                                 (product: { id: string }) =>
                                   product.id === item.idProduct
                               ) &&
+                                products.find(
+                                  (product: { id: string }) =>
+                                    product.id === item.idProduct
+                                ) &&
                                 products
                                   .find(
                                     (product: { id: string }) =>
@@ -389,6 +428,20 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                                   .promotional.toString()
                                   .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                               đ
+                              <s style={{ color: "gray" }}>
+                                {products.find(
+                                  (product: { id: string }) =>
+                                    product.id === item.idProduct
+                                ) &&
+                                  products
+                                    .find(
+                                      (product: { id: string }) =>
+                                        product.id === item.idProduct
+                                    )
+                                    .price.toString()
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                                đ
+                              </s>
                             </div>
                             <div className={cx("total")}>
                               {products.find(
@@ -406,6 +459,60 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                               đ
                             </div>
                           </>
+                          // <>
+                          //   {products.find(
+                          //     (product: { id: string }) =>
+                          //       product.id === item.idProduct
+                          //   ).promotional !== undefined ? (
+                          //     <>
+                          //       <div className={cx("price")}>
+                          //         {products.find(
+                          //           (product: { id: string }) =>
+                          //             product.id === item.idProduct
+                          //         ).promotional !== undefined &&
+                          //           products
+                          //             .find(
+                          //               (product: { id: string }) =>
+                          //                 product.id === item.idProduct
+                          //             )
+                          //             .promotional.toString()
+                          //             .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                          //         đ
+                          //         <s style={{ color: "gray" }}>
+                          //           {products.find(
+                          //             (product: { id: string }) =>
+                          //               product.id === item.idProduct
+                          //           ) &&
+                          //             products
+                          //               .find(
+                          //                 (product: { id: string }) =>
+                          //                   product.id === item.idProduct
+                          //               )
+                          //               .price.toString()
+                          //               .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                          //           đ
+                          //         </s>
+                          //       </div>
+                          //       <div className={cx("total")}>
+                          //         {products.find(
+                          //           (product: { id: string }) =>
+                          //             product.id === item.idProduct
+                          //         ).promotional !== undefined &&
+                          //           (
+                          //             products.find(
+                          //               (product: { id: string }) =>
+                          //                 product.id === item.idProduct
+                          //             ).promotional * item.number
+                          //           )
+                          //             .toString()
+                          //             .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                          //         đ
+                          //       </div>
+                          //     </>
+                          //   ) : (
+                          //     <></>
+                          //   )}
+                          // </>
                         )}
                       </div>
                     )
@@ -416,7 +523,7 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                 <div className={cx("total-bill-left")}>
                   <b>Tổng tiền đơn hàng: </b>
                   <b>Thuế (0%): </b>
-                  <b>Giảm giá (0%): </b>
+                  <b>Giảm giá: </b>
                   <br />
                   <p
                     style={{
@@ -431,9 +538,19 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                 <div className={cx("total-bill-right")}>
                   <b>
                     {total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+                    {/* {totalPrice
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                    đ */}
                   </b>
                   <p>0đ</p>
-                  <p>0đ</p>
+                  <p>
+                    -
+                    {/* {totalPriceDiscount
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ".")} */}
+                    0 đ
+                  </p>
                   <br />
                   <p
                     style={{
@@ -449,9 +566,14 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
               <br />
               {data.status === false ? (
                 <>
-                  <Button primary small onClick={handlePrint}>
-                    In hóa đơn
-                  </Button>
+                  <div className={cx("btns")}>
+                    <Button primary small onClick={handlePrint}>
+                      In hóa đơn
+                    </Button>
+                    <Button outline small onClick={handleCancel}>
+                      Hủy đơn hàng
+                    </Button>
+                  </div>
                 </>
               ) : (
                 <>

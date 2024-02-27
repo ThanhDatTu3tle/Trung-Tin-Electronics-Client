@@ -18,7 +18,7 @@ const ProductCombo: React.FC<any> = ({ data }) => {
         </div>
         <div className={cx("content")}>
           <div className={cx("name")}>
-            {data.name} {data.id}
+            {data.name} {data.id} 
           </div>
           <div className={cx("product-price")}>
             {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ

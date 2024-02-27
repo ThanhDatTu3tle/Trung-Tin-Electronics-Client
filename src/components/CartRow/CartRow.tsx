@@ -55,8 +55,8 @@ const CartRow: React.FC<any> = ({ data, onDeleteProduct }) => {
           </div>
         ) : (
           <div className={cx("small-title-promotional")}>
-            {data.promotional.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
-            <s>{data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</s>
+            <b>{data.promotional.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</b>
+            <s style={{ color: "gray"}}>{data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</s>
           </div>
         )}
 
@@ -101,17 +101,19 @@ const CartRow: React.FC<any> = ({ data, onDeleteProduct }) => {
         )}
         {data.promotional === null ? (
           <div className={cx("small-title")}>
-            {(data.price * count)
+            <b>{(data.price * count)
               .toString()
               .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
             đ
+            </b>
           </div>
         ) : (
           <div className={cx("small-title")}>
-            {(data.promotional * count)
+            <b>{(data.promotional * count)
               .toString()
               .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
             đ
+            </b>
           </div>
         )}
 

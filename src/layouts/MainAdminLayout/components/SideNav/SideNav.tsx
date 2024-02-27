@@ -5,7 +5,7 @@ import classNames from "classnames/bind";
 import styles from './SideNav.module.scss';
 import Titles, { TitleItem } from '../SideNav/Menu';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
     faChartLine, 
     faCodeBranch, 

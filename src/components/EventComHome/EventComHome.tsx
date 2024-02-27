@@ -6,11 +6,11 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
-import styles from "./ComboComHome.module.scss";
+import styles from "./EventComHome.module.scss";
 
 const cx = classNames.bind(styles);
 
-const ComboComHome: React.FC<any> = ({ data }) => {
+const EventComHome: React.FC<any> = ({ data }) => {
   const MySwal = withReactContent(Swal);
 
   const handleClick = async () => {
@@ -44,4 +44,4 @@ const ComboComHome: React.FC<any> = ({ data }) => {
   );
 };
 
-export default ComboComHome;
+export default EventComHome;

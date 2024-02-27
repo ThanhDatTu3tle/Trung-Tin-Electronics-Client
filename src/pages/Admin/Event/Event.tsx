@@ -14,10 +14,11 @@ import { faHouse, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useBrand } from "../../../Context/BrandContext";
 import { useCategory } from "../../../Context/CategoryContext";
 import { useProduct } from "../../../Context/ProductContext";
-import { useCombo } from "../../../Context/ComboContext";
+import { useEvent } from "../../../Context/EventContext";
 import ProductService from "../../../service/ProductService";
 
-import ProductDiscountComponent from "../../../components/ProductDiscountComponent";
+import EventComponent from "../../../components/EventCom/EventComponent";
+import ProductEventComponent from "../../../components/ProductEventCom/ProductEventComponent";
 import Clock from "../../../components/Clock";
 import Button from "../../../components/Button";
 import Image from "../../../components/Image";
@@ -43,7 +44,7 @@ const Event: React.FC<any> = () => {
 
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [price, setPrice] = useState(0);
+  // const [price, setPrice] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [eventChosens, setEventChosens] = useState<
   {
@@ -70,7 +71,7 @@ const Event: React.FC<any> = () => {
   const brands = useBrand();
   const categories = useCategory();
   const filteredProductsResult = useProduct();
-  const combos = useCombo();
+  const events = useEvent();
 
   const [selectedBrandButton, setSelectedBrandButton] = useState<number | null>(
     null
@@ -95,8 +96,8 @@ const Event: React.FC<any> = () => {
   };
 
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
-  const [sumPriceProductsChosen, setSumPriceProductsChosen] = useState(0);
-  const comboProductChosen = JSON.parse(localStorage.getItem("combo") || "[]");
+  // const [sumPriceProductsChosen, setSumPriceProductsChosen] = useState(0);
+  const eventProductChosen = JSON.parse(localStorage.getItem("event") || "[]");
 
   useEffect(() => {    
     const fetchProductDetails = async (productId: string) => {
@@ -110,7 +111,7 @@ const Event: React.FC<any> = () => {
 
     const fetchAllProductDetails = async () => {
       const productDetails = await Promise.all(
-        comboProductChosen.map(async (productId: string) => {
+        eventProductChosen.map(async (productId: string) => {
           const productDetail = await fetchProductDetails(productId);
           if (productDetail) {
             return {
@@ -121,26 +122,26 @@ const Event: React.FC<any> = () => {
         })
       );
 
-      const updatedComboChosens = productDetails.filter(
+      const updatedEventChosens = productDetails.filter(
         (chosenProduct) => chosenProduct !== null
       );
 
-      setEventChosens(updatedComboChosens);
+      setEventChosens(updatedEventChosens);
       // setComboChosenIds(comboChosens.id);
       setIsLoadingProducts(false);
-      setSumPriceProductsChosen(updatedComboChosens.reduce((accumulator, currentProduct) => {
-        return accumulator + currentProduct.price;
-      }, 0));
+      // setSumPriceProductsChosen(updatedEventChosens.reduce((accumulator, currentProduct) => {
+      //   return accumulator + currentProduct.price;
+      // }, 0));
     }
 
     if (isLoadingProducts) {
       fetchAllProductDetails();
     }
-  }, [isLoadingProducts, comboProductChosen]);
+  }, [isLoadingProducts, eventProductChosen]);
 
   const handleCloseAddForm = () => {
-    localStorage.removeItem('combo');
-    if (comboProductChosen.length > 0) {
+    localStorage.removeItem('event');
+    if (eventProductChosen.length > 0) {
       setTimeout(() => {
         window.location.reload();
       }, 1000);
@@ -193,10 +194,10 @@ const Event: React.FC<any> = () => {
       upload(file);
     }
   };
-  const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const priceValue = Number(event.target.value);
-    setPrice(priceValue);
-  };
+  // const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const priceValue = Number(event.target.value);
+  //   setPrice(priceValue);
+  // };
   const handlePercentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const percentValue = Number(event.target.value);
     setDiscount(percentValue);
@@ -208,6 +209,12 @@ const Event: React.FC<any> = () => {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("image", imageUrl);
+    formData.append("cost", '0');
+    formData.append("price", '0');
+    formData.append("discount", discount.toString());
+    eventChosens.forEach((eventChosen, index) => {
+      formData.append(`product[${index}].idProduct`, eventChosen.id);
+    });
 
     const config = {
       headers: {
@@ -225,6 +232,7 @@ const Event: React.FC<any> = () => {
         },
         timer: 1500,
       });
+      localStorage.removeItem('event');
       setOpen(false);
       setTimeout(() => {
         window.location.reload();
@@ -266,7 +274,7 @@ const Event: React.FC<any> = () => {
 
   const handleConfirmEvent = () => {
     MySwal.fire({
-      title: "Khởi tạo combo mới thành công!",
+      title: "Khởi tạo sự kiện giảm giá thành công!",
       icon: "success",
       didOpen: () => {
         MySwal.showLoading();
@@ -302,15 +310,28 @@ const Event: React.FC<any> = () => {
             </Button>
             <Backdrop sx={{ color: "#fff", zIndex: 9 }} open={open}>
               <div className={cx("add-form")}>
+                <div className={cx("product-chosen")}>
+                  <p style={{ fontSize: "1.5rem", fontWeight: "500", paddingBottom: '1rem' }}>
+                    SẢN PHẨM ĐƯỢC CHỌN
+                  </p>
+                  <div className={cx("products")}>
+                    {eventChosens.map((eventChosen) => (
+                      <ProductEventComponent
+                        key={eventChosen.id}
+                        data={eventChosen}
+                      />
+                    ))}
+                  </div>
+                </div>
                 <form
                   action="/upload"
                   method="post"
                   className={cx("form")}
-                  onSubmit={handleSubmit}
+                  onSubmit={(event) => handleSubmit(event)}
                 >
                   <div className={cx("title")}>
                     <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>
-                      THÊM COMBO SẢN PHẨM
+                      THÔNG TIN SỰ KIỆN GIẢM GIÁ
                     </p>
                     <button
                       type="button"
@@ -321,14 +342,14 @@ const Event: React.FC<any> = () => {
                     </button>
                   </div>
                   <div className={cx("inputs")}>
-                    <label>Điền tên combo sản phẩm:</label>
+                    <label>Điền tên sự kiện:</label>
                     <input
                       type="text"
-                      placeholder="Tên danh mục sản phẩm"
+                      placeholder="Tên sự kiện"
                       className={cx("input-name")}
                       onChange={handleNameChange}
                     />
-                    <label>Chọn hình ảnh:</label>
+                    <label htmlFor="image">Chọn hình ảnh sự kiện:</label>
                     <input
                       id="image"
                       type="file"
@@ -338,35 +359,17 @@ const Event: React.FC<any> = () => {
                     />
                     <div className={cx("show-image")}>
                       <Image src={imageUrl} />
-                    </div>
-                    <label>Tổng giá gốc sản phẩm:</label>
-                    <input
-                      type="number"
-                      placeholder="Tổng giá gốc sản phẩm"
-                      className={cx("input-name")}
-                      value={sumPriceProductsChosen}
-                    />
-                    <br />
-                    <div className={cx("new-price-percent")}>
-                      <div className={cx("new-price")}>
-                        <label>Giá combo sản phẩm mới:</label>
-                        <input
-                          type="number"
-                          placeholder="Giá combo sản phẩm mới"
-                          className={cx("input-name")}
-                          onChange={handlePriceChange}
-                        />
-                      </div>
-                      <div className={cx("percent")}>
-                        <label>Phần trăm giảm giá:</label>
-                        <input
-                          type="number"
-                          placeholder="Phần trăm giảm giá"
-                          className={cx("input-name")}
-                          onChange={handlePercentChange}
-                        />
-                      </div> 
-                    </div>
+                    </div>                   
+                    <div className={cx("percent")}>
+                      <label>Phần trăm giảm giá:</label>
+                      <input
+                        type="number"
+                        placeholder="Phần trăm giảm giá"
+                        className={cx("input-name")}
+                        onChange={handlePercentChange}
+                      />
+                    </div> 
+
                   </div>
                   <Button primary small>
                     Xác nhận
@@ -387,9 +390,9 @@ const Event: React.FC<any> = () => {
           <div className={cx("machine-combo")}>
             <div className={cx("title-wrapper")}>
               <div className={cx("title")}>Sự kiện giảm giá</div>
-              {/* {combos.map((data) => (
-                <ComboComponent data={data.combo} />
-              ))} */}
+              {events.map((data) => (
+                <EventComponent data={data} />
+              ))}
             </div>
           </div>
           {category0 === true ? (
@@ -401,9 +404,9 @@ const Event: React.FC<any> = () => {
                   </div>
                   <div className={cx("product")}>
                     {filteredProductsResult
-                      .filter((data) => data.category.name === dataa.name && data.discount !== null)
+                      .filter((data) => data.category.name === dataa.name && data.status === true && data.discount !== null)
                       .map((data) => (
-                        <ProductDiscountComponent key={data.id} data={data} />
+                        <ProductEventComponent key={data.id} data={data} />
                       ))}
                   </div>
                 </div>
@@ -418,9 +421,9 @@ const Event: React.FC<any> = () => {
                   </div>
                   <div className={cx("product")}>
                     {filteredProductsResult
-                      .filter((data) => data.category.name === dataa && data.discount !== null)
+                      .filter((data) => data.category.name === dataa && data.status === true && data.discount !== null)
                       .map((data) => (
-                        <ProductDiscountComponent key={data.id} data={data} />
+                        <ProductEventComponent key={data.id} data={data} />
                       ))}
                   </div>
                 </div>

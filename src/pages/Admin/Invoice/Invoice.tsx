@@ -4,6 +4,8 @@ import { useQuery } from "react-query";
 import classNames from "classnames/bind";
 
 import dayjs, { Dayjs } from "dayjs";
+import { io } from 'socket.io-client';
+
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -48,6 +50,7 @@ const Invoice: React.FC<any> = () => {
   };
 
   const products = useProduct();
+  const [newOrderNotification, setNewOrderNotification] = useState(false);
 
   const [, setInvoices] = useState<
     {
@@ -113,6 +116,21 @@ const Invoice: React.FC<any> = () => {
     }[]
   >([]);
 
+  useEffect(() => {
+    const socket = io('ws://https://2cc3-27-3-232-145.ngrok-free.app/api/v1/'); // Thay 'your-server-url' bằng URL của máy chủ của bạn
+
+    socket.on('newOrder', () => {
+      // Khi nhận được thông điệp về đơn hàng mới
+      setNewOrderNotification(true); // Hiển thị thông báo
+      // Cập nhật danh sách đơn hàng
+      fetchAPIInvoices(); // Hàm fetch danh sách đơn hàng từ API
+    });
+
+    return () => {
+      socket.disconnect(); // Đóng kết nối khi component unmount
+    };
+  }, []);
+
   const fetchAPIInvoices = async () => {
     try {
       const res = await InvoiceService.GetAllInvoice();
@@ -155,11 +173,6 @@ const Invoice: React.FC<any> = () => {
   const handleChangeDayFilter = (newValue: any) => {
     setDayFilter(newValue);
   };
-
-  // useEffect(() => {
-  //     // Áp dụng bộ lọc ở đây
-  //     applyFilters();
-  // }, [dayFilter]);
 
   const applyFilters = () => {
     // Bắt đầu từ danh sách sản phẩm ban đầu
@@ -211,6 +224,12 @@ const Invoice: React.FC<any> = () => {
       <div className={cx("header")}>
         <div className={cx("left")}>
           <p style={{ width: "fit-content", fontWeight: 700 }}>ĐƠN HÀNG</p>
+          {newOrderNotification && (
+            <div className="notification">
+              <p>Có đơn hàng mới được đặt!</p>
+              <button onClick={() => setNewOrderNotification(false)}>Đóng</button>
+            </div>
+          )}
         </div>
         <div className={cx("right")}>
           <div className={cx("current-position")}>

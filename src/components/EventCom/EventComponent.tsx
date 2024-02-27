@@ -5,24 +5,24 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-import styles from "./ComboComponent.module.scss";
+import styles from "./EventComponent.module.scss";
 
-import ProductComboChildComponent from "../ProductComboChildComponent";
+import ProductEventChildComponent from "../ProductEventChildComponent";
 import Image from "../Image";
 import Button from "../Button";
 
 import { axiosClient } from "../../axios";
-import ComboService from "../../service/ComboService";
+import EventService from "../../service/EventService";
 
 const cx = classNames.bind(styles);
 
-const ComboComponent: React.FC<any> = ({ data }) => {
+const EventComponent: React.FC<any> = ({ data }) => {
   const MySwal = withReactContent(Swal);
 
-  const [state, setState] = useState(data.combo.status);
+  const [state, setState] = useState(data.event.status);
   const handleConfirm = async () => {
     try {
-      if (data.combo.status === true) {
+      if (data.event.status === true) {
         MySwal.fire({
           title: "Gỡ áp dụng thành công!",
           icon: "success",
@@ -31,7 +31,7 @@ const ComboComponent: React.FC<any> = ({ data }) => {
           },
           timer: 3000,
         });
-        ComboService.UpdateComboStatus(data.combo.id, 0);
+        EventService.UpdateEventStatus(data.event.id, 0);
         setTimeout(() => {
           window.location.reload();
         }, 1000);
@@ -45,7 +45,7 @@ const ComboComponent: React.FC<any> = ({ data }) => {
           },
           timer: 3000,
         });
-        ComboService.UpdateComboStatus(data.combo.id, 1);
+        EventService.UpdateEventStatus(data.event.id, 1);
         setTimeout(() => {
           window.location.reload();
         }, 1000);
@@ -65,7 +65,7 @@ const ComboComponent: React.FC<any> = ({ data }) => {
 
   const handleDelete = () => {
     try {
-      axiosClient.delete(`combo/delete/${data.combo.id}`, {
+      axiosClient.delete(`event/delete/${data.event.id}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -97,44 +97,34 @@ const ComboComponent: React.FC<any> = ({ data }) => {
     <div className={cx("wrapper")}>
       <div className={cx("inner")}>
         <div className={cx("image")}>
-          <Image src={data.combo.image} />
+          <Image src={data.event.image} />
         </div>
         <div className={cx("content")}>
           <div className={cx("name")}>
-            {data.combo.name}
-            {data.combo.status === false ? (
+            {data.event.name}
+            {data.event.status === false ? (
               <p style={{ color: "#FF0000", fontSize: '1.2rem' }}>Chưa được áp dụng</p>
             ) : (
               <p style={{ color: "#008052", fontSize: '1.2rem' }}>Đang được áp dụng</p>
             )}
           </div>
-          <div className={cx("products-combo")}>
+          <div className={cx("products-event")}>
             {data.detail.map((dataa: any) => (
-              <ProductComboChildComponent key={dataa.id} data={dataa.product} />
+              <ProductEventChildComponent key={dataa.id} data={dataa.product} />
             ))}
           </div>
-          <div className={cx("costs")}>
-            <div className={cx("price")}>
-              <span>Tổng giá gốc: </span>
-              {data.combo.cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
-            </div>
-            <div className={cx("price")}>
-              <span>Tổng giá hiện tại: </span>
-              {data.combo.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
-            </div>
-          </div>
           <div className={cx("btns")}>
-            {data.combo.status === false ? (
+            {data.event.status === false ? (
               <Button primary onClick={handleConfirm} style={{marginRight: '1rem'}}>
-                Áp dụng combo
+                Áp dụng sự kiện
               </Button>
             ) : (
               <Button primary onClick={handleConfirm} style={{marginRight: '1rem'}}>
-                Hủy áp dụng combo
+                Hủy áp dụng sự kiện
               </Button>
             )}
             <Button outline onClick={handleDelete}>
-              Xóa combo
+              Xóa sự kiện
             </Button>
           </div>
         </div>
@@ -143,4 +133,4 @@ const ComboComponent: React.FC<any> = ({ data }) => {
   );
 };
 
-export default ComboComponent;
+export default EventComponent;

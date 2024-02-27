@@ -20,6 +20,8 @@ const faCartShoppingIcon = faCartShopping as IconProp;
 const cx = classNames.bind(styles);
 
 const ProductComHome: React.FC<any> = ({ data }) => {
+  const MySwal = withReactContent(Swal);
+
   const combos = useCombo();
   const productComboIds = combos.flatMap((combo) =>
     combo.detail.map((product) => product.idProduct)
@@ -28,8 +30,6 @@ const ProductComHome: React.FC<any> = ({ data }) => {
     combo.detail.some((product) => product.idProduct === data.id)
   );
   const comboName = foundCombo ? foundCombo.combo.name : null;
-
-  const MySwal = withReactContent(Swal);
 
   const handleClick = async () => {
     if (!localStorage.getItem("seen")) {

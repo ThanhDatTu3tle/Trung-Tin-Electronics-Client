@@ -6,9 +6,20 @@ import styles from "./ProductComboComponent.module.scss";
 
 import Image from "../Image";
 
+import { useCombo } from "../../Context/ComboContext";
+
 const cx = classNames.bind(styles);
 
 const ProductComboComponent: React.FC<any> = ({ data }) => {
+  const combos = useCombo();
+  const productComboIds = combos.flatMap((combo) =>
+    combo.detail.map((product) => product.idProduct)
+  );
+  const foundCombo = combos.find((combo) =>
+    combo.detail.some((product) => product.idProduct === data.id)
+  );
+  const comboName = foundCombo ? foundCombo.combo.name : null;
+
   const [active, setActive] = useState(false);
 
   const handleActive = () => {
@@ -38,16 +49,19 @@ const ProductComboComponent: React.FC<any> = ({ data }) => {
 
   return (
     <div className={cx("wrapper")} onClick={handleActive}>
-      {active === false ? (
+      {productComboIds.includes(data.id) === true && active === false ? (
         <div className={cx("inner")}>
           <div className={cx("image")}>
-            {data.imageProducts && data.imageProducts.length > 0 && (
+          {data.imageProducts && data.imageProducts.length > 0 && (
               <Image src={data.imageProducts[0].image} />
             )}
           </div>
           <div className={cx("content")}>
             <div className={cx("name")}>
               {data.name} {data.id}
+            </div>
+            <div className={cx("combo")}>
+              <p>{comboName}</p>
             </div>
             <div className={cx("product-price")}>
               {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
@@ -55,21 +69,41 @@ const ProductComboComponent: React.FC<any> = ({ data }) => {
           </div>
         </div>
       ) : (
-        <div className={cx("inner-active")}>
-          <div className={cx("image")}>
-            {data.imageProducts && data.imageProducts.length > 0 && (
-              <Image src={data.imageProducts[0].image} />
-            )}
-          </div>
-          <div className={cx("content")}>
-            <div className={cx("name")}>
-              {data.name} {data.id}
+        <>
+          {active === false ? (
+            <div className={cx("inner")}>
+              <div className={cx("image")}>
+                {data.imageProducts && data.imageProducts.length > 0 && (
+                  <Image src={data.imageProducts[0].image} />
+                )}
+              </div>
+              <div className={cx("content")}>
+                <div className={cx("name")}>
+                  {data.name} {data.id}
+                </div>
+                <div className={cx("product-price")}>
+                  {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+                </div>
+              </div>
             </div>
-            <div className={cx("product-price")}>
-              {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+          ) : (
+            <div className={cx("inner-active")}>
+              <div className={cx("image")}>
+                {data.imageProducts && data.imageProducts.length > 0 && (
+                  <Image src={data.imageProducts[0].image} />
+                )}
+              </div>
+              <div className={cx("content")}>
+                <div className={cx("name")}>
+                  {data.name} {data.id}
+                </div>
+                <div className={cx("product-price")}>
+                  {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          )}
+        </>
       )}
     </div>
   );
