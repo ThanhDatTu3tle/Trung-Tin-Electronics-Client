@@ -360,10 +360,12 @@ const ProductManagement: React.FC<any> = () => {
         didOpen: () => {
           MySwal.showLoading();
         },
-        timer: 2000,
+        timer: 1500,
       });
       setOpen(false);
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       MySwal.fire({
         title: "Đã có lỗi xảy ra!",
@@ -371,7 +373,7 @@ const ProductManagement: React.FC<any> = () => {
         didOpen: () => {
           MySwal.showLoading();
         },
-        timer: 2000,
+        timer: 1500,
       });
     }
   };

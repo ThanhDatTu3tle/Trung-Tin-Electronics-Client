@@ -549,7 +549,7 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
                     {/* {totalPriceDiscount
                       .toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ".")} */}
-                    0 đ
+                    0đ
                   </p>
                   <br />
                   <p

@@ -56,7 +56,7 @@ const ProductDiscountComponent: React.FC<any> = ({ data }) => {
 
   const handleUpdateDiscount = async () => {
     try {
-      ProductService.UpdateProductDiscount(data.id, discount, promotional);
+      await ProductService.UpdateProductDiscount(data.id, discount, promotional);
       MySwal.fire({
         title: "Khởi tạo khuyến mãi thành công!",
         icon: "success",

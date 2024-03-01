@@ -116,20 +116,20 @@ const Invoice: React.FC<any> = () => {
     }[]
   >([]);
 
-  useEffect(() => {
-    const socket = io('ws://https://2cc3-27-3-232-145.ngrok-free.app/api/v1/'); // Thay 'your-server-url' bằng URL của máy chủ của bạn
+  // useEffect(() => {
+  //   const socket = io('ws://https://2cc3-27-3-232-145.ngrok-free.app/api/v1/'); // Thay 'your-server-url' bằng URL của máy chủ của bạn
 
-    socket.on('newOrder', () => {
-      // Khi nhận được thông điệp về đơn hàng mới
-      setNewOrderNotification(true); // Hiển thị thông báo
-      // Cập nhật danh sách đơn hàng
-      fetchAPIInvoices(); // Hàm fetch danh sách đơn hàng từ API
-    });
+  //   socket.on('newOrder', () => {
+  //     // Khi nhận được thông điệp về đơn hàng mới
+  //     setNewOrderNotification(true); // Hiển thị thông báo
+  //     // Cập nhật danh sách đơn hàng
+  //     fetchAPIInvoices(); // Hàm fetch danh sách đơn hàng từ API
+  //   });
 
-    return () => {
-      socket.disconnect(); // Đóng kết nối khi component unmount
-    };
-  }, []);
+  //   return () => {
+  //     socket.disconnect(); // Đóng kết nối khi component unmount
+  //   };
+  // }, []);
 
   const fetchAPIInvoices = async () => {
     try {

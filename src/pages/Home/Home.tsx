@@ -202,7 +202,7 @@ const Home: React.FC<any> = () => {
       <div className={cx("combos-events")}>
         <div className={cx("menu-categories")}>
           {categories.map((data) => (
-            <div className={cx("category-item")} onClick={(dataa) => handleLinkToCateogry(data)}>
+            <div className={cx("category-item")} key={data.id} onClick={(dataa) => handleLinkToCateogry(data)}>
               {data.name}
               <div className={cx("arrow")}>
                 <FontAwesomeIcon

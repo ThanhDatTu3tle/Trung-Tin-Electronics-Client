@@ -17,14 +17,14 @@ import React, {
     address: string;
     description: string;
     content: string;
-    createAt: Date;
+    createdAt: Date;
     customerName: string;
     email: string;
     payment: string;
     phone: string;
     status: boolean;
     total: number;
-    updateAt: Date;
+    updatedAt: Date;
     confirm: boolean;
   }
   
@@ -50,14 +50,14 @@ import React, {
         address: string;
         description: string;
         content: string;
-        createAt: Date;
+        createdAt: Date;
         customerName: string;
         email: string;
         payment: string;
         phone: string;
         status: boolean;
         total: number;
-        updateAt: Date;
+        updatedAt: Date;
         confirm: boolean;
       }[]
     >([]);

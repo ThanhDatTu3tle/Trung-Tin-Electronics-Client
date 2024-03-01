@@ -12,6 +12,7 @@ import ProductService from "../../service/ProductService";
 import Button from "../../components/Button";
 import { axiosClient } from "../../axios";
 import { useCart } from "../../Context/CartContext";
+import { useNewOrder } from "../../Context/NewOrderContext ";
 
 import provincesData from "../../assets/data/provinces_vietnam.json";
 
@@ -53,7 +54,10 @@ window.addEventListener("resize", updateScreenSize);
 const Cart: React.FC<any> = () => {
   const MySwal = withReactContent(Swal);
   const history = useNavigate();
+
   const { cartItems } = useCart();
+  // const { hasNewOrder, setHasNewOrder } = useNewOrder();
+
   const status = false;
   const confirm = false;
   const emptyData: {
@@ -186,9 +190,9 @@ const Cart: React.FC<any> = () => {
     setErrorsVisibleMethodPayment(false);
   };
 
-  if (cartData.length === 0) {
-    history("/");
-  }
+  // if (cartData.length === 0) {
+  //   history("/");
+  // }
 
   useEffect(() => {
     const fetchProductDetails = async (productId: string) => {
@@ -399,8 +403,9 @@ const Cart: React.FC<any> = () => {
           },
           timer: 2000,
         });
-
         await localStorage.removeItem("cart");
+        // setHasNewOrder(true);
+        // console.log("New order status:", hasNewOrder);
         window.location.href = "/";
       } catch (error) {
         await MySwal.fire({
@@ -411,29 +416,13 @@ const Cart: React.FC<any> = () => {
           },
           timer: 2000,
         });
-
         await localStorage.removeItem("cart");
+        // setHasNewOrder(true);
+        // console.log("New order status:", hasNewOrder);
         window.location.href = "/";
       }
     }
   };
-
-  // const startPollingForNewOrders = () => {
-  //   const pollingInterval = setInterval(async () => {
-  //       try {
-  //           // Gửi yêu cầu kiểm tra có đơn hàng mới từ server
-  //           const response = await axios.get("/api/orders");
-
-  //           // Xử lý dữ liệu đơn hàng mới từ server
-  //           console.log("Dữ liệu đơn hàng mới:", response.data);
-
-  //           // Dừng Polling khi nhận được dữ liệu mới
-  //           clearInterval(pollingInterval);
-  //       } catch (error) {
-  //           console.error("Lỗi khi kiểm tra đơn hàng mới:", error);
-  //       }
-  //   }, 5000); // Polling sau mỗi 5 giây
-  // };
 
   return (
     <div className={cx("wrapper")}>

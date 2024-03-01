@@ -19,6 +19,8 @@ import { CartProvider } from "./Context/CartContext";
 import { ComboProvider } from "./Context/ComboContext";
 import { EventProvider } from "./Context/EventContext";
 import { InvoiceProvider } from "./Context/InvoiceContext";
+// import { NewOrderProvider } from "./Context/NewOrderContext ";
+import { GoodsProvider } from "./Context/GoodsContext";
 
 import CartButton from "./components/CartButton";
 
@@ -43,81 +45,83 @@ const App: React.FC = () => {
 
   return (
     <AuthContext.Provider value={{ token, setToken, search, setSearch }}>
-      <InvoiceProvider>
-        <EventProvider>
-          <ComboProvider>
-            <BrandProvider>
-              <CategoryProvider>
-                <ProductProvider>
-                  <CartProvider>
-                    <Router>
-                      <div className="App">
-                        <Routes>
-                          {publicRoutes.map((route, index) => {
-                            const Page = route.component;
+      <GoodsProvider>
+        <InvoiceProvider>
+          <EventProvider>
+            <ComboProvider>
+              <BrandProvider>
+                <CategoryProvider>
+                  <ProductProvider>
+                    <CartProvider>
+                      <Router>
+                        <div className="App">
+                          <Routes>
+                            {publicRoutes.map((route, index) => {
+                              const Page = route.component;
 
-                            let Layout = MainUserLayout;
+                              let Layout = MainUserLayout;
 
-                            if (route.layout) {
-                              Layout = route.layout;
-                            } else if (route.layout === null) {
-                              Layout = Fragment;
-                            }
-                            return (
-                              <Route
-                                key={index}
-                                path={route.path}
-                                element={
-                                  <Layout>
-                                    <Page />
-                                  </Layout>
-                                }
-                              />
-                            );
-                          })}
-                          {privateRoutes.map((route, index) => {
-                            const Page = route.component;
-
-                            let Layout = MainAdminLayout;
-
-                            if (route.layout) {
-                              Layout = route.layout;
-                            } else if (route.layout === null) {
-                              Layout = Fragment;
-                            }
-                            return (
-                              <Route
-                                key={index}
-                                path={route.path}
-                                element={
-                                  <ProtectedRoute>
+                              if (route.layout) {
+                                Layout = route.layout;
+                              } else if (route.layout === null) {
+                                Layout = Fragment;
+                              }
+                              return (
+                                <Route
+                                  key={index}
+                                  path={route.path}
+                                  element={
                                     <Layout>
                                       <Page />
                                     </Layout>
-                                  </ProtectedRoute>
-                                }
-                              />
-                            );
-                          })}
-                          <Route
-                            path="/detailCategory/:name/*"
-                            element={<DetailCategory />}
-                          />
-                          <Route
-                            path="/detailProduct/:id/*"
-                            element={<DetailProduct />}
-                          />
-                        </Routes>
-                        <CartButton />
-                      </div>
-                    </Router>
-                  </CartProvider>
-                </ProductProvider>
-              </CategoryProvider>
-            </BrandProvider>
-          </ComboProvider>
-        </EventProvider>
-      </InvoiceProvider>
+                                  }
+                                />
+                              );
+                            })}
+                            {privateRoutes.map((route, index) => {
+                              const Page = route.component;
+
+                              let Layout = MainAdminLayout;
+
+                              if (route.layout) {
+                                Layout = route.layout;
+                              } else if (route.layout === null) {
+                                Layout = Fragment;
+                              }
+                              return (
+                                <Route
+                                  key={index}
+                                  path={route.path}
+                                  element={
+                                    <ProtectedRoute>
+                                      <Layout>
+                                        <Page />
+                                      </Layout>
+                                    </ProtectedRoute>
+                                  }
+                                />
+                              );
+                            })}
+                            <Route
+                              path="/detailCategory/:name/*"
+                              element={<DetailCategory />}
+                            />
+                            <Route
+                              path="/detailProduct/:id/*"
+                              element={<DetailProduct />}
+                            />
+                          </Routes>
+                          <CartButton />
+                        </div>
+                      </Router>
+                    </CartProvider>
+                  </ProductProvider>
+                </CategoryProvider>
+              </BrandProvider>
+            </ComboProvider>
+          </EventProvider>
+        </InvoiceProvider>
+      </GoodsProvider>
     </AuthContext.Provider>
   );
 };

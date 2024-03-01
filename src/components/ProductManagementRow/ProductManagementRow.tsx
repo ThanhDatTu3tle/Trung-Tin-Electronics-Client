@@ -21,9 +21,11 @@ import Button from "../Button";
 
 import { axiosClient } from "../../axios";
 import ProductService from "../../service/ProductService";
+import GoodsService from "../../service/GoodsService";
 import { useBrand } from "../../Context/BrandContext";
 import { useCategory } from "../../Context/CategoryContext";
 import { useCombo } from "../../Context/ComboContext";
+import { useProduct } from "../../Context/ProductContext";
 
 const cx = classNames.bind(styles);
 
@@ -32,6 +34,7 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
 
   const brands = useBrand();
   const categories = useCategory();
+  const products = useProduct();
   const combos = useCombo();
   const productComboIds = combos.flatMap((combo) =>
     combo.detail.map((product) => product.idProduct)
@@ -83,9 +86,9 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
   const [price, setPrice] = useState<number>(data.price);
   const [cost, setCost] = useState<number>(data.cost);
   const [images, setImages] = useState<File[]>([]);
-  // const [imageProducts, setImageProducts] = useState<File[]>(
-  //   data.imageProducts.image
-  // );
+  const [imageProducts, setImageProducts] = useState<File[]>(
+    data.imageProducts.image
+  );
   const [specification, setSpecification] = useState<string[]>(
     data.specification.specification
   );
@@ -208,7 +211,6 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
       formData.append("cost", cost.toString());
       formData.append("idBrand", selectedBrandData.id.toString());
       formData.append("idCategory", selectedCategoryData.id.toString());
-
       // console.log('validImages: ', validImages);
       // console.log('data.imageProducts: ', data.imageProducts);
       // const imgProducts = data.imageProducts.map(
@@ -217,12 +219,12 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
       // console.log('imgProducts: ', imgProducts)
       // const finalImgItem = [...validImages, ...imgProducts];
       // console.log('finalImgItem: ', finalImgItem);
-      validImages.forEach((image, index) => {
-        formData.append(`imageProducts[${index}].image`, image);
-      });
-      specification.forEach((specItem, index) => {
-        formData.append(`specification[${index}]`, specItem);
-      });
+      // validImages.forEach((image, index) => {
+      //   formData.append(`imageProducts[${index}].image`, image);
+      // });
+      // specification.forEach((specItem, index) => {
+      //   formData.append(`specification[${index}]`, specItem);
+      // });
 
       const config = {
         headers: {
@@ -230,7 +232,7 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
         },
       };
 
-      axiosClient.put("product/update", formData, config);
+      await axiosClient.put("product/update", formData, config);
       MySwal.fire({
         title: "Chỉnh sửa thành công!",
         icon: "success",
@@ -311,27 +313,44 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
     setQuantity(quantityValue);
   };
 
-  const updateProductQuantity = () => {
+  const updateProductQuantity = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append("quantity", quantity.toString());
+    products.filter((x) => x.id === data.id).forEach((product, index) => {
+      formData.append(`goodsDetail[${index}].idProduct`, product.id);
+      formData.append(
+        `goodsDetail[${index}].cost`,
+        product.cost?.toString()
+      );
+    });
+
     try {
-      ProductService.UpdateProductQuantity(data.id, quantity);
-      MySwal.fire({
-        title: "Cập nhật hàng tồn kho thành công!",
+      await axiosClient.post("goods/create", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      await ProductService.UpdateProductQuantity(data.id, quantity);
+      await MySwal.fire({
+        title: "Cập nhật hàng tồn thành công!",
         icon: "success",
         didOpen: () => {
           MySwal.showLoading();
         },
         timer: 2000,
       });
-      window.location.reload();
       setState(!state);
+      window.location.reload();
     } catch (error) {
-      MySwal.fire({
-        title: "Đã có lỗi xảy ra!",
+      await MySwal.fire({
+        title: "Sản phẩm chưa được cập nhật giá vốn, vui lòng cập nhật để tiến hành!",
         icon: "error",
         didOpen: () => {
           MySwal.showLoading();
         },
-        timer: 2000,
+        timer: 5000,
       });
     }
   };
@@ -411,20 +430,26 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                       ×
                     </button>
                   </div>
-                  <div className={cx("inputs")}>
-                    <br />
-                    <p>Số lượng tồn kho hiện tại: {data.quantity}</p>
-                    <label htmlFor="quantity">
-                      Chỉnh sửa số lượng tồn kho sản phẩm:
-                    </label>
-                    <input
-                      id="quantity"
-                      type="number"
-                      placeholder="Số lượng hàng nhập kho"
-                      className={cx("input-name")}
-                      onChange={handleQuantityChange}
-                    />
-                  </div>
+                  <form
+                    action="/upload"
+                    method="post"
+                    onSubmit={(event) => updateProductQuantity(event)}
+                  >
+                    <div className={cx("inputs")}>
+                      <br />
+                      <p>Số lượng tồn kho hiện tại: {data.quantity}</p>
+                      <label htmlFor="quantity">
+                        Chỉnh sửa số lượng tồn kho sản phẩm:
+                      </label>
+                      <input
+                        id="quantity"
+                        type="number"
+                        placeholder="Số lượng hàng nhập kho"
+                        className={cx("input-name")}
+                        onChange={handleQuantityChange}
+                      />
+                    </div>
+                  </form>
                   <Button primary small onClick={updateProductQuantity}>
                     Chỉnh sửa
                   </Button>
@@ -567,7 +592,7 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                       className={cx("input-name")}
                       onChange={handlePriceChange}
                     />
-                    <label htmlFor="price">Chỉnh sửa giá gốc sản phẩm:</label>
+                    <label htmlFor="price">Chỉnh sửa giá vốn sản phẩm:</label>
                     <input
                       id="cost"
                       type="number"
@@ -621,7 +646,7 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                     </select>
                   </div>
 
-                  <div className={cx("right")}>
+                  {/* <div className={cx("right")}>
                     <label htmlFor="image">Hình ảnh hiện tại:</label>
                     <div className={cx("show-image")}>
                       {data.imageProducts.map(
@@ -653,7 +678,7 @@ const ProductManagementRow: React.FC<any> = ({ data }) => {
                       onChange={handleSpecChange}
                       rows={5}
                     />
-                  </div>
+                  </div> */}
                 </div>
                 <Button primary small>
                   Xác nhận
