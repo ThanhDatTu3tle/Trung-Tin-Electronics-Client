@@ -19,7 +19,6 @@ import { CartProvider } from "./Context/CartContext";
 import { ComboProvider } from "./Context/ComboContext";
 import { EventProvider } from "./Context/EventContext";
 import { InvoiceProvider } from "./Context/InvoiceContext";
-// import { NewOrderProvider } from "./Context/NewOrderContext ";
 import { GoodsProvider } from "./Context/GoodsContext";
 
 import CartButton from "./components/CartButton";
@@ -45,14 +44,14 @@ const App: React.FC = () => {
 
   return (
     <AuthContext.Provider value={{ token, setToken, search, setSearch }}>
-      <GoodsProvider>
-        <InvoiceProvider>
-          <EventProvider>
-            <ComboProvider>
-              <BrandProvider>
-                <CategoryProvider>
-                  <ProductProvider>
-                    <CartProvider>
+      <ComboProvider>
+        <BrandProvider>
+          <CategoryProvider>
+            <ProductProvider>
+              <CartProvider>
+                <GoodsProvider>
+                  <InvoiceProvider>
+                    <EventProvider>
                       <Router>
                         <div className="App">
                           <Routes>
@@ -114,14 +113,14 @@ const App: React.FC = () => {
                           <CartButton />
                         </div>
                       </Router>
-                    </CartProvider>
-                  </ProductProvider>
-                </CategoryProvider>
-              </BrandProvider>
-            </ComboProvider>
-          </EventProvider>
-        </InvoiceProvider>
-      </GoodsProvider>
+                    </EventProvider>
+                  </InvoiceProvider>
+                </GoodsProvider>
+              </CartProvider>
+            </ProductProvider>
+          </CategoryProvider>
+        </BrandProvider>
+      </ComboProvider>
     </AuthContext.Provider>
   );
 };

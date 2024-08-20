@@ -94,28 +94,28 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
     try {
       if (data.status === false) {
         await InvoiceService.UpdateInvoiceStatus(data.id, 1);
-        MySwal.fire({
-          title: "Xác nhận đơn hàng!",
-          icon: "success",
-          didOpen: () => {
-            MySwal.showLoading();
-          },
-          timer: 2000,
-        });
-        window.location.reload();
-        setState(!state);
+        // MySwal.fire({
+        //   title: "Xác nhận đơn hàng!",
+        //   icon: "success",
+        //   didOpen: () => {
+        //     MySwal.showLoading();
+        //   },
+        //   timer: 2000,
+        // });
+        // window.location.reload();
+        // setState(!state);
       } else {
         await InvoiceService.UpdateInvoiceStatus(data.id, 0);
-        MySwal.fire({
-          title: "Chưa hoàn tất xác nhận đơn hàng!",
-          icon: "warning",
-          didOpen: () => {
-            MySwal.showLoading();
-          },
-          timer: 2000,
-        });
-        window.location.reload();
-        setState(!state);
+        // MySwal.fire({
+        //   title: "Chưa hoàn tất xác nhận đơn hàng!",
+        //   icon: "warning",
+        //   didOpen: () => {
+        //     MySwal.showLoading();
+        //   },
+        //   timer: 2000,
+        // });
+        // window.location.reload();
+        // setState(!state);
       }
     } catch (error) {
       MySwal.fire({
@@ -135,28 +135,28 @@ const InvoiceManagementRow: React.FC<any> = ({ data, products }) => {
     try {
       if (data.confirm === false) {
         await InvoiceService.UpdateInvoiceConfirm(data.id, 1);
-        MySwal.fire({
-          title: "Hoàn tất quá trình giao hàng!",
-          icon: "success",
-          didOpen: () => {
-            MySwal.showLoading();
-          },
-          timer: 2000,
-        });
-        window.location.reload();
-        setState(!state);
+        // MySwal.fire({
+        //   title: "Hoàn tất quá trình giao hàng!",
+        //   icon: "success",
+        //   didOpen: () => {
+        //     MySwal.showLoading();
+        //   },
+        //   timer: 2000,
+        // });
+        // window.location.reload();
+        // setState(!state);
       } else {
         await InvoiceService.UpdateInvoiceConfirm(data.id, 0);
-        MySwal.fire({
-          title: "Chưa hoàn tất quá trình giao hàng!",
-          icon: "warning",
-          didOpen: () => {
-            MySwal.showLoading();
-          },
-          timer: 2000,
-        });
-        window.location.reload();
-        setState(!state);
+        // MySwal.fire({
+        //   title: "Chưa hoàn tất quá trình giao hàng!",
+        //   icon: "warning",
+        //   didOpen: () => {
+        //     MySwal.showLoading();
+        //   },
+        //   timer: 2000,
+        // });
+        // window.location.reload();
+        // setState(!state);
       }
     } catch (error) {
       MySwal.fire({

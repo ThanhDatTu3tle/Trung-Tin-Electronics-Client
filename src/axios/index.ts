@@ -3,7 +3,7 @@ import queryString from 'query-string';
 
 // const baseUrl = `http://localhost:8080/api/v1/`;
 // console.log(baseUrl);
-const baseUrl = `https://94df-27-3-232-145.ngrok-free.app/api/v1/`;
+const baseUrl = `https://2059-104-28-205-73.ngrok-free.app/api/v1`;
 const getToken = () => localStorage.getItem('token');
 
 const axiosClient = axios.create({
@@ -21,7 +21,7 @@ const clientId = '983c8532c49a20e'; // Thay YOUR_CLIENT_ID bằng Client ID củ
 imgurApiClient.defaults.headers.common['Authorization'] = `Client-ID ${clientId}`;
 
 // Add an interceptor to set the authorization header for each request
-axiosClient.interceptors.request.use(config => {
+axiosClient.interceptors.request.use(config => {  
   const token = getToken();
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
